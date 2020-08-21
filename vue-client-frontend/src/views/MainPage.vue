@@ -14,14 +14,16 @@
             Articles Récents
         </Subtitle>
 
-        <ArticlePreview
-            v-for="article in Articles"
-            :title="article.title"
-            :author="article.author"
-            :createdAt="article.createdAt"
-            :content="article.content"
-            :key="article.title">
-        </ArticlePreview>
+        <a href="/article">
+            <ArticlePreview
+                v-for="article in Articles"
+                :title="article.title"
+                :author="article.author"
+                :createdAt="article.createdAt"
+                :content="article.content"
+                :key="article.title">
+            </ArticlePreview>
+        </a>
 
         <div class="m-4">
             <a href="/tous_articles">
@@ -43,7 +45,9 @@
         </ActivityPreview>
 
         <div class="m-4">
-            <BaseButton> Toute l'activité </BaseButton>
+            <a href="/toute_activite">
+                <BaseButton> Toute l'activité </BaseButton>
+            </a>
         </div>
 
     </div>
@@ -76,5 +80,11 @@ export default {
         })
     }         
 }
-
 </script>
+
+<style lang="scss">
+    a{
+        color: black;
+        text-decoration: none;
+    }
+</style>

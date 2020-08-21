@@ -1,3 +1,21 @@
+<template>
+    <div class="preview m-3 p-2">
+        <div class="preview-header">
+            <div class="articleInfo">
+                <p class="mb-0"> {{title}} </p>
+                <p> {{author}} </p>
+            </div>
+            <div class="creationTime">
+                <p> {{createdAt}} </p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <p> {{content}} </p>
+        </div>
+    </div>
+</template>
+
 <script>
 export default {
   name: 'ArticlePreview',
@@ -21,24 +39,6 @@ export default {
   },
 }
 </script>
-
-<template>
-    <div class="preview m-3 p-2">
-        <div class="preview-header">
-            <div class="articleInfo">
-                <p class="mb-0"> {{title}} </p>
-                <p> {{author}} </p>
-            </div>
-            <div class="creationTime">
-                <p> {{createdAt}} </p>
-            </div>
-        </div>
-        
-        <div class="content">
-            <p> {{content}} </p>
-        </div>
-    </div>
-</template>
 
 <style lang="scss">
   .preview{

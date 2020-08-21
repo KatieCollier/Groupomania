@@ -27,8 +27,20 @@ export default new Router({
     {
       path: "/tous_articles",
       alias: "/tous_articles",
-      name: "mainPage",
+      name: "allArticles",
       component: () => import("./views/AllArticles")
+    },
+    {
+      path: "/toute_activite",
+      alias: "/toute_activite",
+      name: "allActivity",
+      component: () => import("./views/AllActivity")
+    },
+    {
+      path: "/article",
+      alias: "/article",
+      name: "articlePage",
+      component: () => import("./views/Article")
     }
   ]
 });

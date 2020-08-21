@@ -16,14 +16,16 @@
             Articles
         </Subtitle>
 
-        <ArticlePreview
-            v-for="article in Articles"
-            :title="article.title"
-            :author="article.author"
-            :createdAt="article.createdAt"
-            :content="article.content"
-            :key="article.title">
+        <a href="/article">
+            <ArticlePreview
+                v-for="article in Articles"
+                :title="article.title"
+                :author="article.author"
+                :createdAt="article.createdAt"
+                :content="article.content"
+                :key="article.title">
         </ArticlePreview>
+        </a>
 
         <ReturnButton />
 
@@ -41,7 +43,7 @@ import ReturnButton from "../components/ReturnButton"
 import {mapState} from "vuex"
 
 export default {
-    name: "mainPage",
+    name: "allActivity",
     components: {
         CurrentUser,
         SearchBar,
@@ -57,3 +59,10 @@ export default {
     }         
 }
 </script>
+
+<style lang="scss">
+    a{
+        color: black;
+        text-decoration: none;
+    }
+</style>
