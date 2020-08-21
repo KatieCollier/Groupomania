@@ -7,7 +7,9 @@
         </SearchBar>
 
         <div class="text-center m-4">
+            <a href="/publier">
             <BaseButton> Créer un article </BaseButton>
+            </a>
         </div>
 
         <Subtitle>

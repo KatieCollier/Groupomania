@@ -41,6 +41,12 @@ export default new Router({
       alias: "/article",
       name: "articlePage",
       component: () => import("./views/Article")
+    },
+    {
+      path: "/publier",
+      alias: "/publier",
+      name: "createArticle",
+      component: () => import("./views/CreateArticle")
     }
   ]
 });

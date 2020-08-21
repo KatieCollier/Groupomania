@@ -3,12 +3,19 @@
         <p class="commentor mb-0"> {{commentor}} </p>
         <p> {{createdAt}} </p>
         <p> {{content}} </p>
+
+        <ActionBar />
     </div>
 </template>
 
 <script>
+import ActionBar from "../components/ActionBar"
+
 export default {
   name: 'Comment',
+  components: {
+      ActionBar
+  },
   props: {
       commentor: {
           type: String,

@@ -14,6 +14,9 @@
             </div>
         
             <p> {{SingleArticle.content}} </p>
+
+            <ActionBar> </ActionBar> 
+
         </div>
 
         <Comment class="ml-5" v-for="comment in Comments"
@@ -31,6 +34,7 @@
 import CurrentUser from "../components/CurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import Comment from "../components/Comment"
+import ActionBar from "../components/ActionBar"
 
 import {mapState} from "vuex"
 
@@ -39,7 +43,8 @@ export default {
     components: {
         CurrentUser,
         ReturnButton,
-        Comment
+        Comment,
+        ActionBar
     },
     computed: {
         ...mapState({
