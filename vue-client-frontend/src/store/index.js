@@ -95,7 +95,14 @@ export default new Vuex.Store({
         createdAt: "2020-08-02 14:02:00",
         content: "You can offset grid columns in two ways: our responsive .offset- grid classes and our margin utilities. Grid classes are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable."
       }
-    ]
+    ],
+    Users: {
+        userName: "Harry Potter",
+        email: "harry.potter@hogwarts.mgc",
+        department: "Gryffondor",
+        password: "Hedwig",
+        image: "../images/profile.png"
+      }
   },
   mutations: {
   },

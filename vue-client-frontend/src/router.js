@@ -47,6 +47,18 @@ export default new Router({
       alias: "/publier",
       name: "createArticle",
       component: () => import("./views/CreateArticle")
+    },
+    {
+      path: "/profile",
+      alias: "/profile",
+      name: "profilePage",
+      component: () => import("./views/UserProfile")
+    },
+    {
+      path: "/modifier_profile",
+      alias: "/modifier_profile",
+      name: "editProfile",
+      component: () => import("./views/EditProfile")
     }
   ]
 });

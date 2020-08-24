@@ -4,17 +4,17 @@
         <p> {{createdAt}} </p>
         <p> {{content}} </p>
 
-        <ActionBar />
+        <ActionBarComment />
     </div>
 </template>
 
 <script>
-import ActionBar from "../components/ActionBar"
+import ActionBarComment from "../components/ActionBarComment"
 
 export default {
   name: 'Comment',
   components: {
-      ActionBar
+      ActionBarComment
   },
   props: {
       commentor: {

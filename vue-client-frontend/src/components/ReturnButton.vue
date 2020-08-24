@@ -1,9 +1,3 @@
-<script>
-export default {
-  name: 'ReturnButton'
-}
-</script>
-
 <template>
   <div>
       <a href="page_principale">
@@ -14,6 +8,12 @@ export default {
   </div>
   
 </template>
+
+<script>
+export default {
+  name: 'ReturnButton'
+}
+</script>
 
 <style lang="scss">
     .return-button{

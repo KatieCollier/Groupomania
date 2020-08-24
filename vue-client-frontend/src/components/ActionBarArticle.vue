@@ -1,10 +1,14 @@
 <template>
   <div class="action">
       <div>
-          <img src="../images/edit.png" alt="Modifier">
+          <a href="/publier">
+            <img src="../images/edit.png" alt="Modifier">
+          </a>
       </div>
       <div>
-          <img src="../images/bin.png" alt="Supprimer">
+          <a href="/page_principale">
+            <img src="../images/bin.png" alt="Supprimer">
+          </a>
       </div>
      <div class="likes">
          <p class="mr-2 h4"> 5 </p>

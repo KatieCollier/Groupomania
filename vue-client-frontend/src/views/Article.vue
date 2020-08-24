@@ -26,6 +26,8 @@
             :content="comment.content"
         />
 
+        <AddComment class="ml-5 mr-3" />
+
         <ReturnButton/>
     </div>
 </template>
@@ -34,7 +36,8 @@
 import CurrentUser from "../components/CurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import Comment from "../components/Comment"
-import ActionBar from "../components/ActionBar"
+import ActionBar from "../components/ActionBarArticle"
+import AddComment from "../components/AddComment"
 
 import {mapState} from "vuex"
 
@@ -44,7 +47,8 @@ export default {
         CurrentUser,
         ReturnButton,
         Comment,
-        ActionBar
+        ActionBar,
+        AddComment
     },
     computed: {
         ...mapState({
