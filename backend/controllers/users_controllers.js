@@ -2,7 +2,7 @@ const db = require("../models");
 const User = db.users;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Tutorial
+// Create and Save a new User
 exports.create = (req, res) => {
     // Validate request
     if (!req.body.email) {
@@ -12,7 +12,7 @@ exports.create = (req, res) => {
       return;
     }
   
-    // Create a Tutorial
+    // Create a User
     const user = {
       email: req.body.email,
       password: req.body.password,
@@ -21,7 +21,7 @@ exports.create = (req, res) => {
       chargeCom: req.body.chargeCom ? req.body.chargeCom: false
     };
   
-    // Save Tutorial in the database
+    // Save User in the database
     User.create(user)
       .then(data => {
         res.send(data);
@@ -34,7 +34,7 @@ exports.create = (req, res) => {
       });
   };
 
-// Retrieve all Tutorials from the database.
+// Retrieve all Users from the database.
 exports.findAll = (req, res) => {
     const email = req.query.email;
     var condition = email ? { email: { [Op.like]: `%${email}%` } } : null;

@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(35),
     },
     profilePic: {
-        type: Sequelize.BLOB("long")
+        type: Sequelize.STRING,
     },
     ChargeCom: {
         type: Sequelize.BOOLEAN(),
