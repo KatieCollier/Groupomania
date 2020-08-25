@@ -9,7 +9,9 @@
         </SearchBar>
 
         <div class="text-center m-4">
-            <BaseButton> Créer un article </BaseButton>
+            <a href="/publier">
+                <BaseButton> Créer un article </BaseButton>
+            </a>
         </div>
 
         <Subtitle>
@@ -43,7 +45,7 @@ import ArticlePreview from "../components/ArticlePreview"
 import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
-import {mapState} from "vuex"
+import http from "../http-common"
 
 export default {
     name: "allActivity",
@@ -55,12 +57,32 @@ export default {
         ArticlePreview,
         ReturnButton,
         Footer
-    },  
-    computed: {
-        ...mapState({
-            Articles: "Articles",
+    },
+    data() {
+        return {
+            Articles: []
+        };
+    },
+    methods: {
+        retrieveArticles() {
+      http
+        .get("/articles")
+        .then(response => {
+          this.Articles = response.data; // JSON are parsed automatically.
+          console.log(response.data);
         })
-    }         
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    refreshList() {
+      this.retrieveArticles();
+    }
+    /* eslint-enable no-console */
+  },
+  mounted() {
+    this.retrieveArticles();
+    }       
 }
 </script>
 
