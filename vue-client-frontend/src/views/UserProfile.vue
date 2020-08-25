@@ -21,7 +21,13 @@
             <a href="/modifier_profile">
                 <BaseButton> Modifier Profile </BaseButton>
             </a>
+
+            <a href="/page_principale">
+                <ReturnButton class="my-5" />
+            </a>
         </div>
+
+        <Footer />
         
     </div>
 </template>
@@ -29,6 +35,8 @@
 <script>
 import LargerCurrentUser from "../components/LargeCurrentUser"
 import BaseButton from "../components/BaseButton"
+import ReturnButton from "../components/ReturnButton"
+import Footer from "../components/Footer"
 
 import {mapState} from "vuex"
 
@@ -36,7 +44,9 @@ export default {
     name: "profilePage",
     components: {
         LargerCurrentUser,
-        BaseButton
+        BaseButton,
+        ReturnButton,
+        Footer
     },
     computed: {
         ...mapState({

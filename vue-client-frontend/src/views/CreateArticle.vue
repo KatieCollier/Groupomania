@@ -24,10 +24,14 @@
 
         <div class="text-center">
             <BaseButton class="col-6 m-4"> Ajouter une image </BaseButton>
-            <BaseButton class="col-6 m-4"> Publier </BaseButton>
+            <a href="/page_principale">
+                <BaseButton class="col-6 m-4"> Publier </BaseButton>
+            </a>
         </div>
         
         <ReturnButton />
+
+        <Footer />
         
     </div>
 </template>
@@ -36,13 +40,15 @@
 import LargeCurrentUser from "../components/LargeCurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import BaseButton from "../components/BaseButton"
+import Footer from "../components/Footer"
 
 export default {
     name: "createArticle",
     components: {
         LargeCurrentUser,
         ReturnButton,
-        BaseButton
+        BaseButton,
+        Footer
     }
 }
 </script>

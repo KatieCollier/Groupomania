@@ -59,6 +59,12 @@ export default new Router({
       alias: "/modifier_profile",
       name: "editProfile",
       component: () => import("./views/EditProfile")
+    },
+    {
+      path: "/activite_utilisateur",
+      alias: "/activite_utilisateur",
+      name: "userActivity",
+      component: () => import("./views/UserActivity")
     }
   ]
 });

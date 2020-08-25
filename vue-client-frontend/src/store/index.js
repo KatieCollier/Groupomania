@@ -102,7 +102,23 @@ export default new Vuex.Store({
         department: "Gryffondor",
         password: "Hedwig",
         image: "../images/profile.png"
+      },
+    SingleUser: [
+      {
+        userName: "Draco Malfoy",
+        activityType: "Article",
+        articleTitle: "Article 1",
+        content: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.",
+        createdAt: "2020-08-01 12:00:00"
+      },
+      {
+        userName: "Draco Malfoy",
+        activityType: "Comment",
+        articleTitle: "Article 3",
+        content: "Loren Ipsum Expelliarmus",
+        createdAt: "2020-08-03 15:36:00"
       }
+    ],
   },
   mutations: {
   },

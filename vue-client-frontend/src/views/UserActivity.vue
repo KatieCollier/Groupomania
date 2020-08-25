@@ -1,57 +1,48 @@
 <template>
-    <div class="overview">
-        <CurrentUser>
-        </CurrentUser>
+    <div>
+        <CurrentUser />
 
         <ReturnButton />
 
-        <SearchBar class="mb-3">
-        </SearchBar>
+        <Subtitle> Draco Malfoy </Subtitle>
 
-        <Subtitle>
-            Activité
-        </Subtitle>
-
-        <ActivityPreview
-            v-for="activity in Activities"
-            :user="activity.user"
+        <ActivityPreview 
+             v-for="activity in SingleUser"
+            :user="activity.userName"
             :activityType="activity.activityType"
             :createdAt="activity.createdAt"
             :content="activity.content"
-            :key="activity.title">
-        </ActivityPreview>
+            :key="activity.title"
+        />
 
         <ReturnButton />
 
         <Footer />
-
     </div>
 </template>
 
 <script>
 import CurrentUser from "../components/CurrentUser"
-import SearchBar from "../components/SearchBar"
+import ReturnButton from "../components/ReturnButton"
 import Subtitle from "../components/SubTitle"
 import ActivityPreview from "../components/ActivityPreview"
-import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
 import {mapState} from "vuex"
 
 export default {
-    name: "allActivity",
+    name: "userActivity",
     components: {
         CurrentUser,
-        SearchBar,
+        ReturnButton,
         Subtitle,
         ActivityPreview,
-        ReturnButton,
         Footer
-    },  
+    },
     computed: {
         ...mapState({
-            Activities: "Activities",
+            SingleUser: "SingleUser"
         })
-    }         
+    }
 }
 </script>

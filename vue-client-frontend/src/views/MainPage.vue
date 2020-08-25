@@ -52,6 +52,7 @@
             </a>
         </div>
 
+        <Footer />
     </div>
 </template>
 
@@ -62,6 +63,7 @@ import BaseButton from "../components/BaseButton"
 import Subtitle from "../components/SubTitle"
 import ArticlePreview from "../components/ArticlePreview"
 import ActivityPreview from "../components/ActivityPreview"
+import Footer from "../components/Footer"
 
 import {mapState} from "vuex"
 
@@ -73,7 +75,8 @@ export default {
         BaseButton,
         Subtitle,
         ArticlePreview,
-        ActivityPreview
+        ActivityPreview,
+        Footer
     },  
     computed: {
         ...mapState({

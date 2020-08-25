@@ -29,6 +29,8 @@
 
         <ReturnButton />
 
+        <Footer />
+
     </div>
 </template>
 
@@ -39,6 +41,7 @@ import BaseButton from "../components/BaseButton"
 import Subtitle from "../components/SubTitle"
 import ArticlePreview from "../components/ArticlePreview"
 import ReturnButton from "../components/ReturnButton"
+import Footer from "../components/Footer"
 
 import {mapState} from "vuex"
 
@@ -50,7 +53,8 @@ export default {
         BaseButton,
         Subtitle,
         ArticlePreview,
-        ReturnButton
+        ReturnButton,
+        Footer
     },  
     computed: {
         ...mapState({

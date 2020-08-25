@@ -78,9 +78,14 @@ export default {
 };
 </script>
 
-<style>
-.submit-form {
-  max-width: 300px;
-  margin: auto;
-}
+<style lang="scss">
+  .submit-form{
+    max-width: 300px;
+    margin: auto;
+  }
+  .form-control{
+    border-radius: 5px;
+    background-color: #FFD7D7;
+    border: #FD2D01 1px solid;
+  }
 </style>

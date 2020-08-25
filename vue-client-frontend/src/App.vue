@@ -21,4 +21,8 @@
   img{
     height:50px;
   }
+  a{
+    color: black;
+    text-decoration: none;
+  }
 </style>
