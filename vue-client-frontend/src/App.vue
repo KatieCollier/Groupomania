@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="p-2 text-center"> 
-      <img src="./images/icon-left-font-monochrome-black.png" alt="">
+      <img src="/images/icon-left-font-monochrome-black.png" alt="">
     </header>
 
     <div class="text-center font-italic h3 mb-4 mt-2">

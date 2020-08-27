@@ -61,3 +61,53 @@ exports.findOne = (req, res) => {
       });
     });
 };
+
+// Update an Article identified by id
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  Article.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Article was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Article with id=${id}. Maybe Article was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Articles with id=" + id
+      });
+    });
+};
+
+//Delete an article with a specified id
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Article.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Article was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Article with id=" + id
+      });
+    });
+};

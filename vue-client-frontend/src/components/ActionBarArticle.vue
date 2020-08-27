@@ -2,31 +2,42 @@
   <div class="action">
       <div>
           <a href="/publier">
-            <img src="../images/edit.png" alt="Modifier">
+            <img src="/images/edit.png" alt="Modifier">
           </a>
       </div>
       <div>
-          <a href="/page_principale">
-            <img src="../images/bin.png" alt="Supprimer">
-          </a>
+          <span v-on:click="deleteArticle()">
+            <img src="/images/bin.png" alt="Supprimer">
+          </span>
       </div>
      <div class="likes">
          <p class="mr-2 h4"> 5 </p>
-         <img src="../images/like.jpg" alt="Liker">
+         <img src="/images/like.jpg" alt="Liker">
      </div> 
   </div>
 </template>
 
 <script>
+import http from '../http-common'
+
+
 export default {
   name: 'ActionBar',
-  props: {
-      likesCount: {
-          type: Number,
-          required: true
+  methods: {
+      deleteArticle() {
+          http
+            .delete("/articles/" + this.article.id)
+            .then(response => {
+                console.log(response.data);
+                this.$emit("refreshData");
+                this.$router.push("/page_principale");
+            })
+            .catch(e => {
+                console.log(e);
+            });
       }
   }
-}
+};
 </script>
 
 <style lang="scss">

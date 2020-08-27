@@ -1,14 +1,14 @@
 <template>
   <div class="action">
       <div>
-          <img src="../images/edit.png" alt="Modifier">
+          <img src="/images/edit.png" alt="Modifier">
       </div>
       <div>
-          <img src="../images/bin.png" alt="Supprimer">
+          <img src="/images/bin.png" alt="Supprimer">
       </div>
      <div class="likes">
          <p class="mr-2 h4"> 5 </p>
-         <img src="../images/like.jpg" alt="Liker">
+         <img src="/images/like.jpg" alt="Liker">
      </div> 
   </div>
 </template>

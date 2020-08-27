@@ -12,12 +12,27 @@
             <p class="article-time"> {{this.article.createdAt}} </p>
 
             <div class="text-center">
-                <img class="article-img img-fluid m-3" src="../images/images.jpg" alt="random image">
+                <img class="article-img img-fluid m-3" src="/images/images.jpg" alt="random image">
             </div>
         
             <p> {{this.article.content}} </p>
 
-            <ActionBar> </ActionBar> 
+            <div class="action">
+                <div>
+                    <a href="/publier">
+                        <img src="/images/edit.png" alt="Modifier">
+                    </a>
+                </div>
+                <div>
+                    <span v-on:click="deleteArticle()">
+                        <img src="/images/bin.png" alt="Supprimer">
+                    </span>
+                </div>
+                <div class="likes">
+                    <p class="mr-2 h4"> 5 </p>
+                    <img src="/images/like.jpg" alt="Liker">
+                </div> 
+            </div>
 
         </div>
 
@@ -40,7 +55,6 @@
 import CurrentUser from "../components/CurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import Comment from "../components/Comment"
-import ActionBar from "../components/ActionBarArticle"
 import AddComment from "../components/AddComment"
 import Footer from "../components/Footer"
 
@@ -53,7 +67,6 @@ export default {
         CurrentUser,
         ReturnButton,
         Comment,
-        ActionBar,
         AddComment,
         Footer
     },
@@ -74,10 +87,19 @@ export default {
              .catch(e => {
                  console.log(e)
              })
-        }
-    },
-    mounted(){
-        //this.retrieveOneArticle();
+        },
+        deleteArticle() {
+            http
+                .delete("/articles/" + this.article.id)
+                .then(response => {
+                    console.log(response.data);
+                    this.$emit("refreshData");
+                    this.$router.push("/page_principale");
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        },
     },
     created() {
         this.retrieveOneArticle();
@@ -98,5 +120,21 @@ export default {
     }
     .article-img{
         max-width: 90%;
+    }
+    .action{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .likes{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        p{
+            font-weight: bold;
+            color: #FD2D01;
+        }
     }
 </style>

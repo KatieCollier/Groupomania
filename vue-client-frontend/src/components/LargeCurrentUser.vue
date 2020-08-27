@@ -1,7 +1,7 @@
 <template>
     <div class="currentUser">
         <p class="h4 mt-3"> {{currentUser}} </p>
-        <img src="../images/profile.png" alt="lien vers la page de profile">
+        <img src="/images/profile.png" alt="lien vers la page de profile">
     </div>
 </template>
 

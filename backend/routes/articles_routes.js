@@ -11,6 +11,12 @@ module.exports = app => {
 
     // Retrieve a single Article with id
     router.get("/:id", articles.findOne);
+
+    // Update an Article with id
+    router.put("/:id", articles.update);
+
+    // Delete an Article with id
+    router.delete("/:id", articles.delete);
   
     app.use('/api/articles', router);
   };
