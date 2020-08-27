@@ -35,7 +35,7 @@ exports.create = (req, res) => {
 // Retrieve all Articles from the database.
 exports.findAll = (req, res) => {
   
-    Article.findAll()
+    Article.findAll({include: ["user", "comments"]})
       .then(data => {
         res.send(data);
       })
@@ -51,7 +51,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Article.findByPk(id)
+  Article.findByPk(id, {include: ["user", "comments"]})
     .then(data => {
       res.send(data);
     })

@@ -28,7 +28,7 @@
                             }">
                             <p class="mb-0"> {{article.title}} </p>
                         </router-link>
-                        <p> {{article.author}} </p>
+                        <p> {{article.user.userName}} </p>
                     </div>
                     <div class="creationTime">
                         <p> {{article.createdAt}} </p>

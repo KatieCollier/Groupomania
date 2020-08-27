@@ -7,7 +7,7 @@
         <div v-if="this.article" class="article-box m-3 p-2">
             <p class="mb-0 article-info h4"> {{this.article.title}} </p>
             <a href="/activite_utilisateur"> 
-                <p class="article-info h4"> {{this.article.author}} </p>
+                <p class="article-info h4"> {{this.article.user.userName}} </p>
             </a>
             <p class="article-time"> {{this.article.createdAt}} </p>
 
@@ -41,7 +41,7 @@
 
         </div>
 
-        <Comment class="ml-5" v-for="comment in Comments"
+        <Comment class="ml-5" v-for="comment in article.comments"
             :key="comment.id"
             :commentor="comment.commentor"
             :createdAt="comment.createdAt"
@@ -63,7 +63,6 @@ import Comment from "../components/Comment"
 import AddComment from "../components/AddComment"
 import Footer from "../components/Footer"
 
-import {mapState} from "vuex"
 import http from '../http-common'
 
 export default {
@@ -74,11 +73,6 @@ export default {
         Comment,
         AddComment,
         Footer
-    },
-    computed: {
-        ...mapState({
-            Comments: "Comments"
-        })
     },
     props: ["article"],
     methods: {

@@ -28,12 +28,17 @@ db.sequelize = sequelize;
 db.users = require("./user")(sequelize, Sequelize);
 db.articles = require("./articles")(sequelize, Sequelize);
 db.comments = require("./comments")(sequelize, Sequelize);
-db.likes = require("./likes")(sequelize, Sequelize);
 
 db.users.hasMany(db.articles, {as: "articles"});
 db.articles.belongsTo(db.users, {
   foreignKey: "userId",
   as: "user",
+})
+
+db.articles.hasMany(db.comments, {as: "comments"});
+db.comments.belongsTo(db.articles, {
+  foreignKey: "articleId",
+  as: "article"
 })
 
 module.exports = db;
