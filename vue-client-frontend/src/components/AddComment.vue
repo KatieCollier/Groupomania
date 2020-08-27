@@ -6,9 +6,10 @@
                 type="text"
                 id="content"
                 required
+                v-model="comment.content"
                 placeholder="Commentez..."
             />
-            <BaseButton class="float-right"> Envoyer </BaseButton>
+            <BaseButton @click="addComment" class="float-right"> Envoyer </BaseButton>
         </div>
     </div>
 </template>
@@ -16,10 +17,44 @@
 <script>
 import BaseButton from "../components/BaseButton"
 
+import http from "../http-common"
+
 export default {
     name: "AddComment",
     components: {
         BaseButton
+    },
+    data() {
+        return {
+            comment: {
+                articleId: "",
+                userId: "",
+                content: ""
+            }
+        }
+    },
+    methods: {
+        addComment() {
+            const data = {
+                articleId: this.$route.params.id,
+                userId: 9,
+                content: this.comment.content
+            }
+
+            http
+            .post("/comments", data)
+            .then(response => {
+                this.comment.id = response.data.id;
+                console.log(response.data);
+                this.$router.go()
+                
+            })
+            .catch(e => {
+                console.log(e);
+            });
+
+            this.comment = {};
+        }
     }
 }
 </script>
