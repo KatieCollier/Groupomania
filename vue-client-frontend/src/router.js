@@ -49,6 +49,13 @@ export default new Router({
       component: () => import("./views/CreateArticle")
     },
     {
+      path: "/modifier/:id",
+      alias: "/modifier",
+      name: "editArticle",
+      component: () => import("./views/EditArticle"),
+      props: true
+    },
+    {
       path: "/profile",
       alias: "/profile",
       name: "profilePage",

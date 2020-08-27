@@ -2,6 +2,8 @@
     <div>
         <LargeCurrentUser class="mb-4" />
 
+        <ReturnButton />
+
         <div class="m-3">
             <div class="form-group">
                 <label for="title">Titre:</label>
@@ -26,12 +28,10 @@
         </div>
 
         <div class="text-center">
-            <BaseButton class="col-6 m-4"> Ajouter une image </BaseButton>
-                <BaseButton class="col-6 m-4" v-on:click="addArticle"> Publier </BaseButton>
+            <BaseButton class="col-6 m-4"> Modifier l'image </BaseButton>
+                <BaseButton class="col-6 m-4" @click="updateArticle"> Enregistrer </BaseButton>
         </div>
         
-        <ReturnButton />
-
         <Footer />
         
     </div>
@@ -43,49 +43,58 @@ import ReturnButton from "../components/ReturnButton"
 import BaseButton from "../components/BaseButton"
 import Footer from "../components/Footer"
 
-import http from "../http-common"
+import {mapState} from "vuex"
+import http from '../http-common'
 import router from "../router"
 
 export default {
-    name: "createArticle",
+    name: "editPage",
     components: {
         LargeCurrentUser,
         ReturnButton,
         BaseButton,
         Footer
     },
-    data() {
-        return{
-            article: {
-                title: "",
-                content: ""
-            }
-        }
+    computed: {
+        ...mapState({
+            Comments: "Comments"
+        })
     },
+    props: ["article"],
     methods: {
-        addArticle() {
+        retrieveOneArticle() {
+            http
+             .get("/articles/" + this.$route.params.id)
+             .then(response => {
+                 this.article = response.data
+                 console.log(response.data)
+             })
+             .catch(e => {
+                 console.log(e)
+             })
+        },
+        updateArticle(){
             const data = {
                 title: this.article.title,
-                content: this.article.content,
-                userId: 1
-            };
+                content: this.article.content
+            }
 
             http
-            .post("/articles", data)
-            .then(response => {
-            this.article.id = response.data.id;
-            console.log(response.data);
-            router.push("/page_principale");
-            })
-            .catch(e => {
-            console.log(e);
-            });
-    
-            this.submitted = true;
-            this.article = {};
-            },
+                .put("/articles/" + this.$route.params.id, data)
+                .then(response => {
+                    console.log(response.data)
+                    router.push("/page_principale");
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        }
+    },
+    created() {
+        this.retrieveOneArticle();
+        console.log(this.$route.params)
     }
-};
+}
 </script>
 
 <style lang="scss">

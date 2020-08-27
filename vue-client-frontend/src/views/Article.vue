@@ -14,14 +14,19 @@
             <div class="text-center">
                 <img class="article-img img-fluid m-3" src="/images/images.jpg" alt="random image">
             </div>
-        
-            <p> {{this.article.content}} </p>
+
+            <div class="full-content">
+                <p> {{this.article.content}} </p>
+            </div>
 
             <div class="action">
                 <div>
-                    <a href="/publier">
+                    <router-link :to="{
+                            name: 'editArticle',
+                            params: { id: this.article.id }
+                        }">
                         <img src="/images/edit.png" alt="Modifier">
-                    </a>
+                    </router-link>
                 </div>
                 <div>
                     <span v-on:click="deleteArticle()">
