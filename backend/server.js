@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
 
@@ -10,6 +11,12 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   next();
 });
+
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions))
 
 const db = require("./models");
 db.sequelize.sync();

@@ -4,18 +4,18 @@
 
         <ReturnButton/>
 
-        <div class="article-box m-3 p-2">
-            <p class="mb-0 article-info h4"> {{SingleArticle.title}} </p>
+        <div v-if="this.article" class="article-box m-3 p-2">
+            <p class="mb-0 article-info h4"> {{this.article.title}} </p>
             <a href="/activite_utilisateur"> 
-                <p class="article-info h4"> {{SingleArticle.author}} </p>
+                <p class="article-info h4"> {{this.article.author}} </p>
             </a>
-            <p class="article-time"> {{SingleArticle.createdAt}} </p>
+            <p class="article-time"> {{this.article.createdAt}} </p>
 
             <div class="text-center">
                 <img class="article-img img-fluid m-3" src="../images/images.jpg" alt="random image">
             </div>
         
-            <p> {{SingleArticle.content}} </p>
+            <p> {{this.article.content}} </p>
 
             <ActionBar> </ActionBar> 
 
@@ -45,6 +45,7 @@ import AddComment from "../components/AddComment"
 import Footer from "../components/Footer"
 
 import {mapState} from "vuex"
+import http from '../http-common'
 
 export default {
     name: "articlePage",
@@ -58,32 +59,30 @@ export default {
     },
     computed: {
         ...mapState({
-            Articles: "Articles",
-            SingleArticle: "SingleArticle",
             Comments: "Comments"
         })
     },
-    props: {
-      title: {
-          type: String,
-          required: true
-      },
-      author: {
-          type: String,
-          required: true
-      },
-      image: {
-          type: Object
-      },
-      createdAt: {
-          type: Date,
-          required:true
-      },
-      content: {
-          type: String,
-          required: true
-      }
-  },
+    props: ["article"],
+    methods: {
+        retrieveOneArticle() {
+            http
+             .get("/articles/" + this.$route.params.id)
+             .then(response => {
+                 this.article = response.data
+                 console.log(response.data)
+             })
+             .catch(e => {
+                 console.log(e)
+             })
+        }
+    },
+    mounted(){
+        //this.retrieveOneArticle();
+    },
+    created() {
+        this.retrieveOneArticle();
+        console.log(this.$route.params)
+    }
 }
 </script>
 

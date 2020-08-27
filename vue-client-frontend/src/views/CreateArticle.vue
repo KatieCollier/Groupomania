@@ -9,6 +9,8 @@
                     type="text"
                     id="title"
                     required
+                    v-model="article.title"
+                    name="title"
                 />
             </div>
 
@@ -18,15 +20,14 @@
                     type="text"
                     id="content"
                     required
-                />
+                    v-model="article.content"
+                    name="content"                />
             </div>
         </div>
 
         <div class="text-center">
             <BaseButton class="col-6 m-4"> Ajouter une image </BaseButton>
-            <a href="/page_principale">
-                <BaseButton class="col-6 m-4"> Publier </BaseButton>
-            </a>
+                <BaseButton class="col-6 m-4" v-on:click="addArticle"> Publier </BaseButton>
         </div>
         
         <ReturnButton />
@@ -42,6 +43,9 @@ import ReturnButton from "../components/ReturnButton"
 import BaseButton from "../components/BaseButton"
 import Footer from "../components/Footer"
 
+import http from "../http-common"
+import router from "../router"
+
 export default {
     name: "createArticle",
     components: {
@@ -49,8 +53,39 @@ export default {
         ReturnButton,
         BaseButton,
         Footer
+    },
+    data() {
+        return{
+            article: {
+                title: "",
+                content: ""
+            }
+        }
+    },
+    methods: {
+        addArticle() {
+            const data = {
+                title: this.article.title,
+                content: this.article.content,
+                userId: 1
+            };
+
+            http
+            .post("/articles", data)
+            .then(response => {
+            this.article.id = response.data.id;
+            console.log(response.data);
+            router.push("/page_principale");
+            })
+            .catch(e => {
+            console.log(e);
+            });
+    
+            this.submitted = true;
+            this.article = {};
+            },
     }
-}
+};
 </script>
 
 <style lang="scss">

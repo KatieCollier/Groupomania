@@ -16,16 +16,29 @@
             Articles Récents
         </Subtitle>
 
-        <a href="/article">
-            <ArticlePreview
-                v-for="article in Articles"
-                :title="article.title"
-                :author="article.author"
-                :createdAt="article.createdAt"
-                :content="article.content"
-                :key="article.title">
-            </ArticlePreview>
-        </a>
+        <div class="preview m-3 p-2"
+            v-for="(article, index) in Articles"
+                    :key="index">
+
+                <div class="preview-header">
+                    <div class="articleInfo">
+                        <router-link :to="{
+                                name: 'articlePage',
+                                params: { id: article.id }
+                            }">
+                            <p class="mb-0"> {{article.title}} </p>
+                        </router-link>
+                        <p> {{article.author}} </p>
+                    </div>
+                    <div class="creationTime">
+                        <p> {{article.createdAt}} </p>
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <p> {{article.content}} </p>
+                </div>
+            </div>
 
         <div class="m-4">
             <a href="/tous_articles">
@@ -61,9 +74,10 @@ import CurrentUser from "../components/CurrentUser"
 import SearchBar from "../components/SearchBar"
 import BaseButton from "../components/BaseButton"
 import Subtitle from "../components/SubTitle"
-import ArticlePreview from "../components/ArticlePreview"
 import ActivityPreview from "../components/ActivityPreview"
 import Footer from "../components/Footer"
+
+import http from "../http-common"
 
 import {mapState} from "vuex"
 
@@ -74,16 +88,39 @@ export default {
         SearchBar,
         BaseButton,
         Subtitle,
-        ArticlePreview,
         ActivityPreview,
         Footer
     },  
     computed: {
         ...mapState({
-            Articles: "Articles",
             Activities: "Activities"
         })
-    }         
+    },
+    data() {
+        return {
+            Articles: []
+        };
+    },
+    methods: {
+        retrieveArticles() {
+        http
+            .get("/articles")
+            .then(response => {
+            this.Articles = response.data; // JSON are parsed automatically.
+            console.log(response.data);
+            })
+            .catch(e => {
+            console.log(e);
+            });
+        },
+        refreshList() {
+        this.retrieveArticles();
+        }
+        /* eslint-enable no-console */
+        },
+    mounted() {
+        this.retrieveArticles();
+    }            
 }
 </script>
 
@@ -91,5 +128,23 @@ export default {
     a{
         color: black;
         text-decoration: none;
+    }
+    .preview{
+        width: 90%;
+        border: black 2px solid;
+        &-header{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        } 
+    }
+    .articleInfo{
+        font-weight: bold;
+    }
+    .content{
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
     }
 </style>

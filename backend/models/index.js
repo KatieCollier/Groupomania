@@ -30,4 +30,10 @@ db.articles = require("./articles")(sequelize, Sequelize);
 db.comments = require("./comments")(sequelize, Sequelize);
 db.likes = require("./likes")(sequelize, Sequelize);
 
+db.users.hasMany(db.articles, {as: "articles"});
+db.articles.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "user",
+})
+
 module.exports = db;

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <a href="page_principale">
+      <a href="/page_principale">
           <button v-on="$listeners" class="return-button btn-md m-3">
               Retour à l'accueil
           </button>

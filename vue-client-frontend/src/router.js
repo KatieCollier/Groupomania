@@ -37,10 +37,10 @@ export default new Router({
       component: () => import("./views/AllActivity")
     },
     {
-      path: "/article",
-      alias: "/article",
+      path: "/articles/:id",
       name: "articlePage",
-      component: () => import("./views/Article")
+      component: () => import("./views/Article"),
+      props: true
     },
     {
       path: "/publier",

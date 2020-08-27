@@ -101,7 +101,7 @@ export default new Vuex.Store({
         email: "harry.potter@hogwarts.mgc",
         department: "Gryffondor",
         password: "Hedwig",
-        image: "../images/profile.png"
+        image: "/images/profile.png"
       },
     SingleUser: [
       {

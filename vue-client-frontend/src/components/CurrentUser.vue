@@ -2,7 +2,7 @@
     <div class="currentUser col-7 offset-5 mb-3">
         <p class="pr-2 h5"> {{Users.userName}} </p>
         <a href="/profile" class="stretched-link">
-            <img src="../images/profile.png" alt="lien vers la page de profile">
+            <img :src="Users.image" alt="lien vers la page de profile">
         </a>
     </div>
 </template>
