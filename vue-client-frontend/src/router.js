@@ -59,7 +59,8 @@ export default new Router({
       path: "/profile",
       alias: "/profile",
       name: "profilePage",
-      component: () => import("./views/UserProfile")
+      component: () => import("./views/UserProfile"),
+      props: true
     },
     {
       path: "/modifier_profile",

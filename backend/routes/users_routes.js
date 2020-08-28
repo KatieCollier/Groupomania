@@ -8,6 +8,9 @@ module.exports = app => {
   
     // Login with existing user
     router.post("/login", users.login);
+
+    // Find user by Id
+    router.get("/:id", users.findOne);
   
     app.use('/api/users', router);
   };

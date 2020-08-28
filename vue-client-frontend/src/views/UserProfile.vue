@@ -11,9 +11,9 @@
         <div class="m-3">
             <p class="info-title h4"> Informations utilisateur: </p>
             <div class="m-3">
-                <p> <strong> Nom d'utilisateur: </strong> {{Users.userName}} </p>
-                <p> <strong> Email: </strong> {{Users.email}} </p>
-                <p> <strong> Equipe: </strong> {{Users.department}} </p>
+                <p> <strong> Nom d'utilisateur: </strong> {{this.user.userName}} </p>
+                <p> <strong> Email: </strong> {{this.user.email}} </p>
+                <p> <strong> Equipe: </strong> {{this.user.department}} </p>
             </div>
         </div>
 
@@ -38,6 +38,8 @@ import BaseButton from "../components/BaseButton"
 import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
+import http from "../http-common"
+
 import {mapState} from "vuex"
 
 export default {
@@ -48,10 +50,26 @@ export default {
         ReturnButton,
         Footer
     },
+    props: ["user"],
     computed: {
         ...mapState({
             Users: "Users",
         })
+    },
+    methods: {
+        retrieveOneUser() {
+            http
+             .get("/users/" + this.$route.params.id)
+             .then(response => {
+                 this.user = response.data
+             })
+             .catch(e => {
+                 console.log(e)
+             })
+        },
+    },
+    created() {
+        this.retrieveOneUser();
     }
 }
 </script>
