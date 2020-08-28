@@ -48,6 +48,8 @@
             :content="comment.content"
         />
 
+        {{comments.content}}
+
         <AddComment class="ml-5 mr-3" />
 
         <ReturnButton/>
@@ -75,13 +77,18 @@ export default {
         Footer
     },
     props: ["article"],
+    data(){
+        return {
+            comments: []
+        }
+    },
     methods: {
         retrieveOneArticle() {
             http
              .get("/articles/" + this.$route.params.id)
              .then(response => {
                  this.article = response.data
-                 console.log(response.data)
+                 console.log("Articles: ", response.data)
              })
              .catch(e => {
                  console.log(e)
@@ -98,11 +105,22 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
+        },
+        getRelatedComments() {
+            http
+                .get("comments/articleId/" + this.article.id)
+                .then(response => {
+                 this.comments = response.data
+                 console.log("Comments: ", response.data)
+             })
+             .catch(e => {
+                 console.log(e)
+             })
         }
     },
     created() {
         this.retrieveOneArticle();
-        console.log(this.$route.params)
+        this.getRelatedComments();
     }
 }
 </script>

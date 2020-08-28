@@ -8,6 +8,9 @@ module.exports = app => {
   
     // Retrieve all articles
     router.get("/", comments.findAll);
+
+    // Find comments by articleId
+    router.get("/articleId/:articleId", comments.findByArticleId);
   
     app.use('/api/comments', router);
   };

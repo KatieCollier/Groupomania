@@ -28,7 +28,7 @@ exports.create = (req, res) => {
 // Retrieve all comments from the database.
 exports.findAll = (req, res) => {
   
-    Comment.findAll()
+    Comment.findAll({include: ["user"]})
       .then(data => {
         res.send(data);
       })
@@ -39,3 +39,22 @@ exports.findAll = (req, res) => {
         });
       });
   };
+
+// Find comment by articleId.
+exports.findByArticleId = (req, res) => {  
+  Comment.findAll({
+    where: {
+      articleId: req.params.articleId
+    }}, 
+    {include: ["user"]}
+  )
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving user info."
+      });
+    });
+};

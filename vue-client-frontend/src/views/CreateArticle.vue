@@ -27,7 +27,7 @@
 
         <div class="text-center">
             <BaseButton class="col-6 m-4"> Ajouter une image </BaseButton>
-                <BaseButton class="col-6 m-4" v-on:click="addArticle"> Publier </BaseButton>
+            <BaseButton class="col-6 m-4" v-on:click="addArticle"> Publier </BaseButton>
         </div>
         
         <ReturnButton />

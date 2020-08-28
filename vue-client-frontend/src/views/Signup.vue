@@ -38,6 +38,7 @@
       <div class="form-group">
         <label for="password"> Mot de passe*: </label>
         <input
+          type="password"
           class="form-control"
           id="password"
           required
@@ -48,9 +49,7 @@
 
       <p> *: Champ obligatoire </p>
       <div class="text-center">
-        <a href="/page_principale">
-          <BaseButton @click="saveUser"> Inscription </BaseButton>
-        </a>
+        <BaseButton @click="saveUser"> Inscription </BaseButton>
       </div>
     
   </div>
@@ -59,7 +58,9 @@
 
 <script>
 import BaseButton from "../components/BaseButton"
-import UserDataService from "../services/UserDataServices";
+
+import router from "../router"
+import http from "../http-common"
 
 export default {
   name: "signup",
@@ -69,7 +70,6 @@ export default {
   data() {
     return {
       user: {
-        id: null,
         email: "",
         userName: "",
         password: "",
@@ -80,18 +80,20 @@ export default {
   },
   methods: {
     saveUser() {
-      var data = {
+      const data = {
         email: this.user.email,
         userName: this.user.userName,
         password: this.user.password,
-        department: this.user.department
+        department: this.user.department,
+        chargeCom: false
       };
 
-      UserDataService.create(data)
+      http
+        .post("/users/signup", data)
         .then(response => {
           this.user.id = response.data.id;
           console.log(response.data);
-          this.submitted = true;
+          router.push("/");
         })
         .catch(e => {
           console.log(e);

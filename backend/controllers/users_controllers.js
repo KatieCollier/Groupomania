@@ -1,53 +1,55 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 const db = require("../models");
 const User = db.users;
-const Article = db.articles;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new User
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.email) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-      return;
-    }
-  
-    // Create a User
+/* create and export a function to create a new user (sign up) */
+exports.signup = (req, res, next) => {
+  bcrypt.hash(req.body.password, 10) /* create a hash from the password (encrypt it) */
+  .then(hash => {
+
     const user = {
       email: req.body.email,
-      password: req.body.password,
+      password: hash,
       userName: req.body.userName,
       department: req.body.department,
       chargeCom: req.body.chargeCom ? req.body.chargeCom: false
     };
-  
-    // Save User in the database
-    User.create(user)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred during signup."
-        });
-      });
-  };
 
-// Retrieve all Users from the database.
-exports.findAll = (req, res) => {
-    const email = req.query.email;
-    var condition = email ? { email: { [Op.like]: `%${email}%` } } : null;
-  
-    User.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving user info."
-        });
-      });
-  };
+      User.create(user) /* save the new user */
+          .then(() => res.status(201).json({message: "Utilisateur créé !"}))
+          .catch(error => res.status(400).json({error}));
+  })
+  .catch(error => res.status(500).json({error}));
+};
+
+/* create and export a function to login */
+exports.login = (req, res, next) => {
+  User.findOne({where: {email: req.body.email}})
+  .then(user => {
+    if(!user){ /* if this user does NOT exist, return an error */
+        res.staus(401).json({error: "Utilisateur non trouvé !"})
+    }
+    bcrypt.compare(req.body.password, user.password) /* if the user DOES exist, compare the password in the request to the (encrypted) password stored in the database */
+        .then(valid => {
+            if(!valid){ /* if these passwords do NOT match, return an error */
+                res.status(401).json({error: "Mot de passe incorrecte !"});
+            }
+            res.status(200).json({ /* if the passwords DO match: */
+                userId: user.id,
+                token: jwt.sign( /* give the user a token necessary for authentication and use of the app */
+                    {userId: user.id},
+                    "RANDOM_SECRET_TOKEN",
+                    {expiresIn: "24h"} /* this token expires in 24h as a security precaution */
+                )
+                
+            });
+    
+        })
+        .catch(error => res.status(500).json({error}));
+})
+.catch(error => res.status(500).json({error}));   
+    
+}

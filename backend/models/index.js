@@ -41,4 +41,10 @@ db.comments.belongsTo(db.articles, {
   as: "article"
 })
 
+db.users.hasMany(db.comments, {as: "comments"});
+db.comments.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "user"
+})
+
 module.exports = db;

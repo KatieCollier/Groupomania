@@ -15,6 +15,7 @@
       <div class="form-group">
         <label for="password"> Mot de passe: </label>
         <input
+          type="password"
           class="form-control"
           id="password"
           required
@@ -24,9 +25,7 @@
       </div>
 
       <div class="text-center">
-        <a href="/page_principale">
-          <BaseButton @click="saveUser" class="m-3"> Connection </BaseButton>
-        </a>
+          <BaseButton @click="login" class="m-3"> Connection </BaseButton>
 
         <div class="mt-4">      
           <p> Pas encore de compte? <br>
@@ -34,7 +33,7 @@
         </div>
 
         <a href="/inscription">
-          <BaseButton @click="saveUser" class="m-3"> Inscription </BaseButton>
+          <BaseButton class="m-3"> Inscription </BaseButton>
         </a>
       </div>
 
@@ -43,7 +42,9 @@
 
 <script>
 import BaseButton from "../components/BaseButton"
-import UserDataService from "../services/UserDataServices";
+
+import http from "../http-common"
+import router from "../router"
 
 export default {
   name: "logon",
@@ -59,15 +60,22 @@ export default {
     };
   },
   methods: {
-    findUser() {
-      var data = {
+    login() {
+      const data = {
         email: this.user.email,
         password: this.user.password,
       };
 
-      UserDataService.getAll(data)
+      http
+        .post("/users/login", data)
         .then(response => {
-          console.log(response.data);
+          const userId = response.data.userId;
+          const token = response.data.token;
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("token", token);
+          if(token) {
+            router.push("/page_principale");
+          }
         })
         .catch(e => {
           console.log(e);
