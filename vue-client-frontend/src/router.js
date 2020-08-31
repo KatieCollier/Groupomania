@@ -56,17 +56,18 @@ export default new Router({
       props: true
     },
     {
-      path: "/profile",
+      path: "/profile/:id",
       alias: "/profile",
       name: "profilePage",
       component: () => import("./views/UserProfile"),
       props: true
     },
     {
-      path: "/modifier_profile",
+      path: "/modifier_profile/:id",
       alias: "/modifier_profile",
       name: "editProfile",
-      component: () => import("./views/EditProfile")
+      component: () => import("./views/EditProfile"),
+      props: true
     },
     {
       path: "/activite_utilisateur",

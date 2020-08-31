@@ -8,7 +8,8 @@
                     class="form-control"
                     id="userName"
                     required
-                    :placeholder="Users.userName"
+                    v-model="user.userName"
+                    name="userName"
                 />
             </div>
 
@@ -19,7 +20,8 @@
                     class="form-control"
                     id="email"
                     required
-                    :placeholder="Users.email"
+                    v-model="user.email"
+                    name="email"
                 />
             </div>
 
@@ -30,7 +32,8 @@
                     class="form-control"
                     id="department"
                     required
-                    :placeholder="Users.department"
+                    v-model="user.department"
+                    name="department"
                 />
             </div>
 
@@ -41,15 +44,14 @@
                     class="form-control"
                     id="password"
                     required
-                    placeholder="******"
+                    v-model="user.password"
+                    name="password"
                 />
             </div>
 
             <div class="text-center">
                 <BaseButton class="mx-5 my-3"> Choisissez Votre Image </BaseButton>
-                <a href="/profile">
-                    <BaseButton class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
-                </a>
+                <BaseButton @click="updateProfile" class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
                 <a href="/connection">
                     <BaseButton class="mx-5 my-3 mb-5"> Supprimer Votre Compte </BaseButton>
                 </a>
@@ -64,7 +66,8 @@
 import BaseButton from "../components/BaseButton"
 import Footer from "../components/Footer"
 
-import {mapState} from "vuex"
+import http from "../http-common"
+import router from "../router"
 
 export default {
   name: "editProfile",
@@ -72,10 +75,39 @@ export default {
     BaseButton,
     Footer
   },
-  computed:{
-      ...mapState({
-          Users: "Users"
-      })
+  props: ["user"],
+  methods: {
+      retrieveOneUser() {
+            http
+             .get("/users/" + this.$route.params.id)
+             .then(response => {
+                 this.user = response.data
+             })
+             .catch(e => {
+                 console.log(e)
+             })
+        },
+      updateProfile() {
+        const data = {
+            userName: this.user.userName,
+            email: this.user.email,
+            department: this.user.department,
+            password: this.user.password
+        }
+
+          http
+            .put("/users/" + this.$route.params.id, data)
+            .then(response => {
+                console.log(response.data)
+                router.push("/profile/" + this.$route.params.id)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+      }
+  },
+  created() {
+      this.retrieveOneUser();
   }
 };
 </script>

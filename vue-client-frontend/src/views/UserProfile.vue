@@ -18,9 +18,12 @@
         </div>
 
         <div class="text-center m-5"> 
-            <a href="/modifier_profile">
+            <router-link :to="{
+                            name: 'editProfile',
+                            params: { id: this.user.id }
+                        }">
                 <BaseButton> Modifier Profile </BaseButton>
-            </a>
+            </router-link>
 
             <a href="/page_principale">
                 <ReturnButton class="my-5" />

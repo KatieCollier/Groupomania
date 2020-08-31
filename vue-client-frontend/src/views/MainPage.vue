@@ -118,7 +118,7 @@ export default {
         }
         /* eslint-enable no-console */
         },
-    mounted() {
+    created() {
         this.retrieveArticles();
     }            
 }

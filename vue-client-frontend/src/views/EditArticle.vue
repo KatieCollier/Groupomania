@@ -92,7 +92,6 @@ export default {
     },
     created() {
         this.retrieveOneArticle();
-        console.log(this.$route.params)
     }
 }
 </script>

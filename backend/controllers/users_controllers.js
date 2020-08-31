@@ -51,6 +51,7 @@ exports.login = (req, res, next) => {
 .catch(error => res.status(500).json({error}));     
 }
 
+// find one user by id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
@@ -61,6 +62,31 @@ exports.findOne = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message: "Error retrieving Article with id=" + id
+      });
+    });
+};
+
+//update one user by id
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  User.update(req.body, {
+    where: {id: id}
+  })
+    .then(num => {
+      if (num = 1) {
+        res.send({
+          message: "Votre profile a été mis à jour"
+        });
+      } else {
+        res.send({
+          message: "Nous ne pouvons mettre à jour votre profile"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Erreur lors de la mise à jour de votre profile"
       });
     });
 };
