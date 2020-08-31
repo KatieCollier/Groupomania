@@ -52,9 +52,7 @@
             <div class="text-center">
                 <BaseButton class="mx-5 my-3"> Choisissez Votre Image </BaseButton>
                 <BaseButton @click="updateProfile" class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
-                <a href="/connection">
-                    <BaseButton class="mx-5 my-3 mb-5"> Supprimer Votre Compte </BaseButton>
-                </a>
+                <BaseButton @click="deleteProfile" class="mx-5 my-3 mb-5"> Supprimer Votre Compte </BaseButton>
             </div>
         </div>
 
@@ -103,6 +101,15 @@ export default {
             })
             .catch(e => {
                 console.log(e)
+            })
+      },
+      deleteProfile() {
+          http
+            .delete("/users/" + this.$route.params.id)
+            .then(response => {
+                console.log(response.data)
+                localStorage.clear()
+                router.push("/connection")
             })
       }
   },

@@ -90,3 +90,28 @@ exports.update = (req, res) => {
       });
     });
 };
+
+//delete user with specified id
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  User.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Votre compte a été supprimé"
+        });
+      } else {
+        res.send({
+          message: "Problème lors de la suppression de votre compte"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Erreur lors de la suppression de votre compte"
+      });
+    });
+};
