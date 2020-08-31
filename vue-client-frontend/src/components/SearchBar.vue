@@ -13,5 +13,6 @@ export default {
         background-color: #C4C4C4;
         color: black;
         border: none;
+        width: 70%;
     }
 </style>

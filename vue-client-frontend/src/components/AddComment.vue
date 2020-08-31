@@ -37,7 +37,7 @@ export default {
         addComment() {
             const data = {
                 articleId: this.$route.params.id,
-                userId: 9,
+                userId: localStorage.getItem("userId"),
                 content: this.comment.content
             }
 

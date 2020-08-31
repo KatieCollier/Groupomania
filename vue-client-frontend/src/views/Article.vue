@@ -20,7 +20,7 @@
             </div>
 
             <div class="action">
-                <div>
+                <div v-if="canEdit" class="mr-3">
                     <router-link :to="{
                             name: 'editArticle',
                             params: { id: this.article.id }
@@ -28,7 +28,7 @@
                         <img src="/images/edit.png" alt="Modifier">
                     </router-link>
                 </div>
-                <div>
+                <div v-if="canEdit" class="mr-3">
                     <span v-on:click="deleteArticle()">
                         <img src="/images/bin.png" alt="Supprimer">
                     </span>
@@ -79,7 +79,8 @@ export default {
     props: ["article"],
     data(){
         return {
-            comments: []
+            comments: [],
+            canEdit: false
         }
     },
     methods: {
@@ -88,6 +89,12 @@ export default {
              .get("/articles/" + this.$route.params.id)
              .then(response => {
                  this.article = response.data
+                 this.author = this.article.userId
+                if(localStorage.getItem("userId") == this.author ||
+                    localStorage.getItem("chargeCom") == true) {
+            this.canEdit = true;
+            console.log("canEdit: ", this.canEdit)
+        }
                  console.log("Articles: ", response.data)
              })
              .catch(e => {
@@ -141,7 +148,7 @@ export default {
     .action{
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
     }
     .likes{

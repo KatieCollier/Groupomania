@@ -71,8 +71,10 @@ export default {
         .then(response => {
           const userId = response.data.userId;
           const token = response.data.token;
+          const chargeCom = response.data.chargeCom
           localStorage.setItem("userId", userId);
           localStorage.setItem("token", token);
+          localStorage.setItem("chargeCom", chargeCom)
           if(token) {
             router.push("/page_principale");
           }

@@ -123,7 +123,7 @@ export default {
         }
         /* eslint-enable no-console */
         },
-    created() {
+    beforeMount() {
         this.retrieveArticles();
     }            
 }
