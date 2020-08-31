@@ -28,23 +28,30 @@ db.sequelize = sequelize;
 db.users = require("./user")(sequelize, Sequelize);
 db.articles = require("./articles")(sequelize, Sequelize);
 db.comments = require("./comments")(sequelize, Sequelize);
+db.likes = require("./likes")(sequelize, Sequelize);
 
-db.users.hasMany(db.articles, {as: "articles"});
+db.users.hasMany(db.articles, {as: "articles"}, {onDelete: 'CASCADE', hooks: true});
 db.articles.belongsTo(db.users, {
   foreignKey: "userId",
-  as: "user",
+  as: "user"
 })
 
-db.articles.hasMany(db.comments, {as: "comments"});
+db.users.hasMany(db.comments, {as: "comments"}, {onDelete: 'CASCADE', hooks: true});
+db.comments.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "user"
+})
+
+db.articles.hasMany(db.comments, {as: "comments"}, {onDelete: 'CASCADE', hooks: true});
 db.comments.belongsTo(db.articles, {
   foreignKey: "articleId",
   as: "article"
 })
 
-db.users.hasMany(db.comments, {as: "comments"});
-db.comments.belongsTo(db.users, {
-  foreignKey: "userId",
-  as: "user"
+db.articles.hasMany(db.likes, {as: "likes"}, {onDelete: 'CASCADE', hooks: true});
+db.likes.belongsTo(db.articles, {
+  foreignKey: "articleId",
+  as: "article"
 })
 
 module.exports = db;

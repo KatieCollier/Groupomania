@@ -1,7 +1,10 @@
 module.exports = app => {
-    const users = require("../controllers/users_controllers");
+  const router = require("express").Router();  
   
-    var router = require("express").Router();
+  const users = require("../controllers/users_controllers");
+  const auth = require("../middleware/auth");
+  
+    
   
     // Sign up and create new user
     router.post("/signup", users.signup);
@@ -10,13 +13,13 @@ module.exports = app => {
     router.post("/login", users.login);
 
     // Find user by Id
-    router.get("/:id", users.findOne);
+    router.get("/:id", auth, users.findOne);
 
     //Update user by Id
-    router.put("/:id", users.update)
+    router.put("/:id", auth, users.update)
 
     //Delete user by id
-    router.delete("/:id", users.delete)
+    router.delete("/:id", auth, users.delete)
   
     app.use('/api/users', router);
   };

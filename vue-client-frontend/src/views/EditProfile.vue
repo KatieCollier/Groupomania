@@ -44,8 +44,8 @@
                     class="form-control"
                     id="password"
                     required
-                    v-model="user.password"
                     name="password"
+                    placeholder="Changez votre mot de passe"
                 />
             </div>
 

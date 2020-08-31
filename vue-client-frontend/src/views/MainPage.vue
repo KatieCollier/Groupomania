@@ -16,6 +16,11 @@
             Articles Récents
         </Subtitle>
 
+        <div>
+            <p v-if="Articles.length == 0"> Bravo vous êtes le premier utilisateur: <br>
+         Ecrivez le tout premier article !</p>
+        </div>
+        
         <div class="preview m-3 p-2"
             v-for="(article, index) in Articles"
                     :key="index">
@@ -107,7 +112,7 @@ export default {
             .get("/articles")
             .then(response => {
             this.Articles = response.data; // JSON are parsed automatically.
-            console.log(response.data);
+            console.log("Articles: ", response.data);
             })
             .catch(e => {
             console.log(e);

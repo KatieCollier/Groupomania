@@ -67,7 +67,7 @@ export default {
             const data = {
                 title: this.article.title,
                 content: this.article.content,
-                userId: 1
+                userId: localStorage.getItem("userId")
             };
 
             http
