@@ -4,13 +4,11 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Like
 exports.create = (req, res) => {
-      
-    // Create an Like
+    // Create a Like
     const like = {
       articleId: req.body.articleId,
       userId: req.body.userId
     };
-  
     // Save Like in the database
     Like.create(like)
       .then(data => {
@@ -23,6 +21,24 @@ exports.create = (req, res) => {
         });
       });
   };
+
+//Find Likes by article id
+// Find comment by articleId.
+exports.findByArticleId = (req, res) => { 
+  const articleId = req.params.id
+  Like.findAll(
+    {where: {articleId: articleId}}
+    )
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Impossible de trouver les likes pour cet article"
+      });
+    });
+};
 
 // Retrieve all likes from the database.
 exports.findAll = (req, res) => {

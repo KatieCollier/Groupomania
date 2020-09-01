@@ -3,8 +3,11 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Article
+    // Create a new Like
     router.post("/", likes.create);
+
+    //Find Likes by article id
+    router.get("/articles/:id", likes.findByArticleId);
   
     // Retrieve all articles
     router.get("/", likes.findAll);

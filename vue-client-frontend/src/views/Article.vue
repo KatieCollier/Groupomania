@@ -28,14 +28,16 @@
                         <img src="/images/edit.png" alt="Modifier">
                     </router-link>
                 </div>
-                <div v-if="canEdit" class="mr-3">
+                <div v-if="canDelete" class="mr-3">
                     <span v-on:click="deleteArticle()">
                         <img src="/images/bin.png" alt="Supprimer">
                     </span>
                 </div>
                 <div class="likes">
-                    <p class="mr-2 h4"> 5 </p>
-                    <img src="/images/like.jpg" alt="Liker">
+                    <p class="mr-2 h4"> {{Likes.length}} </p>
+                    <span @click="likeArticle">
+                        <img src="/images/like.jpg" alt="Liker">
+                    </span>  
                 </div> 
             </div>
 
@@ -81,8 +83,10 @@ export default {
     data(){
         return {
             Comments: [],
+            Likes: [],
             canEdit: false,
             canEditComment: false,
+            canDelete:false,
             actualUser: localStorage.getItem("userId")
         }
     },
@@ -93,12 +97,13 @@ export default {
              .then(response => {
                  this.article = response.data
                  this.author = this.article.userId
+                if(localStorage.getItem("userId") == this.author) {
+                    this.canEdit = true;
+                }
                 if(localStorage.getItem("userId") == this.author ||
                     localStorage.getItem("chargeCom") == true) {
-            this.canEdit = true;
-            console.log("canEdit: ", this.canEdit)
-        }
-                 console.log("Articles: ", response.data)
+                        this.canDelete = true;
+                }
              })
              .catch(e => {
                  console.log(e)
@@ -118,7 +123,7 @@ export default {
         },
         getRelatedComments() {
             http
-                .get("comments/articles/" + this.$route.params.id)
+                .get("/comments/articles/" + this.$route.params.id)
                 .then(response => {
                  this.Comments = response.data
                  console.log("Comments: ", response.data)
@@ -126,9 +131,40 @@ export default {
              .catch(e => {
                  console.log(e)
              })
+        },
+        likeArticle() {
+            const data = {
+                userId: this.actualUser,
+                articleId: this.article.id
+            }
+
+            http
+                .post("/likes", data)
+                .then(response => {
+                    this.like = response.data
+                    console.log(response.data)
+                    this.$router.go()
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+
+                this.like = {}
+        },
+        getLikes() {
+            http
+                .get("/likes/articles/" + this.$route.params.id)
+                .then(response => {
+                    this.Likes = response.data
+                    console.log("Likes :", this.Likes)
+                })
+                .catch(e => {
+                    console.log(e)
+                })
         }
     },
     created() {
+        this.getLikes();
         this.retrieveOneArticle();
         this.getRelatedComments();
     }

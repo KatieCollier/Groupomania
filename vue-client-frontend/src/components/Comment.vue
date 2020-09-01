@@ -13,7 +13,7 @@
                     <img src="/images/edit.png" alt="Modifier">
                 </router-link>
             </div>
-            <div v-if="canEditComment" @click="deleteComment">
+            <div v-if="canDeleteComment" @click="deleteComment">
                 <img src="/images/bin.png" alt="Supprimer">
             </div>
             <div class="likes">
@@ -55,15 +55,22 @@ export default {
   data() {
       return {
           actualUser: localStorage.getItem("userId"),
-          canEditComment: false
+          canEditComment: false,
+          canDeleteComment: false
       }
   },
   methods: {
       commentEditing() {
+          if(this.commentorId == this.actualUser) {
+              this.canEditComment = true
+              console.log("canEditComment", this.canEditComment)
+          }
+      },
+      commentDeleting() {
           if(this.commentorId == this.actualUser ||
             localStorage.getItem("chargeCom") == true ||
             this.articleAuthorId == this.actualUser) {
-              this.canEditComment = true
+              this.canDeleteComment = true
               console.log("canEditComment", this.canEditComment)
           }
       },
@@ -82,6 +89,7 @@ export default {
   },
   created() {
       this.commentEditing();
+      this.commentDeleting();
   }
 }
 </script>
