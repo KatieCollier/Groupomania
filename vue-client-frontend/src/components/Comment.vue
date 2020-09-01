@@ -13,7 +13,7 @@
                     <img src="/images/edit.png" alt="Modifier">
                 </router-link>
             </div>
-            <div v-if="canEditComment">
+            <div v-if="canEditComment" @click="deleteComment">
                 <img src="/images/bin.png" alt="Supprimer">
             </div>
             <div class="likes">
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import http from "../http-common"
+
 export default {
   name: 'Comment',
   props: {
@@ -64,6 +66,18 @@ export default {
               this.canEditComment = true
               console.log("canEditComment", this.canEditComment)
           }
+      },
+      deleteComment() {
+          http
+                .delete("/comments/" + this.commentId)
+                .then(response => {
+                    console.log(response.data);
+                    this.$emit("refreshData");
+                    this.$router.go();
+                })
+                .catch(e => {
+                    console.log(e);
+                });
       }
   },
   created() {

@@ -93,3 +93,28 @@ exports.update = (req, res) => {
       });
     });
 };
+
+//Delete a Comment with a specified id
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Comment.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Commentaire effacé"
+        });
+      } else {
+        res.send({
+          message: "Echec de la supression du commentaire"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Echec de la supression du commentaire"
+      });
+    });
+};
