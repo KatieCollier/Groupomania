@@ -6,7 +6,12 @@
 
         <div class="action">
             <div v-if="canEditComment">
-                <img src="/images/edit.png" alt="Modifier">
+                <router-link :to="{
+                            name: 'editComment',
+                            params: { id: commentId }
+                        }">
+                    <img src="/images/edit.png" alt="Modifier">
+                </router-link>
             </div>
             <div v-if="canEditComment">
                 <img src="/images/bin.png" alt="Supprimer">
@@ -40,6 +45,9 @@ export default {
       },
       articleAuthorId: {
           type: Number
+      },
+      commentId: {
+          type: Number
       }
   },
   data() {
@@ -54,6 +62,7 @@ export default {
             localStorage.getItem("chargeCom") == true ||
             this.articleAuthorId == this.actualUser) {
               this.canEditComment = true
+              console.log("canEditComment", this.canEditComment)
           }
       }
   },

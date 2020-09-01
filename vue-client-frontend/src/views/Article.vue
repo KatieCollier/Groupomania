@@ -48,6 +48,7 @@
             :content="comment.content"
             :commentorId="comment.userId"
             :articleAuthorId="comment.article.userId"
+            :commentId="comment.id"
         />
 
         <AddComment class="ml-5 mr-3" />

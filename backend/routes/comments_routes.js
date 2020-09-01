@@ -11,6 +11,12 @@ module.exports = app => {
 
     // Find comments by articleId
     router.get("/articles/:id", comments.findByArticleId);
+
+    //Find a comment by id
+    router.get("/:id", comments.findOne);
+
+    //Update a comment with id
+    router.put("/:id", comments.update);
   
     app.use('/api/comments', router);
   };

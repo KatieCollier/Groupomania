@@ -74,6 +74,12 @@ export default new Router({
       alias: "/activite_utilisateur",
       name: "userActivity",
       component: () => import("./views/UserActivity")
+    },
+    {
+      path: "/modifier_commentaire/:id",
+      alias: "/modifier_commentaire",
+      name: "editComment",
+      component: () => import("./views/EditComment")
     }
   ]
 });

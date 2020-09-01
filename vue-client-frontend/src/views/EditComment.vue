@@ -6,30 +6,18 @@
 
         <div class="m-3">
             <div class="form-group">
-                <label for="title">Titre:</label>
-                <input
-                    type="text"
-                    id="title"
-                    required
-                    v-model="article.title"
-                    name="title"
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="content">Texte:</label>
-                <textarea
+                <label for="content">Commentaire:</label>
+                <textarea class="comment-textarea"
                     type="text"
                     id="content"
                     required
-                    v-model="article.content"
+                    v-model="comment.content"
                     name="content"                />
             </div>
         </div>
 
         <div class="text-center">
-            <BaseButton class="col-6 m-4"> Modifier l'image </BaseButton>
-                <BaseButton class="col-6 m-4" @click="updateArticle"> Enregistrer </BaseButton>
+            <BaseButton class="col-6 m-4" @click="updateComment"> Enregistrer </BaseButton>
         </div>
         
         <Footer />
@@ -47,37 +35,36 @@ import http from '../http-common'
 import router from "../router"
 
 export default {
-    name: "editPage",
+    name: "editComment",
     components: {
         LargeCurrentUser,
         ReturnButton,
         BaseButton,
         Footer
     },
-    props: ["article"],
+    props: ["comment"],
     methods: {
-        retrieveOneArticle() {
+        retrieveOneComment() {
             http
-             .get("/articles/" + this.$route.params.id)
+             .get("/comments/" + this.$route.params.id)
              .then(response => {
-                 this.article = response.data
+                 this.comment = response.data
                  console.log(response.data)
              })
              .catch(e => {
                  console.log(e)
              })
         },
-        updateArticle(){
+        updateComment(){
             const data = {
-                title: this.article.title,
-                content: this.article.content
+                content: this.comment.content
             }
 
             http
-                .put("/articles/" + this.$route.params.id, data)
+                .put("/comments/" + this.$route.params.id, data)
                 .then(response => {
                     console.log(response.data)
-                    router.push("/page_principale");
+                    router.go(-1);
                 })
                 .catch(e => {
                     console.log(e);
@@ -85,7 +72,7 @@ export default {
         }
     },
     created() {
-        this.retrieveOneArticle();
+        this.retrieveOneComment();
     }
 }
 </script>
@@ -104,7 +91,7 @@ export default {
         box-shadow: none;
         width: 100%;
     }
-    textarea{
-        height: 500px;
+    .comment-textarea{
+        height: 200px;
     }
 </style>
