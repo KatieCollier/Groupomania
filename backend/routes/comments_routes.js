@@ -10,7 +10,7 @@ module.exports = app => {
     router.get("/", comments.findAll);
 
     // Find comments by articleId
-    router.get("/articleId/:articleId", comments.findByArticleId);
+    router.get("/articles/:id", comments.findByArticleId);
   
     app.use('/api/comments', router);
   };

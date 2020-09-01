@@ -16,7 +16,7 @@
             Articles Récents
         </Subtitle>
 
-        <div>
+        <div class="text-center m-3">
             <p v-if="Articles.length == 0"> Bravo vous êtes le premier utilisateur: <br>
          Ecrivez le tout premier article !</p>
         </div>

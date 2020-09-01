@@ -41,13 +41,12 @@ exports.findAll = (req, res) => {
   };
 
 // Find comment by articleId.
-exports.findByArticleId = (req, res) => {  
-  Comment.findAll({
-    where: {
-      articleId: req.params.articleId
-    }}, 
-    {include: ["user"]}
-  )
+exports.findByArticleId = (req, res) => { 
+  const articleId = req.params.id
+  
+  Comment.findAll(
+    {where: {articleId: articleId}, include: ["user", "article"]}
+    )
     .then(data => {
       res.send(data);
     })

@@ -41,14 +41,14 @@
 
         </div>
 
-        <Comment class="ml-5" v-for="comment in article.comments"
+        <Comment class="ml-5" v-for="comment in Comments"
             :key="comment.id"
-            :commentor="comment.commentor"
+            :commentor="comment.user.userName"
             :createdAt="comment.createdAt"
             :content="comment.content"
+            :commentorId="comment.userId"
+            :articleAuthorId="comment.article.userId"
         />
-
-        {{comments.content}}
 
         <AddComment class="ml-5 mr-3" />
 
@@ -79,8 +79,10 @@ export default {
     props: ["article"],
     data(){
         return {
-            comments: [],
-            canEdit: false
+            Comments: [],
+            canEdit: false,
+            canEditComment: false,
+            actualUser: localStorage.getItem("userId")
         }
     },
     methods: {
@@ -115,9 +117,9 @@ export default {
         },
         getRelatedComments() {
             http
-                .get("comments/articleId/" + this.article.id)
+                .get("comments/articles/" + this.$route.params.id)
                 .then(response => {
-                 this.comments = response.data
+                 this.Comments = response.data
                  console.log("Comments: ", response.data)
              })
              .catch(e => {

@@ -42,6 +42,12 @@ db.comments.belongsTo(db.users, {
   as: "user"
 })
 
+db.users.hasMany(db.likes, {as: "likes"}, {onDelete: 'CASCADE', hooks: true});
+db.likes.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "user"
+})
+
 db.articles.hasMany(db.comments, {as: "comments"}, {onDelete: 'CASCADE', hooks: true});
 db.comments.belongsTo(db.articles, {
   foreignKey: "articleId",
