@@ -9,7 +9,7 @@ module.exports = app => {
     //Find Likes by article id
     router.get("/articles/:id", likes.findByArticleId);
   
-    // Retrieve all articles
+    // Retrieve all Likes
     router.get("/", likes.findAll);
   
     app.use('/api/likes', router);

@@ -31,6 +31,7 @@ require("./routes/users_routes")(app);
 require("./routes/articles_routes")(app);
 require("./routes/comments_routes")(app);
 require("./routes/likes_routes")(app);
+require("./routes/commentLikes_routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

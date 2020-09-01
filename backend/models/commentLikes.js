@@ -1,12 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
-    const Like = sequelize.define("like", {
+    const CommentLike = sequelize.define("commentLike", {
       id: {
         type: Sequelize.INTEGER(11),
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
-      articleId : {
+      commentId : {
         type: Sequelize.INTEGER(11),
         allowNull: false,
     },
@@ -16,5 +16,5 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
   
-    return Like;
+    return CommentLike;
   };

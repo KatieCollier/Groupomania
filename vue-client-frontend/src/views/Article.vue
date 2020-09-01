@@ -84,6 +84,7 @@ export default {
         return {
             Comments: [],
             Likes: [],
+            alreadyLiked: 0,
             canEdit: false,
             canEditComment: false,
             canDelete:false,
@@ -133,23 +134,27 @@ export default {
              })
         },
         likeArticle() {
-            const data = {
-                userId: this.actualUser,
-                articleId: this.article.id
-            }
+            if(this.alreadyLiked == 0){
+                const data = {
+                    userId: this.actualUser,
+                    articleId: this.article.id
+                }
 
-            http
-                .post("/likes", data)
-                .then(response => {
-                    this.like = response.data
-                    console.log(response.data)
-                    this.$router.go()
-                })
-                .catch(e => {
-                    console.log(e)
-                })
+                http
+                    .post("/likes", data)
+                    .then(response => {
+                        this.like = response.data
+                        console.log(response.data)
+                        this.$router.go()
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
 
-                this.like = {}
+                    this.like = {}
+                } else {
+                    console.log("Déjà liké !")
+                } 
         },
         getLikes() {
             http
@@ -157,6 +162,12 @@ export default {
                 .then(response => {
                     this.Likes = response.data
                     console.log("Likes :", this.Likes)
+                    for(let i = 0; i < this.Likes.length; i++) {
+                        if(this.Likes[i].userId == this.actualUser) {
+                            this.alreadyLiked++
+                            console.log("alreadyLiked: ", this.alreadyLiked)
+                        }    
+                    }
                 })
                 .catch(e => {
                     console.log(e)
