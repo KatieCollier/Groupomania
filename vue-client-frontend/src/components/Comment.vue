@@ -18,7 +18,9 @@
             </div>
             <div class="likes">
                 <p class="mr-2 h4"> {{NbCommentLikes}} </p>
-                <img src="/images/like.jpg" alt="Liker">
+                <div @click="likeComment">
+                    <img src="/images/like.jpg" alt="Liker">
+                </div>
             </div> 
         </div>
     </div>
@@ -60,6 +62,8 @@ export default {
           actualUser: localStorage.getItem("userId"),
           canEditComment: false,
           canDeleteComment: false,
+          CommentLikes: [],
+          commentAlreadyLiked: 0,
       }
   },
   methods: {
@@ -88,7 +92,45 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
-      },  
+      }, 
+      getCommentLikes() {
+        http
+            .get("commentLikes/comments/" + this.commentId)
+            .then(response => {
+                this.CommentLikes = response.data
+                for(let i = 0; i < this.CommentLikes.length; i++) {
+                    if(this.CommentLikes[i].userId == this.actualUser) {
+                        this.commentAlreadyLiked++
+                    }
+                }
+            })
+      },
+      likeComment() {
+
+            if(this.commentAlreadyLiked == 0) {
+                const data = {
+                    userId: this.actualUser,
+                    commentId: this.commentId
+                }
+
+                http
+                    .post("/commentLikes", data)
+                    .then(response => {
+                        this.commentLike = response.data
+                        console.log(response.data)
+                        this.$router.go()
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+
+                    this.commentLike = {}
+
+                    this.commentAlreadyLiked = 0
+            } else {
+                console.log("Déjà liké !", this.commentAlreadyLiked)
+            }       
+        }, 
   },
   created() {
       this.commentEditing();
