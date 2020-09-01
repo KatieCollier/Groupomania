@@ -41,7 +41,7 @@ exports.findAll = (req, res) => {
 exports.findByArticleId = (req, res) => { 
   const articleId = req.params.id
   Comment.findAll(
-    {where: {articleId: articleId}, include: ["user", "article"]}
+    {where: {articleId: articleId}, include: ["user", "article", "commentLikes"]}
     )
     .then(data => {
       res.send(data);

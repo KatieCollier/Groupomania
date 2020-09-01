@@ -17,7 +17,7 @@
                 <img src="/images/bin.png" alt="Supprimer">
             </div>
             <div class="likes">
-                <p class="mr-2 h4"> 5 </p>
+                <p class="mr-2 h4"> {{NbCommentLikes}} </p>
                 <img src="/images/like.jpg" alt="Liker">
             </div> 
         </div>
@@ -50,13 +50,16 @@ export default {
       },
       commentId: {
           type: Number
+      },
+      NbCommentLikes: {
+          type: Number
       }
   },
   data() {
       return {
           actualUser: localStorage.getItem("userId"),
           canEditComment: false,
-          canDeleteComment: false
+          canDeleteComment: false,
       }
   },
   methods: {
@@ -85,11 +88,12 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
-      }
+      },  
   },
   created() {
       this.commentEditing();
       this.commentDeleting();
+      this.getCommentLikes();
   }
 }
 </script>

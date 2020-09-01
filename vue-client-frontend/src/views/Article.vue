@@ -51,6 +51,7 @@
             :commentorId="comment.userId"
             :articleAuthorId="comment.article.userId"
             :commentId="comment.id"
+            :NbCommentLikes="comment.commentLikes.length"
         />
 
         <AddComment class="ml-5 mr-3" />
@@ -85,6 +86,8 @@ export default {
             Comments: [],
             Likes: [],
             alreadyLiked: 0,
+            CommentLikes: [],
+            commentAlreadyLiked: 0,
             canEdit: false,
             canEditComment: false,
             canDelete:false,
@@ -127,6 +130,7 @@ export default {
                 .get("/comments/articles/" + this.$route.params.id)
                 .then(response => {
                  this.Comments = response.data
+                 this.NbCommentLikes = 
                  console.log("Comments: ", response.data)
              })
              .catch(e => {
