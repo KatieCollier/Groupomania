@@ -1,5 +1,5 @@
 <template>
-    <div class="overview">
+    <div class="mainpage">
         <CurrentUser>
         </CurrentUser>
 
@@ -46,7 +46,7 @@
                 </div>
                 
                 <div class="content">
-                    <p> {{article.content}} </p>
+                     {{article.content}} 
                 </div>
             </div>
 
@@ -156,26 +156,28 @@ export default {
 </script>
 
 <style lang="scss">
-    a{
-        color: black;
-        text-decoration: none;
-    }
-    .preview{
-        width: 90%;
-        border: black 2px solid;
-        &-header{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        } 
-    }
-    .articleInfo{
-        font-weight: bold;
-    }
-    .content{
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
+    .mainpage{
+        a{
+            color: black;
+            text-decoration: none;
+        }
+        .preview{
+            width: 90%;
+            border: black 2px solid;
+            &-header{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            } 
+        }
+        .articleInfo{
+            font-weight: bold;
+        }
+        .content{
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
     }
 </style>

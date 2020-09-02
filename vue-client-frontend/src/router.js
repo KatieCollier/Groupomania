@@ -39,8 +39,7 @@ export default new Router({
     {
       path: "/articles/:id",
       name: "articlePage",
-      component: () => import("./views/Article"),
-      props: true
+      component: () => import("./views/Article")
     },
     {
       path: "/publier",

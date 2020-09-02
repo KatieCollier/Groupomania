@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="articlepage">
         <CurrentUser/>
 
         <ReturnButton/>
@@ -16,7 +16,7 @@
             </div>
 
             <div class="full-content">
-                <p> {{this.article.content}} </p>
+                 {{this.article.content}} 
             </div>
 
             <div class="action">
@@ -81,7 +81,6 @@ export default {
         AddComment,
         Footer
     },
-    props: ["article"],
     data(){
         return {
             Comments: [],
@@ -177,6 +176,7 @@ export default {
         }
     },
     created() {
+        console.log("Created")
         this.getLikes();
         this.retrieveOneArticle();
         this.getRelatedComments();
@@ -185,32 +185,34 @@ export default {
 </script>
 
 <style lang="scss">
-    .article-box{
-        border: black 2px solid;
-    }
-    .article-info{
-        font-weight: bold;
-    }
-    .article-time{
-        font-weight: lighter;
-    }
-    .article-img{
-        max-width: 90%;
-    }
-    .action{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-    }
-    .likes{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        p{
+    .articlepage{
+        .article-box{
+            border: black 2px solid;
+        }
+        .article-info{
             font-weight: bold;
-            color: #FD2D01;
+        }
+        .article-time{
+            font-weight: lighter;
+        }
+        .article-img{
+            max-width: 90%;
+        }
+        .action{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .likes{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            p{
+                font-weight: bold;
+                color: #FD2D01;
+            }
         }
     }
 </style>
