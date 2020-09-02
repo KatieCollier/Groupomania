@@ -36,7 +36,8 @@
                 <div class="likes">
                     <p class="mr-2 h4"> {{Likes.length}} </p>
                     <span @click="likeArticle">
-                        <img src="/images/like.jpg" alt="Liker">
+                        <img v-if="alreadyLiked" src="/images/like-color.png" alt="Liker">
+                        <img v-else src="/images/like-transparent.jpg" alt="Liker">
                     </span>  
                 </div> 
             </div>

@@ -24,7 +24,8 @@
             <div class="likes">
                 <p class="mr-2 h4"> {{NbCommentLikes}} </p>
                 <div @click="likeComment">
-                    <img src="/images/like.jpg" alt="Liker">
+                    <img v-if="commentAlreadyLiked" src="/images/like-color.png" alt="Liker">
+                    <img v-else src="/images/like-transparent.jpg" alt="Liker">
                 </div>
             </div> 
         </div>
