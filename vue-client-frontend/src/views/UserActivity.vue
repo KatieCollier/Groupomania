@@ -27,7 +27,6 @@ import Subtitle from "../components/SubTitle"
 import ActivityPreview from "../components/ActivityPreview"
 import Footer from "../components/Footer"
 
-import {mapState} from "vuex"
 import http from "../http-common"
 
 export default {
@@ -38,11 +37,6 @@ export default {
         Subtitle,
         ActivityPreview,
         Footer
-    },
-    computed: {
-        ...mapState({
-            SingleUser: "SingleUser"
-        })
     },
     data() {
         return {
@@ -67,7 +61,7 @@ export default {
                         return o;
                     })
                     this.UserActivity = Articles.concat(Comments)
-                    this.UserActivity.sort((a, b) => (a.updatedAt > b.updatedAt) ? 1 : -1)
+                    this.UserActivity.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)
                 })
                 .catch(e => {
                     console.log(e)

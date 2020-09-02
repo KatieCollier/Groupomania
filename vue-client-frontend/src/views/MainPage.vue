@@ -61,12 +61,17 @@
         </Subtitle>
 
         <ActivityPreview
-            v-for="activity in Activities"
-            :user="activity.user"
+            v-for="activity in AllActivity"
+            :key="activity.updatedAt"
+            :user="activity.user.userName"
             :activityType="activity.activityType"
+            :activityTitle="activity.title"
             :createdAt="activity.createdAt"
             :content="activity.content"
-            :key="activity.title">
+            :commentArticleId="activity.articleId"
+            :articleId="activity.id"
+            :userId="activity.userId"
+            >
         </ActivityPreview>
 
         <div class="m-4">
@@ -89,8 +94,6 @@ import Footer from "../components/Footer"
 
 import http from "../http-common"
 
-import {mapState} from "vuex"
-
 export default {
     name: "mainPage",
     components: {
@@ -100,15 +103,12 @@ export default {
         Subtitle,
         ActivityPreview,
         Footer
-    },  
-    computed: {
-        ...mapState({
-            Activities: "Activities"
-        })
     },
     data() {
         return {
-            Articles: []
+            Articles: [],
+            Comments: [],
+            AllActivity: []
         };
     },
     methods: {
@@ -125,11 +125,32 @@ export default {
         },
         refreshList() {
         this.retrieveArticles();
-        }
-        /* eslint-enable no-console */
         },
+        getAllActivity() {
+            http
+                .get("/comments")
+                .then(response => {
+                    this.Comments = response.data
+                    const comments = this.Comments.map(function(o) {
+                        o.activityType = "Comment on";
+                        return o;
+                    })
+                    const articles = this.Articles.map(function(o) {
+                        o.activityType = "Article";
+                        return o;
+                    })
+                    this.AllActivity = articles.concat(comments)
+                    this.AllActivity.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)  
+                    console.log("all activity: ", this.AllActivity)
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        }
+    },
     created() {
         this.retrieveArticles();
+        this.getAllActivity();
     }            
 }
 </script>

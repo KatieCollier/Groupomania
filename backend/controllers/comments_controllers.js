@@ -25,7 +25,7 @@ exports.create = (req, res) => {
 
 // Retrieve all comments from the database.
 exports.findAll = (req, res) => {
-    Comment.findAll({include: ["user"]})
+    Comment.findAll({include: ["user", "article"]})
       .then(data => {
         res.send(data);
       })

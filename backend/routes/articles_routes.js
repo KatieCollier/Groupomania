@@ -8,7 +8,7 @@ module.exports = app => {
     router.post("/", auth, articles.create);
   
     // Retrieve all articles
-    router.get("/", auth, articles.findAll);
+    router.get("/",  articles.findAll);
 
     // Retrieve a single Article with id
     router.get("/:id", auth, articles.findOne);

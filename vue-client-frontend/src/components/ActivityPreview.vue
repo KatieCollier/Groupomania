@@ -2,12 +2,33 @@
     <div class="preview m-3 p-2">
         <div class="preview-header">
             <div class="articleInfo">
-                <p class="mb-0"> {{user}} </p>
                 <p> {{activityType}} </p>
+                
             </div>
             <div class="creationTime">
                 <p> {{createdAt}} </p>
             </div>
+        </div>
+
+        <div class="activity-title">
+            <router-link :to="{
+                                name: 'articlePage',
+                                params: { id: commentArticleId }
+                            }">
+                <p v-if="activityType === 'Comment on'" class="mb-0 link"> This article </p>
+            </router-link>
+            <router-link :to="{
+                                name: 'articlePage',
+                                params: { id: articleId }
+                            }">
+                <p class="mb-0"> {{activityTitle}} </p>
+            </router-link>
+            <router-link :to="{
+                                name: 'userActivity',
+                                params: { id: userId }
+                            }">
+                <p> {{user}} </p>
+            </router-link>
         </div>
         
         <div class="content">
@@ -35,6 +56,18 @@ export default {
       content: {
           type: String,
           required: true
+      },
+      activityTitle: {
+          type: String
+      },
+      commentArticleId: {
+          type: Number
+      },
+      articleId: {
+          type: Number
+      },
+      userId: {
+          type: Number
       }
   },
 }
@@ -52,6 +85,13 @@ export default {
   }
   .articleInfo{
       font-weight: bold;
+      color: #FD2D01;
+  }
+  .activity-title{
+      font-weight: bold;
+  }
+  .link{
+      font-style: italic;
   }
   p{
     overflow: hidden;
