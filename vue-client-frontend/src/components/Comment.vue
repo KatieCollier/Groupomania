@@ -1,6 +1,11 @@
 <template>
     <div class="comment m-3 p-2">
-        <p class="commentor mb-0"> {{commentor}} </p>
+        <router-link :to="{
+                            name: 'userActivity',
+                            params: { id: commentorId }
+                        }">
+            <p class="commentor mb-0"> {{commentor}} </p>
+        </router-link>
         <p> {{createdAt}} </p>
         <p> {{content}} </p>
 

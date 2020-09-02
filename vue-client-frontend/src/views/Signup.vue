@@ -93,16 +93,12 @@ export default {
         .then(response => {
           this.user.id = response.data.id;
           console.log(response.data);
+          this.user = {};
           router.push("/");
         })
         .catch(e => {
           console.log(e);
         });
-    },
-    
-    newUser() {
-      this.submitted = false;
-      this.user = {};
     }
   }
 };

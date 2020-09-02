@@ -13,7 +13,7 @@ module.exports = app => {
     router.post("/login", users.login);
 
     // Find user by Id
-    router.get("/:id", auth, users.findOne);
+    router.get("/:id",  users.findOne);
 
     //Update user by Id
     router.put("/:id", auth, users.update)

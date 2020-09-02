@@ -55,7 +55,7 @@ exports.login = (req, res, next) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  User.findByPk(id)
+  User.findByPk(id, {include: ["articles", "comments"]})
     .then(data => {
       res.send(data);
     })

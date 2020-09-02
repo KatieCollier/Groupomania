@@ -33,7 +33,12 @@
                             }">
                             <p class="mb-0"> {{article.title}} </p>
                         </router-link>
-                        <p> {{article.user.userName}} </p>
+                        <router-link :to="{
+                                name: 'userActivity',
+                                params: { id: article.userId }
+                            }">
+                            <p> {{article.user.userName}} </p>
+                        </router-link>
                     </div>
                     <div class="creationTime">
                         <p> {{article.createdAt}} </p>
@@ -123,7 +128,7 @@ export default {
         }
         /* eslint-enable no-console */
         },
-    beforeMount() {
+    created() {
         this.retrieveArticles();
     }            
 }
