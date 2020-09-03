@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="edit-profile">
         <div class="submit-form">
             <div class="form-group">
                 <label for="userName">Nom d'utilisateur:</label>
@@ -119,9 +119,11 @@ export default {
 };
 </script>
 
-<style>
-.submit-form {
-  max-width: 300px;
-  margin: auto;
-}
+<style lang="scss">
+    .edit-profile{
+        .submit-form {
+            max-width: 300px;
+            margin: auto;
+        }
+    }
 </style>

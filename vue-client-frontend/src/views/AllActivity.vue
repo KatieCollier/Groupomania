@@ -1,5 +1,5 @@
 <template>
-    <div class="overview">
+    <div class="all-activity">
         <CurrentUser>
         </CurrentUser>
 
@@ -18,7 +18,7 @@
             :user="activity.user.userName"
             :activityType="activity.activityType"
             :activityTitle="activity.title"
-            :createdAt="activity.createdAt"
+            :updatedAt="activity.updatedAt | formatDate"
             :content="activity.content"
             :commentArticleId="activity.articleId"
             :articleId="activity.id"
@@ -42,6 +42,7 @@ import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
+import moment from "moment"
 
 export default {
     name: "allActivity",
@@ -58,6 +59,13 @@ export default {
             Articles: [],
             Comments: [],
             AllActivity: []
+        }
+    },
+    filters: {
+        formatDate: function(value){
+            if(value) {
+               return moment(String(value)).format("DD/MM/YYYY kk:mm") 
+            }
         }
     },
     methods: {

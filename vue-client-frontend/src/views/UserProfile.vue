@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="user-profile">
         <LargerCurrentUser class="mb-5" />
 
         <div class="text-center mb-5">
@@ -78,7 +78,9 @@ export default {
 </script>
 
 <style lang="scss">
-    .info-title{
-        font-weight: bold;
+    .user-profile{
+        .info-title{
+            font-weight: bold;
+        }
     }
 </style>

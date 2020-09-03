@@ -1,10 +1,8 @@
 <template>
     <div class="mainpage">
-        <CurrentUser>
-        </CurrentUser>
+        <CurrentUser />
 
-        <SearchBar>
-        </SearchBar>
+        <SearchBar />
 
         <div class="text-center m-4">
             <a href="/publier">
@@ -15,40 +13,17 @@
         <Subtitle>
             Articles Récents
         </Subtitle>
-
-        <div class="text-center m-3">
-            <p v-if="Articles.length == 0"> Bravo vous êtes le premier utilisateur: <br>
-         Ecrivez le tout premier article !</p>
-        </div>
         
-        <div class="preview m-3 p-2"
-            v-for="(article, index) in Articles"
-                    :key="index">
-
-                <div class="preview-header">
-                    <div class="articleInfo">
-                        <router-link :to="{
-                                name: 'articlePage',
-                                params: { id: article.id }
-                            }">
-                            <p class="mb-0"> {{article.title}} </p>
-                        </router-link>
-                        <router-link :to="{
-                                name: 'userActivity',
-                                params: { id: article.userId }
-                            }">
-                            <p> {{article.user.userName}} </p>
-                        </router-link>
-                    </div>
-                    <div class="creationTime">
-                        <p> {{article.createdAt}} </p>
-                    </div>
-                </div>
-                
-                <div class="content">
-                     {{article.content}} 
-                </div>
-            </div>
+        <ArticlePreview
+            v-for="article in Articles"
+            :key="article.id"
+            :articleId="article.id"
+            :title="article.title"
+            :userId="article.userId"
+            :author="article.user.userName"
+            :updatedAt="article.updatedAt | formatDate"
+            :content="article.content"
+         />
 
         <div class="m-4">
             <a href="/tous_articles">
@@ -66,13 +41,12 @@
             :user="activity.user.userName"
             :activityType="activity.activityType"
             :activityTitle="activity.title"
-            :createdAt="activity.createdAt"
+            :updatedAt="activity.updatedAt | formatDate"
             :content="activity.content"
             :commentArticleId="activity.articleId"
             :articleId="activity.id"
             :userId="activity.userId"
-            >
-        </ActivityPreview>
+            />
 
         <div class="m-4">
             <a href="/toute_activite">
@@ -89,10 +63,12 @@ import CurrentUser from "../components/CurrentUser"
 import SearchBar from "../components/SearchBar"
 import BaseButton from "../components/BaseButton"
 import Subtitle from "../components/SubTitle"
+import ArticlePreview from "../components/ArticlePreview"
 import ActivityPreview from "../components/ActivityPreview"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
+import moment from "moment"
 
 export default {
     name: "mainPage",
@@ -101,6 +77,7 @@ export default {
         SearchBar,
         BaseButton,
         Subtitle,
+        ArticlePreview,
         ActivityPreview,
         Footer
     },
@@ -110,6 +87,13 @@ export default {
             Comments: [],
             AllActivity: []
         };
+    },
+    filters: {
+        formatDate: function(value){
+            if(value) {
+               return moment(String(value)).format("DD/MM/YYYY kk:mm") 
+            }
+        }
     },
     methods: {
         retrieveArticles() {

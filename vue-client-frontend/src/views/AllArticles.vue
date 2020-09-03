@@ -1,12 +1,10 @@
 <template>
-    <div class="overview">
-        <CurrentUser>
-        </CurrentUser>
+    <div class="all-articles">
+        <CurrentUser />
 
         <ReturnButton />
 
-        <SearchBar>
-        </SearchBar>
+        <SearchBar />
 
         <div class="text-center m-4">
             <a href="/publier">
@@ -18,29 +16,16 @@
             Articles
         </Subtitle>
 
-        <div class="preview m-3 p-2"
-        v-for="(article, index) in Articles"
-                :key="index">
-
-            <div class="preview-header">
-                <div class="articleInfo">
-                    <router-link :to="{
-                            name: 'articlePage',
-                            params: { id: article.id }
-                        }">
-                        <p class="mb-0"> {{article.title}} </p>
-                    </router-link>
-                    <p> {{article.user.userName}} </p>
-                </div>
-                <div class="creationTime">
-                    <p> {{article.createdAt}} </p>
-                </div>
-            </div>
-            
-            <div class="content">
-                <p> {{article.content}} </p>
-            </div>
-        </div>
+        <ArticlePreview
+            v-for="article in Articles"
+            :key="article.id"
+            :articleId="article.id"
+            :title="article.title"
+            :userId="article.userId"
+            :author="article.user.userName"
+            :updatedAt="article.updatedAt | formatDate"
+            :content="article.content"
+         />
 
         <ReturnButton />
 
@@ -54,10 +39,12 @@ import CurrentUser from "../components/CurrentUser"
 import SearchBar from "../components/SearchBar"
 import BaseButton from "../components/BaseButton"
 import Subtitle from "../components/SubTitle"
+import ArticlePreview from "../components/ArticlePreview"
 import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
+import moment from "moment"
 
 export default {
     name: "allActivity",
@@ -66,6 +53,7 @@ export default {
         SearchBar,
         BaseButton,
         Subtitle,
+        ArticlePreview,
         ReturnButton,
         Footer
     },
@@ -73,6 +61,13 @@ export default {
         return {
             Articles: []
         };
+    },
+    filters: {
+        formatDate: function(value){
+            if(value) {
+               return moment(String(value)).format("DD/MM/YYYY kk:mm") 
+            }
+        }
     },
     methods: {
         retrieveArticles() {
@@ -96,28 +91,3 @@ export default {
     }       
 }
 </script>
-
-<style lang="scss">
-    a{
-        color: black;
-        text-decoration: none;
-    }
-    .preview{
-        width: 90%;
-        border: black 2px solid;
-        &-header{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        } 
-    }
-    .articleInfo{
-        font-weight: bold;
-    }
-    .content{
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-    }
-</style>

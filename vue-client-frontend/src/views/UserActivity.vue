@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="user-activity">
         <CurrentUser />
 
         <ReturnButton />
@@ -9,9 +9,11 @@
         <ActivityPreview 
              v-for="activity in UserActivity"
             :activityType="activity.activityType"
-            :createdAt="activity.createdAt"
+            :updatedAt="activity.updatedAt | formatDate"
             :content="activity.content"
-            :key="activity.createdAt"
+            :key="activity.updatedAt"
+            :activityTitle="activity.title"
+            :commentArticleId="activity.articleId"
         />
 
         <ReturnButton />
@@ -28,6 +30,7 @@ import ActivityPreview from "../components/ActivityPreview"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
+import moment from "moment"
 
 export default {
     name: "userActivity",
@@ -44,6 +47,13 @@ export default {
             UserActivity: [],
         }
     },
+    filters: {
+        formatDate: function(value){
+            if(value) {
+               return moment(String(value)).format("DD/MM/YYYY kk:mm") 
+            }
+        }
+    },
     methods: {
         getUserActivity() {
             http
@@ -57,7 +67,7 @@ export default {
                     })
                     const comments = this.UserWithActivity.comments
                     const Comments = comments.map(function(o) {
-                        o.activityType = "Comment";
+                        o.activityType = "Comment on";
                         return o;
                     })
                     this.UserActivity = Articles.concat(Comments)

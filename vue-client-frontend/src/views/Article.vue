@@ -6,10 +6,13 @@
 
         <div v-if="this.article" class="article-box m-3 p-2">
             <p class="mb-0 article-info h4"> {{this.article.title}} </p>
-            <a href="/activite_utilisateur"> 
+            <router-link :to="{
+                                name: 'userActivity',
+                                params: { id: this.article.userId }
+                            }"> 
                 <p class="article-info h4"> {{this.article.user.userName}} </p>
-            </a>
-            <p class="article-time"> {{this.article.createdAt}} </p>
+            </router-link>
+            <p class="article-time"> {{this.article.updatedAt | formatDate}} </p>
 
             <div class="text-center">
                 <img class="article-img img-fluid m-3" src="/images/images.jpg" alt="random image">
@@ -47,7 +50,7 @@
         <Comment class="ml-5" v-for="comment in Comments"
             :key="comment.id"
             :commentor="comment.user.userName"
-            :createdAt="comment.createdAt"
+            :updatedAt="comment.updatedAt | formatDate"
             :content="comment.content"
             :commentorId="comment.userId"
             :articleAuthorId="comment.article.userId"
@@ -71,6 +74,7 @@ import AddComment from "../components/AddComment"
 import Footer from "../components/Footer"
 
 import http from '../http-common'
+import moment from "moment"
 
 export default {
     name: "articlePage",
@@ -91,6 +95,13 @@ export default {
             canEditComment: false,
             canDelete:false,
             actualUser: localStorage.getItem("userId")
+        }
+    },
+    filters: {
+        formatDate: function(value){
+            if(value) {
+               return moment(String(value)).format("DD/MM/YYYY kk:mm") 
+            }
         }
     },
     methods: {

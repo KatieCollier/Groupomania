@@ -1,42 +1,44 @@
 <template>
-  <div class="submit-form">
+  <div class="logon-form">
+    <div class="submit-form">
 
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input
-          class="form-control"
-          id="email"
-          required
-          v-model="user.email"
-          name="email"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="password"> Mot de passe: </label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          required
-          v-model="user.password"
-          name="password"
-        />
-      </div>
-
-      <div class="text-center">
-          <BaseButton @click="login" class="m-3"> Connection </BaseButton>
-
-        <div class="mt-4">      
-          <p> Pas encore de compte? <br>
-          Inscrivez-vous! </p>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            class="form-control"
+            id="email"
+            required
+            v-model="user.email"
+            name="email"
+          />
         </div>
 
-        <a href="/inscription">
-          <BaseButton class="m-3"> Inscription </BaseButton>
-        </a>
-      </div>
+        <div class="form-group">
+          <label for="password"> Mot de passe: </label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            required
+            v-model="user.password"
+            name="password"
+          />
+        </div>
 
+        <div class="text-center">
+            <BaseButton @click="login" class="m-3"> Connection </BaseButton>
+
+          <div class="mt-4">      
+            <p> Pas encore de compte? <br>
+            Inscrivez-vous! </p>
+          </div>
+
+          <a href="/inscription">
+            <BaseButton class="m-3"> Inscription </BaseButton>
+          </a>
+        </div>
+
+    </div>
   </div>
 </template>
 
@@ -89,13 +91,15 @@ export default {
 </script>
 
 <style lang="scss">
-  .submit-form{
-    max-width: 300px;
-    margin: auto;
-  }
-  .form-control{
-    border-radius: 5px;
-    background-color: #FFD7D7;
-    border: #FD2D01 1px solid;
+  .logon-form{
+     .submit-form{
+      max-width: 300px;
+      margin: auto;
+    }
+    .form-control{
+      border-radius: 5px;
+      background-color: #FFD7D7;
+      border: #FD2D01 1px solid;
+    }
   }
 </style>

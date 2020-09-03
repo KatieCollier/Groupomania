@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="create-article">
         <LargeCurrentUser class="mb-4" />
 
         <div class="m-3">
@@ -89,20 +89,22 @@ export default {
 </script>
 
 <style lang="scss">
-    .form-group{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-    }
-    input, textarea{
-        border-radius: 5px;
-        background-color: #FFD7D7;
-        border: #FD2D01 1px solid;
-        box-shadow: none;
-        width: 100%;
-    }
-    textarea{
-        height: 500px;
+    .create-article{
+        .form-group{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        input, textarea{
+            border-radius: 5px;
+            background-color: #FFD7D7;
+            border: #FD2D01 1px solid;
+            box-shadow: none;
+            width: 100%;
+        }
+        textarea{
+            height: 500px;
+        }
     }
 </style>

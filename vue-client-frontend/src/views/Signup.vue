@@ -1,59 +1,60 @@
 <template>
-  <div class="submit-form">
+  <div class="signup-form">
+    <div class="submit-form">
     
-      <div class="form-group">
-        <label for="userName">Nom d'utilisateur*:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="userName"
-          required
-          v-model="user.userName"
-          name="userName"
-        />
-      </div>
+        <div class="form-group">
+          <label for="userName">Nom d'utilisateur*:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="userName"
+            required
+            v-model="user.userName"
+            name="userName"
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="email">Email*:</label>
-        <input
-          class="form-control"
-          id="email"
-          required
-          v-model="user.email"
-          name="email"
-        />
-      </div>
+        <div class="form-group">
+          <label for="email">Email*:</label>
+          <input
+            class="form-control"
+            id="email"
+            required
+            v-model="user.email"
+            name="email"
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="department"> Equipe*: </label>
-        <input
-          class="form-control"
-          id="department"
-          required
-          v-model="user.department"
-          name="department"
-        />
-      </div>
+        <div class="form-group">
+          <label for="department"> Equipe*: </label>
+          <input
+            class="form-control"
+            id="department"
+            required
+            v-model="user.department"
+            name="department"
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="password"> Mot de passe*: </label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          required
-          v-model="user.password"
-          name="password"
-        />
-      </div>
+        <div class="form-group">
+          <label for="password"> Mot de passe*: </label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            required
+            v-model="user.password"
+            name="password"
+          />
+        </div>
 
-      <p> *: Champ obligatoire </p>
-      <div class="text-center">
-        <BaseButton @click="saveUser"> Inscription </BaseButton>
-      </div>
-    
-  </div>
-    
+        <p> *: Champ obligatoire </p>
+        <div class="text-center">
+          <BaseButton @click="saveUser"> Inscription </BaseButton>
+        </div>
+      
+    </div>
+  </div>   
 </template>
 
 <script>
@@ -105,13 +106,15 @@ export default {
 </script>
 
 <style  lang="scss">
-  .submit-form {
-    max-width: 300px;
-    margin: auto;
-  }
-  .form-control{
-      border-radius: 5px;
-      background-color: #FFD7D7;
-      border: #FD2D01 1px solid;
+  .signup-form{
+    .submit-form {
+      max-width: 300px;
+      margin: auto;
     }
+    .form-control{
+        border-radius: 5px;
+        background-color: #FFD7D7;
+        border: #FD2D01 1px solid;
+    }
+  }
 </style>

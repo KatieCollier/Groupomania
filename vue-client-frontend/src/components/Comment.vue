@@ -6,7 +6,7 @@
                         }">
             <p class="commentor mb-0"> {{commentor}} </p>
         </router-link>
-        <p> {{createdAt}} </p>
+        <p> {{updatedAt}} </p>
         <p> {{content}} </p>
 
         <div class="action">
@@ -39,16 +39,13 @@ export default {
   name: 'Comment',
   props: {
       commentor: {
-          type: String,
-          required: true
+          type: String
       },
       content: {
-          type: String,
-          required: true
+          type: String
       },
-      createdAt: {
-          type: Date,
-          required:true
+      updatedAt: {
+          type: Date
       },
       commentorId: {
           type: Number

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="edit-article">
         <LargeCurrentUser class="mb-4" />
 
         <ReturnButton />
@@ -23,7 +23,8 @@
                     id="content"
                     required
                     v-model="article.content"
-                    name="content"                />
+                    name="content" 
+                />
             </div>
         </div>
 
@@ -91,20 +92,22 @@ export default {
 </script>
 
 <style lang="scss">
-    .form-group{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-    }
-    input, textarea{
-        border-radius: 5px;
-        background-color: #FFD7D7;
-        border: #FD2D01 1px solid;
-        box-shadow: none;
-        width: 100%;
-    }
-    textarea{
-        height: 500px;
+    .edit-article{
+        .form-group{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        input, textarea{
+            border-radius: 5px;
+            background-color: #FFD7D7;
+            border: #FD2D01 1px solid;
+            box-shadow: none;
+            width: 100%;
+        }
+        textarea{
+            height: 500px;
+        }
     }
 </style>

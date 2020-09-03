@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="edit-comment">
         <LargeCurrentUser class="mb-4" />
 
         <ReturnButton />
@@ -78,20 +78,22 @@ export default {
 </script>
 
 <style lang="scss">
-    .form-group{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-    }
-    input, textarea{
-        border-radius: 5px;
-        background-color: #FFD7D7;
-        border: #FD2D01 1px solid;
-        box-shadow: none;
-        width: 100%;
-    }
-    .comment-textarea{
-        height: 200px;
+    .edit-comment{
+        .form-group{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        input, textarea{
+            border-radius: 5px;
+            background-color: #FFD7D7;
+            border: #FD2D01 1px solid;
+            box-shadow: none;
+            width: 100%;
+        }
+        .comment-textarea{
+            height: 200px;
+        }
     }
 </style>

@@ -5,8 +5,8 @@
                 <p> {{activityType}} </p>
                 
             </div>
-            <div class="creationTime">
-                <p> {{createdAt}} </p>
+            <div class="updateTime">
+                <p> {{updatedAt}} </p>
             </div>
         </div>
 
@@ -42,20 +42,16 @@ export default {
   name: 'ActivityPreview',
   props: {
       user: {
-          type: String,
-          required: true
+          type: String
       },
       activityType: {
-          type: String,
-          required: true
+          type: String
       },
-      createdAt: {
-          type: Date,
-          required:true
+      updatedAt: {
+          type: Date
       },
       content: {
-          type: String,
-          required: true
+          type: String
       },
       activityTitle: {
           type: String
