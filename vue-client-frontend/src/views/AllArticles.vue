@@ -74,7 +74,8 @@ export default {
         http
             .get("/articles")
             .then(response => {
-            this.Articles = response.data; // JSON are parsed automatically.
+            this.Articles = response.data;
+            this.Articles.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)
             console.log(response.data);
             })
             .catch(e => {
