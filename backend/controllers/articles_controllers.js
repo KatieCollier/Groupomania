@@ -16,7 +16,8 @@ exports.create = (req, res) => {
     const article = {
       userId: req.body.userId,
       title: req.body.title,
-      content: req.body.content
+      content: req.body.content,
+      imageUrl: req.body.imageUrl
     };
   
     // Save Article in the database

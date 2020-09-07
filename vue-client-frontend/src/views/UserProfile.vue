@@ -43,8 +43,6 @@ import Footer from "../components/Footer"
 
 import http from "../http-common"
 
-import {mapState} from "vuex"
-
 export default {
     name: "profilePage",
     components: {
@@ -54,11 +52,6 @@ export default {
         Footer
     },
     props: ["user"],
-    computed: {
-        ...mapState({
-            Users: "Users",
-        })
-    },
     methods: {
         retrieveOneUser() {
             http

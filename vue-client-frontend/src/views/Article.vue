@@ -15,7 +15,7 @@
             <p class="article-time"> {{this.article.updatedAt | formatDate}} </p>
 
             <div class="text-center">
-                <img class="article-img img-fluid m-3" src="/images/images.jpg" alt="random image">
+                <img v-if="imagePresent" class="article-img img-fluid m-3" :src="/images/ + this.article.imageUrl" alt="random image">
             </div>
 
             <div class="full-content">
@@ -87,6 +87,7 @@ export default {
     },
     data(){
         return {
+            imagePresent: null,
             Comments: [],
             Likes: [],
             alreadyLiked: 0,
@@ -111,6 +112,9 @@ export default {
              .then(response => {
                  this.article = response.data
                  this.author = this.article.userId
+                 if(this.article.imageUrl != null){
+                     this.imagePresent = true
+                 }
                 if(localStorage.getItem("userId") == this.author) {
                     this.canEdit = true;
                 }

@@ -50,7 +50,7 @@
             </div>
 
             <div class="text-center">
-                <BaseButton class="mx-5 my-3"> Choisissez Votre Image </BaseButton>
+                <UploadFiles> chargez votre image </UploadFiles>
                 <BaseButton @click="updateProfile" class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
                 <BaseButton @click="deleteProfile" class="mx-5 my-3 mb-5"> Supprimer Votre Compte </BaseButton>
             </div>
@@ -62,6 +62,7 @@
 
 <script>
 import BaseButton from "../components/BaseButton"
+import UploadFiles from "../components/UploadFiles"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
@@ -71,6 +72,7 @@ export default {
   name: "editProfile",
   components: {
     BaseButton,
+    UploadFiles,
     Footer
   },
   props: ["user"],
@@ -90,13 +92,15 @@ export default {
             userName: this.user.userName,
             email: this.user.email,
             department: this.user.department,
-            password: this.user.password
+            password: this.user.password,
+            imageUrl: localStorage.getItem("imageUrl")
         }
 
           http
             .put("/users/" + this.$route.params.id, data)
             .then(response => {
                 console.log(response.data)
+                localStorage.removeItem("imageUrl")
                 router.push("/profile/" + this.$route.params.id)
             })
             .catch(e => {

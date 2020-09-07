@@ -20,6 +20,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+global.__basedir = __dirname;
+
 const db = require("./models");
 db.sequelize.sync();
 
@@ -34,6 +36,7 @@ require("./routes/articles_routes")(app);
 require("./routes/comments_routes")(app);
 require("./routes/likes_routes")(app);
 require("./routes/commentLikes_routes")(app);
+require("./routes/upload_routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

@@ -6,26 +6,21 @@
                         }">
             <div class="currentUser col-7 offset-5 mb-3">
                 <p class="pr-2 h5"> {{user.userName}} </p>
-                <img :src="Users.image" alt="lien vers la page de profile">
+                <img :src="userImage" alt="lien vers la page de profile">
             </div>
         </router-link>
     </div>
 </template>
 
 <script>
-import {mapState} from "vuex"
 import http from "../http-common"
 
 export default {
   name: 'CurrentUser',
-  computed: {
-      ...mapState({
-          Users: "Users"
-      })
-  },
   data() {
       return {
-          user: []
+          user: [],
+          userImage: "/images/profile.png"
       }
   },
   methods: {
@@ -35,6 +30,9 @@ export default {
             .then(response => {
                 this.user = response.data
                 console.log("User: ", response.data)
+                if(this.user.imageUrl != null) {
+                    this.userImage = "/images/" + this.user.imageUrl
+                }
             })
             .catch(e => {
                 console.log(e)

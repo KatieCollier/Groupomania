@@ -1,7 +1,7 @@
 <template>
     <div class="currentUser">
         <p class="h4 mt-3"> {{user.userName}} </p>
-        <img src="/images/profile.png" alt="lien vers la page de profile">
+        <img :src="userImage" alt="lien vers la page de profile">
     </div>
 </template>
 
@@ -12,9 +12,8 @@ export default {
   name: 'CurrentUser',
   data() {
       return {
-          currentUser: "Harry Potter",
-          src: "../images/profile.png",
-          user:[]
+          user:[],
+          userImage: "/images/profile.png"
       }
   },
    methods: {
@@ -23,6 +22,9 @@ export default {
             .get("/users/" + localStorage.getItem("userId"))
             .then(response => {
                 this.user = response.data
+                if(this.user.imageUrl != null) {
+                    this.userImage = "/images/" + this.user.imageUrl
+                }
                 console.log("User: ", response.data)
             })
             .catch(e => {
