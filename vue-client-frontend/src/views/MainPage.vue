@@ -15,7 +15,7 @@
         </Subtitle>
         
         <ArticlePreview
-            v-for="article in Articles"
+            v-for="article in Articles.slice(0, 5)"
             :key="article.id"
             :articleId="article.id"
             :title="article.title"
@@ -36,7 +36,7 @@
         </Subtitle>
 
         <ActivityPreview
-            v-for="activity in AllActivity"
+            v-for="activity in AllActivity.slice(0, 5)"
             :key="activity.updatedAt"
             :user="activity.user.userName"
             :activityType="activity.activityType"
@@ -100,7 +100,8 @@ export default {
         http
             .get("/articles")
             .then(response => {
-            this.Articles = response.data; // JSON are parsed automatically.
+            this.Articles = response.data; 
+            this.Articles.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)
             console.log("Articles: ", response.data);
             })
             .catch(e => {

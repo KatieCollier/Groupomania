@@ -27,7 +27,7 @@ exports.create = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred during signup."
+            err.message || "Erreur lors de la creation de l'article."
         });
       });
   };

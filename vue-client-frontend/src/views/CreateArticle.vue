@@ -21,7 +21,7 @@
                     id="content"
                     required
                     v-model="article.content"
-                    name="content"                />
+                    name="content" />
             </div>
         </div>
 
@@ -36,6 +36,7 @@
         
     </div>
 </template>
+
 
 <script>
 import LargeCurrentUser from "../components/LargeCurrentUser"
@@ -67,7 +68,7 @@ export default {
             const data = {
                 title: this.article.title,
                 content: this.article.content,
-                userId: localStorage.getItem("userId")
+                userId: localStorage.getItem("userId"),
             };
 
             http
@@ -84,7 +85,7 @@ export default {
             this.submitted = true;
             this.article = {};
             },
-    }
+    }    
 };
 </script>
 

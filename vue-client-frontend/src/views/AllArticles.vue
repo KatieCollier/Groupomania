@@ -26,6 +26,16 @@
             :updatedAt="article.updatedAt | formatDate"
             :content="article.content"
          />
+        
+        <div class="pagination">
+            <b-pagination class="m-5"
+                v-model="page"
+                :total-rows="count"
+                :per-page="pageSize"
+                pills
+                @change="handlePageChange"
+            />
+        </div>
 
         <ReturnButton />
 
@@ -59,7 +69,10 @@ export default {
     },
     data() {
         return {
-            Articles: []
+            Articles: [],
+            page: 1,
+            count: 0,
+            pageSize: 5
         };
     },
     filters: {
@@ -76,19 +89,29 @@ export default {
             .then(response => {
             this.Articles = response.data;
             this.Articles.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)
+            this.count = this.Articles.length
             console.log(response.data);
             })
             .catch(e => {
             console.log(e);
             });
-    },
-    refreshList() {
-      this.retrieveArticles();
-    }
-    /* eslint-enable no-console */
+        },
+        refreshList() {
+        this.retrieveArticles();
+        },
+        handlePageChange(value) {
+            this.page = value;
+            this.retrieveArticles();
+        }
   },
   mounted() {
     this.retrieveArticles();
     }       
 }
 </script>
+
+<style lang="scss">
+    .pagination{
+        margin: auto;
+    }
+</style>

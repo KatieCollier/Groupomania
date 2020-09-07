@@ -5,19 +5,19 @@ module.exports = app => {
     const auth = require("../middleware/auth");
   
     // Create a new Article
-    router.post("/", auth, articles.create);
+    router.post("/", articles.create);
   
     // Retrieve all articles
     router.get("/",  articles.findAll);
 
     // Retrieve a single Article with id
-    router.get("/:id", auth, articles.findOne);
+    router.get("/:id", articles.findOne);
 
     // Update an Article with id
-    router.put("/:id", auth, articles.update);
+    router.put("/:id", articles.update);
 
     // Delete an Article with id
-    router.delete("/:id", auth, articles.delete);
+    router.delete("/:id", articles.delete);
   
     app.use('/api/articles', router);
   };
