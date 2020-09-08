@@ -1,11 +1,12 @@
 <template>
     <div class="edit-profile">
-        <div class="submit-form">
+
+        <div class="m-4">
             <div class="form-group">
                 <label for="userName">Nom d'utilisateur:</label>
                 <input
-                    type="text"
                     class="form-control"
+                    type="text"
                     id="userName"
                     required
                     v-model="user.userName"
@@ -16,8 +17,8 @@
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input
-                    type="text"
                     class="form-control"
+                    type="text"
                     id="email"
                     required
                     v-model="user.email"
@@ -28,8 +29,8 @@
             <div class="form-group">
                 <label for="department">Equipe:</label>
                 <input
-                    type="text"
                     class="form-control"
+                    type="text"
                     id="department"
                     required
                     v-model="user.department"
@@ -40,22 +41,23 @@
             <div class="form-group">
                 <label for="password">Mot de passe:</label>
                 <input
-                    type="password"
                     class="form-control"
+                    type="password"
                     id="password"
                     required
                     name="password"
                     placeholder="Changez votre mot de passe"
                 />
             </div>
-
-            <div class="text-center">
-                <UploadFiles> chargez votre image </UploadFiles>
-                <BaseButton @click="updateProfile" class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
-                <BaseButton @click="deleteProfile" class="mx-5 my-3 mb-5"> Supprimer Votre Compte </BaseButton>
-            </div>
         </div>
 
+        <UploadFiles />
+    
+        <div class="text-center m-5">
+            <BaseButton @click="updateProfile" class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
+            <BaseButton @click="deleteProfile" class="mx-5 my-3 mb-5"> Supprimer Votre Compte </BaseButton>
+        </div>
+        
         <Footer />
     </div>
 </template>
@@ -75,6 +77,11 @@ export default {
     UploadFiles,
     Footer
   },
+  data() {
+      return {
+          image: null
+      }
+  },
   props: ["user"],
   methods: {
       retrieveOneUser() {
@@ -88,12 +95,18 @@ export default {
              })
         },
       updateProfile() {
+          if(localStorage.getItem("imageUrl")) {
+              this.image = localStorage.getItem("imageUrl")
+          } else {
+              this.image = this.user.imageUrl
+          }
+
         const data = {
             userName: this.user.userName,
             email: this.user.email,
             department: this.user.department,
             password: this.user.password,
-            imageUrl: localStorage.getItem("imageUrl")
+            imageUrl: this.image
         }
 
           http
@@ -125,9 +138,12 @@ export default {
 
 <style lang="scss">
     .edit-profile{
-        .submit-form {
-            max-width: 300px;
-            margin: auto;
+        input{
+            border-radius: 5px;
+            background-color: #FFD7D7;
+            border: #FD2D01 1px solid;
+            box-shadow: none;
+            width: 100%;
         }
     }
 </style>

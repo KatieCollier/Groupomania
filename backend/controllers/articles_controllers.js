@@ -2,6 +2,8 @@ const db = require("../models");
 const Article = db.articles;
 const Op = db.Sequelize.Op;
 
+const fs = require("fs");
+
 // Create and Save a new Article
 exports.create = (req, res) => {
     // Validate request
@@ -91,7 +93,7 @@ exports.update = (req, res) => {
 //Delete an article with a specified id
 exports.delete = (req, res) => {
   const id = req.params.id;
-
+ 
   Article.destroy({
     where: { id: id }
   })
@@ -112,3 +114,21 @@ exports.delete = (req, res) => {
       });
     });
 };
+
+exports.deleteWithImage = (req, res) => {
+  const id = req.params.id
+
+  Article.findByPk(id)
+    .then(data => {
+      res.send(data)
+      console.log("data", data)
+      const filename = data.imageUrl
+      console.log(filename)
+      fs.unlink(`uploads/${filename}`, () => {
+        console.log("image deleted !")
+      })
+    })
+    .catch(e => {
+      console.log(e)
+    })
+}

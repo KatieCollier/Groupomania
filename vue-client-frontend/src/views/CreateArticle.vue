@@ -1,6 +1,6 @@
 <template>
     <div class="create-article">
-        <LargeCurrentUser class="mb-4" />
+        <CurrentUser class="mb-4" />
 
         <div class="m-3">
             <div class="form-group">
@@ -25,9 +25,10 @@
             </div>
         </div>
 
+        <UploadFiles />
+
         <div class="text-center">
-            <BaseButton class="col-6 m-4"> Ajouter une image </BaseButton>
-            <BaseButton class="col-6 m-4" v-on:click="addArticle"> Publier </BaseButton>
+            <BaseButton class="col-6 m-4" @click="addArticle"> Publier </BaseButton>
         </div>
         
         <ReturnButton />
@@ -39,8 +40,9 @@
 
 
 <script>
-import LargeCurrentUser from "../components/LargeCurrentUser"
+import CurrentUser from "../components/LargeCurrentUser"
 import ReturnButton from "../components/ReturnButton"
+import UploadFiles from "../components/UploadFiles"
 import BaseButton from "../components/BaseButton"
 import Footer from "../components/Footer"
 
@@ -50,17 +52,16 @@ import router from "../router"
 export default {
     name: "createArticle",
     components: {
-        LargeCurrentUser,
+        CurrentUser,
         ReturnButton,
+        UploadFiles,
         BaseButton,
         Footer
     },
     data() {
         return{
-            article: {
-                title: "",
-                content: ""
-            }
+            article: {},
+            image: []
         }
     },
     methods: {
@@ -69,13 +70,16 @@ export default {
                 title: this.article.title,
                 content: this.article.content,
                 userId: localStorage.getItem("userId"),
+                imageUrl: localStorage.getItem("imageUrl")
             };
+            console.log("resquest data:", data)
 
             http
             .post("/articles", data)
             .then(response => {
             this.article.id = response.data.id;
             console.log(response.data);
+            localStorage.removeItem("imageUrl")
             router.push("/page_principale");
             })
             .catch(e => {

@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="container">
-        <form @submit.prevent="handleSubmit">
             <div class="form-group">
+                <label for="file"> Choisissez une image: </label>
                 <input type="file" name="uploadfile" @change="uploadFile">
             </div>
 
@@ -11,9 +11,8 @@
             </div>
 
             <div class="text-center">
-                <BaseButton :disabled="!uploadfile"> Chargez l'image </BaseButton>
+                <BaseButton :disabled="!uploadfile" @click="handleSubmit"> Chargez l'image </BaseButton>
             </div>
-        </form>
     </div>    
   </div>
 </template>
@@ -38,7 +37,7 @@ export default {
     },
     methods: {
         uploadFile (event) {
-        this.uploadfile = event.target.files
+            this.uploadfile = event.target.files
         },
         handleSubmit() {
           const formData = new FormData();
@@ -53,6 +52,7 @@ export default {
                 this.imageUrl = this.image.file.filename
                 localStorage.setItem("imageUrl", this.imageUrl)
                 this.message = "Image téléchargée: " + this.image.file.originalname
+                window.stop();
             })
             .catch(e => {
                 console.log(e)

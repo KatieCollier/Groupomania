@@ -132,6 +132,7 @@ export default {
                 .delete("/articles/" + this.article.id)
                 .then(response => {
                     console.log(response.data);
+                    console.log("/images/" + this.article.imageUrl)
                     this.$emit("refreshData");
                     this.$router.push("/page_principale");
                 })

@@ -30,7 +30,7 @@
 
         <div class="text-center">
             <BaseButton class="col-6 m-4"> Modifier l'image </BaseButton>
-                <BaseButton class="col-6 m-4" @click="updateArticle"> Enregistrer </BaseButton>
+            <BaseButton class="col-6 m-4" @click="updateArticle"> Enregistrer </BaseButton>
         </div>
         
         <Footer />
