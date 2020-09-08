@@ -70,6 +70,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
   .preview{
       width: 90%;
       border: black 2px solid;
@@ -81,7 +83,7 @@ export default {
   }
   .articleInfo{
       font-weight: bold;
-      color: #FD2D01;
+      color: $red;
   }
   .activity-title{
       font-weight: bold;

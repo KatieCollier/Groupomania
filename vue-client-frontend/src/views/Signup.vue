@@ -106,6 +106,8 @@ export default {
 </script>
 
 <style  lang="scss">
+@import "../_variables.scss";
+
   .signup-form{
     .submit-form {
       max-width: 300px;
@@ -113,8 +115,8 @@ export default {
     }
     .form-control{
         border-radius: 5px;
-        background-color: #FFD7D7;
-        border: #FD2D01 1px solid;
+        background-color: $pink;
+        border: $red 1px solid;
     }
   }
 </style>

@@ -8,20 +8,13 @@
         <SearchBar class="mb-3">
         </SearchBar>
 
-        <Subtitle>
+        <Subtitle class="font-weight-bold">
             Activité
         </Subtitle>
 
-        <Subtitle>
-            Articles 
-            
-        </Subtitle>
-
-        <button @click="toggleArticles" class="btn btn-lg btn-danger"> 
-        </button>
+        <DropTitle @click="toggleArticles" class="font-weight-bold"> Voir les articles </DropTitle>
 
         <div v-show="showArticles" class="activity-articles">
-            <p> DISPLAY articles here</p>
 
             <ArticlePreview
             v-for="article in Articles"
@@ -34,45 +27,39 @@
             :content="article.content"
          />
         
-        <div class="pagination">
-            <b-pagination class="m-5"
-                v-model="page"
-                :total-rows="count"
-                :per-page="pageSize"
-                pills
-                @change="handlePageChange"
-            />
-        </div>
+            <div class="pagination text-center">
+                <b-pagination class="mx-auto"
+                    v-model="page"
+                    :total-rows="count"
+                    :per-page="pageSize"
+                    pills
+                    align="center"
+                    @change="handlePageChange"
+                />
+            </div>
 
         </div>
         
-
-        <Subtitle>
-            Commentaires
-        </Subtitle>
-
-        <button @click="toggleComments" class="btn btn-lg btn-danger">    
-        </button>
+        <DropTitle @click="toggleComments" class="font-weight-bold"> Voir les commentaires </DropTitle>
 
         <div v-if="showComments" class="activity-comments">
-            <p> DISPLAY comments here</p>
 
-            <Comment v-for="comment in Comments"
+            <CommentPreview v-for="comment in Comments"
                 :key="comment.id"
-                :commentor="comment.user.userName"
                 :updatedAt="comment.updatedAt | formatDate"
+                :commentArticleId="comment.articleId"
+                :userId="comment.userId"
+                :user="comment.user.userName"
                 :content="comment.content"
-                :commentorId="comment.userId"
-                :articleAuthorId="comment.article.userId"
-                :commentId="comment.id"
             />
 
             <div class="pagination">
-            <b-pagination class="m-5"
+            <b-pagination class="m-auto"
                 v-model="commentPage"
                 :total-rows="commentCount"
                 :per-page="pageSize"
                 pills
+                align="center"
                 @change="handleCommentPageChange"
             />
             </div>
@@ -92,7 +79,8 @@ import Subtitle from "../components/SubTitle"
 import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 import ArticlePreview from "../components/ArticlePreview"
-import Comment from "../components/Comment"
+import DropTitle from "../components/DropTitle"
+import CommentPreview from "../components/CommentPreview"
 
 import http from "../http-common"
 import moment from "moment"
@@ -106,7 +94,8 @@ export default {
         ReturnButton,
         Footer,
         ArticlePreview,
-        Comment
+        DropTitle,
+        CommentPreview
     },  
     data() {
         return {
@@ -196,3 +185,22 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+    @import "../_variables.scss";
+    @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+    .all-activity{
+        a{
+            color: black;
+            text-decoration: none;
+            :hover{
+                color: $red;
+            }
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
+        }
+    }
+</style>

@@ -94,6 +94,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .create-article{
         .form-group{
             display: flex;
@@ -103,13 +105,17 @@ export default {
         }
         input, textarea{
             border-radius: 5px;
-            background-color: #FFD7D7;
-            border: #FD2D01 1px solid;
+            background-color: $pink;
+            border: $red 1px solid;
             box-shadow: none;
             width: 100%;
         }
         textarea{
             height: 500px;
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
         }
     }
 </style>

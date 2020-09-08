@@ -5,7 +5,7 @@
                             params: { id: user.id }
                         }">
             <div class="currentUser col-7 offset-5 mb-3">
-                <p class="pr-2 h5"> {{user.userName}} </p>
+                <p class="pr-2 h5 font-weight-bold"> {{user.userName}} </p>
                 <img :src="userImage" alt="lien vers la page de profile">
             </div>
         </router-link>

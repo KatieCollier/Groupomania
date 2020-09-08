@@ -12,7 +12,7 @@
             </a>
         </div>
 
-        <Subtitle>
+        <Subtitle class="font-weight-bold">
             Articles
         </Subtitle>
 
@@ -28,7 +28,7 @@
          />
         
         <div class="pagination">
-            <b-pagination class="m-5"
+            <b-pagination class="m-auto"
                 v-model="page"
                 :total-rows="count"
                 :per-page="pageSize"
@@ -120,7 +120,13 @@ export default {
 </script>
 
 <style lang="scss">
-    .pagination{
-        margin: auto;
+@import "../_variables.scss";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+    .all-articles{
+        a{
+            color: black;
+            text-decoration: none;
+        }
     }
 </style>

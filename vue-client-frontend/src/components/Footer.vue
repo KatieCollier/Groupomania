@@ -19,8 +19,10 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     footer{
-        background-color: #FFD7D7;
+        background-color: $pink;
         height: 40px;
     }
 </style>

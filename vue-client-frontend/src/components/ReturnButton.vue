@@ -16,8 +16,10 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .return-button{
-        background-color: #FFD7D7;
+        background-color: $pink;
         border: 2px solid black;
         border-radius: 10px;
         color: black;

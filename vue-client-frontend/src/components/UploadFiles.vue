@@ -65,10 +65,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "../_variables.scss";
+
     .container {
     max-width: 600px;
     }
     button:disabled{
+        opacity: 70%;
+    }
+    button:disabled:hover{
+        background-color: $pink;
+        border: 2px solid $red;
+        color: $red;
         opacity: 70%;
     }
 </style>

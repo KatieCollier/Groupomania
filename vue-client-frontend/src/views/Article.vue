@@ -201,7 +201,20 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .articlepage{
+        a{
+            color: black;
+            text-decoration: none;
+            :hover{
+                color: $red;
+            }
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
+        }
         .article-box{
             border: black 2px solid;
         }
@@ -227,7 +240,7 @@ export default {
             align-items: center;
             p{
                 font-weight: bold;
-                color: #FD2D01;
+                color: $red;
             }
         }
     }

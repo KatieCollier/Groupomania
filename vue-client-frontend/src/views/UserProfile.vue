@@ -71,9 +71,15 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .user-profile{
         .info-title{
             font-weight: bold;
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
         }
     }
 </style>

@@ -11,9 +11,11 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .subtitle{
-        background-color: #FFD7D7;
-        color: #FD2D01;
+        background-color: $pink;
+        color: $red;
         font-weight: bold;
     }
 </style>

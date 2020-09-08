@@ -4,7 +4,13 @@
 
         <ReturnButton />
 
-        <Subtitle> {{UserWithActivity.userName}} </Subtitle>
+        <div class="subtitle-with-image">
+            <Subtitle class="font-weight-bold"> {{UserWithActivity.userName}} </Subtitle>
+             <img :src="image" alt="" class="subtitle-image">
+        </div>
+        
+
+       
         
         <ActivityPreview 
              v-for="activity in UserActivity"
@@ -45,6 +51,7 @@ export default {
         return {
             UserWithActivity: [],
             UserActivity: [],
+            image: "",
         }
     },
     filters: {
@@ -60,6 +67,7 @@ export default {
                 .get("/users/" + this.$route.params.id)
                 .then(response => {
                     this.UserWithActivity = response.data
+                    this.image = "/images/" + this.UserWithActivity.imageUrl
                     const articles = this.UserWithActivity.articles
                     const Articles = articles.map(function(o) {
                         o.activityType = "Article";
@@ -83,3 +91,31 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+@import "../_variables.scss";
+
+    .user-activity{
+        .subtitle-with-image{
+            position: relative;
+        }
+        .subtitle-image{
+            position: absolute;
+            right: 20px;
+            top: 0px;
+            border-radius: 50%;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+            :hover{
+                color: $red;
+                text-decoration: none;
+            }
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
+        }
+    }
+</style>

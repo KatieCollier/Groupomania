@@ -146,10 +146,19 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .mainpage{
         a{
             color: black;
             text-decoration: none;
+            :hover{
+                color: $red;
+            }
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
         }
         .preview{
             width: 90%;

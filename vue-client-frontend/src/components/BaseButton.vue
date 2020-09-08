@@ -11,11 +11,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     button{
-        background-color: #FFD7D7;
-        border: 2px solid #FD2D01;
+        background-color: $pink;
+        border: 2px solid $red;
         border-radius: 10;
-        color:#FD2D01;
+        color: $red;
         font-weight: bold;
     }
 </style>
