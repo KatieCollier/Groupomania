@@ -71,7 +71,7 @@ export default {
         return {
             Articles: [],
             page: 1,
-            count: 0,
+            count: null,
             pageSize: 5
         };
     },
@@ -83,18 +83,27 @@ export default {
         }
     },
     methods: {
+        getRequestParams(page) {
+            let params = {};
+            if(page) {
+                params["page"] = page - 1;
+            }
+            return params;
+        },
         retrieveArticles() {
-        http
-            .get("/articles")
-            .then(response => {
-            this.Articles = response.data;
-            this.Articles.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)
-            this.count = this.Articles.length
-            console.log(response.data);
-            })
-            .catch(e => {
-            console.log(e);
-            });
+            const params = this.getRequestParams(
+                this.page
+            )
+
+            http
+                .get("/articles", {params})
+                .then(response => {
+                this.Articles = response.data.rows;
+                this.count = response.data.count
+                })
+                .catch(e => {
+                console.log(e);
+                });
         },
         refreshList() {
         this.retrieveArticles();

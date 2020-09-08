@@ -15,7 +15,7 @@
         </Subtitle>
         
         <ArticlePreview
-            v-for="article in Articles.slice(0, 5)"
+            v-for="article in Articles"
             :key="article.id"
             :articleId="article.id"
             :title="article.title"
@@ -97,25 +97,30 @@ export default {
     },
     methods: {
         retrieveArticles() {
-        http
-            .get("/articles")
-            .then(response => {
-            this.Articles = response.data; 
-            this.Articles.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)
-            console.log("Articles: ", response.data);
-            })
-            .catch(e => {
-            console.log(e);
-            });
+            let params = {};
+            params["page"] = 0
+
+            http
+                .get("/articles", {params})
+                .then(response => {
+                this.Articles = response.data.rows;
+                console.log("Articles: ", response.data);
+                })
+                .catch(e => {
+                console.log(e);
+                });
         },
         refreshList() {
-        this.retrieveArticles();
+            this.retrieveArticles();
         },
         getAllActivity() {
+            let params = {};
+            params["page"] = 0
+
             http
-                .get("/comments")
+                .get("/comments", {params})
                 .then(response => {
-                    this.Comments = response.data
+                    this.Comments = response.data.rows
                     const comments = this.Comments.map(function(o) {
                         o.activityType = "Comment on";
                         return o;

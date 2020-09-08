@@ -37,8 +37,14 @@ exports.create = (req, res) => {
 
 // Retrieve all Articles from the database.
 exports.findAll = (req, res) => {
+  const page = req.query.page;
   
-    Article.findAll({include: ["user", "comments"]})
+    Article.findAndCountAll({
+      limit: 5,
+      offset: 5*page,
+      order: [["updatedAt", "DESC"]], 
+      include: ["user", "comments"]
+    })
       .then(data => {
         res.send(data);
       })

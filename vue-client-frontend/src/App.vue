@@ -14,8 +14,10 @@
 </template>
 
 <style lang="scss"> 
+  @import "./_variables.scss";
+
   header{
-    background-color: #FFD7D7;
+    background-color: $pink;
     height: 60px;
   }
   img{

@@ -25,7 +25,14 @@ exports.create = (req, res) => {
 
 // Retrieve all comments from the database.
 exports.findAll = (req, res) => {
-    Comment.findAll({include: ["user", "article"]})
+  const page = req.query.page
+
+    Comment.findAndCountAll({
+      limit: 5,
+      offset: 5*page,
+      order: [["updatedAt", "DESC"]], 
+      include: ["user", "article"]
+    })
       .then(data => {
         res.send(data);
       })
