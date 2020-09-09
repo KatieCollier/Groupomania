@@ -10,7 +10,7 @@
             </a>
         </div>
 
-        <Subtitle>
+        <Subtitle class="font-weight-bold">
             Articles Récents
         </Subtitle>
         
@@ -31,7 +31,7 @@
             </a>
         </div>
 
-        <Subtitle>
+        <Subtitle class="font-weight-bold">
             Activité Récente
         </Subtitle>
 
