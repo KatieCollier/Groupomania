@@ -13,7 +13,6 @@ exports.create = (req, res) => {
       });
       return;
     }
-  
     // Create an Article
     const article = {
       userId: req.body.userId,
@@ -21,7 +20,6 @@ exports.create = (req, res) => {
       content: req.body.content,
       imageUrl: req.body.imageUrl
     };
-  
     // Save Article in the database
     Article.create(article)
       .then(data => {
@@ -35,15 +33,18 @@ exports.create = (req, res) => {
       });
   };
 
-// Retrieve all Articles from the database.
-exports.findAll = (req, res) => {
+// Retrieve all Articles from the database by page and keyword if available.
+exports.findAllSearch = (req, res) => {
+  const keyword = req.query.keyword;
+  const condition = keyword ? {title: {[Op.like]: `%${keyword}%`} }: null
   const page = req.query.page;
   
     Article.findAndCountAll({
       limit: 5,
       offset: 5*page,
       order: [["updatedAt", "DESC"]], 
-      include: ["user", "comments"]
+      include: ["user", "comments"],
+      where: condition
     })
       .then(data => {
         res.send(data);

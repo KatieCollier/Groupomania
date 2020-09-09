@@ -75,19 +75,19 @@ export default {
             console.log("resquest data:", data)
 
             http
-            .post("/articles", data)
-            .then(response => {
-            this.article.id = response.data.id;
-            console.log(response.data);
-            localStorage.removeItem("imageUrl")
-            router.push("/page_principale");
-            })
-            .catch(e => {
-            console.log(e);
-            });
+                .post("/articles", data)
+                .then(response => {
+                this.article.id = response.data.id;
+                console.log(response.data);
+                localStorage.removeItem("imageUrl")
+                router.push("/page_principale");
+                })
+                .catch(e => {
+                console.log(e);
+                });
     
-            this.submitted = true;
-            this.article = {};
+                this.submitted = true;
+                this.article = {};
             },
     }    
 };
