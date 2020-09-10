@@ -38,18 +38,3 @@ exports.findByArticleId = (req, res) => {
       });
     });
 };
-
-// Retrieve all likes from the database.
-exports.findAll = (req, res) => {
-  
-    Like.findAll()
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving user info."
-        });
-      });
-  };

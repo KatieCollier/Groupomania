@@ -1,16 +1,15 @@
 module.exports = app => {
+    const router = require("express").Router();
+
     const likes = require("../controllers/likes_controllers");
   
-    var router = require("express").Router();
+    const auth = require("../middleware/auth")
   
     // Create a new Like
-    router.post("/", likes.create);
+    router.post("/", auth, likes.create);
 
     //Find Likes by article id
-    router.get("/articles/:id", likes.findByArticleId);
-  
-    // Retrieve all Likes
-    router.get("/", likes.findAll);
+    router.get("/articles/:id", auth, likes.findByArticleId);
   
     app.use('/api/likes', router);
   };
