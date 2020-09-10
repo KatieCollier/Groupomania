@@ -30,7 +30,6 @@ db.articles = require("./articles")(sequelize, Sequelize);
 db.comments = require("./comments")(sequelize, Sequelize);
 db.likes = require("./likes")(sequelize, Sequelize);
 db.commentLikes = require("./commentLikes")(sequelize, Sequelize);
-db.images = require("./images")(sequelize, Sequelize);
 
 db.users.hasMany(db.articles, {as: "articles"}, {onDelete: 'CASCADE', hooks: true});
 db.articles.belongsTo(db.users, {
