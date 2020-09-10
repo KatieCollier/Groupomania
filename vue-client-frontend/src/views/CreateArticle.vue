@@ -24,8 +24,11 @@
                     name="content" />
             </div>
         </div>
-
-        <UploadFiles />
+        
+        <div class="form-group">
+                <label for="file"> Choisissez une image: </label>
+                <input type="file" name="uploadfile" @change="uploadFile">
+            </div>
 
         <div class="text-center">
             <BaseButton class="col-6 m-4" @click="addArticle"> Publier </BaseButton>
@@ -42,7 +45,6 @@
 <script>
 import CurrentUser from "../components/LargeCurrentUser"
 import ReturnButton from "../components/ReturnButton"
-import UploadFiles from "../components/UploadFiles"
 import BaseButton from "../components/BaseButton"
 import Footer from "../components/Footer"
 
@@ -54,32 +56,39 @@ export default {
     components: {
         CurrentUser,
         ReturnButton,
-        UploadFiles,
         BaseButton,
         Footer
     },
     data() {
         return{
             article: {},
-            image: []
+            image: [],
+            uploadfile: null
         }
     },
     methods: {
+        uploadFile (event) {
+            this.uploadfile = event.target.files
+            console.log("Uploaded file: ", this.uploadfile)
+        },
         addArticle() {
-            const data = {
-                title: this.article.title,
-                content: this.article.content,
-                userId: localStorage.getItem("userId"),
-                imageUrl: localStorage.getItem("imageUrl")
-            };
-            console.log("resquest data:", data)
+            const formData = new FormData();
+            for (const i of Object.keys(this.uploadfile)) {
+                formData.append('uploadfile', this.uploadfile[i])
+            }
+            formData.append("title", this.article.title)
+            formData.append("content", this.article.content)
+            formData.append("userId", localStorage.getItem("userId"))
 
             http
-                .post("/articles", data)
+                .post("/articles", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
                 .then(response => {
                 this.article.id = response.data.id;
                 console.log(response.data);
-                localStorage.removeItem("imageUrl")
                 router.push("/page_principale");
                 })
                 .catch(e => {

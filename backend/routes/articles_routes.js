@@ -3,9 +3,10 @@ module.exports = app => {
 
     const articles = require("../controllers/articles_controllers");
     const auth = require("../middleware/auth");
+    const multer = require("../middleware/multer-config")
   
     // Create a new Article
-    router.post("/", articles.create);
+    router.post("/", multer, articles.create);
   
     // Retrieve all articles
     router.get("/",  articles.findAllSearch);
@@ -14,7 +15,7 @@ module.exports = app => {
     router.get("/:id", articles.findOne);
 
     // Update an Article with id
-    router.put("/:id", articles.update);
+    router.put("/:id", multer, articles.updateWithImage);
 
     // Delete an Article with id
     router.delete("/:id", articles.delete);

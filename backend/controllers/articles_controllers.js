@@ -18,7 +18,7 @@ exports.create = (req, res) => {
       userId: req.body.userId,
       title: req.body.title,
       content: req.body.content,
-      imageUrl: req.body.imageUrl
+      imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
     };
     // Save Article in the database
     Article.create(article)
@@ -73,10 +73,41 @@ exports.findOne = (req, res) => {
 };
 
 // Update an Article identified by id
-exports.update = (req, res) => {
+exports.update = (req, res) => {  
   const id = req.params.id;
 
   Article.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Article was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Article with id=${id}. Maybe Article was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Articles with id=" + id
+      });
+    });
+};
+
+// Update an Article identified by id
+exports.updateWithImage = (req, res) => {  
+  const id = req.params.id;
+
+  const article = {
+    title: req.body.title,
+    content: req.body.content,
+    imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
+  }
+
+  Article.update(article, {
     where: { id: id }
   })
     .then(num => {

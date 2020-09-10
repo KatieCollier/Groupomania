@@ -26,11 +26,7 @@ export default {
     },
     data() {
         return {
-            comment: {
-                articleId: "",
-                userId: "",
-                content: ""
-            }
+            comment: []
         }
     },
     methods: {
@@ -39,7 +35,9 @@ export default {
                 articleId: this.$route.params.id,
                 userId: localStorage.getItem("userId"),
                 content: this.comment.content
+                
             }
+            console.log("comment info", data)
 
             http
             .post("/comments", data)

@@ -15,7 +15,7 @@
             <p class="article-time"> {{this.article.updatedAt | formatDate}} </p>
 
             <div class="text-center">
-                <img v-if="imagePresent" class="article-img img-fluid m-3" :src="/images/ + this.article.imageUrl" alt="random image">
+                <img v-if="imagePresent" class="article-img img-fluid m-3" :src="this.article.imageUrl" alt="random image">
             </div>
 
             <div class="full-content">
@@ -112,6 +112,7 @@ export default {
              .then(response => {
                  this.article = response.data
                  this.author = this.article.userId
+                 console.log("article.imageUrl", this.article.imageUrl)
                  if(this.article.imageUrl != null){
                      this.imagePresent = true
                  }

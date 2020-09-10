@@ -28,8 +28,12 @@
             </div>
         </div>
 
+        <div class="form-group">
+                <label for="file"> Choisissez une image: </label>
+                <input type="file" name="uploadfile" @change="uploadFile">
+            </div>
+
         <div class="text-center">
-            <BaseButton class="col-6 m-4"> Modifier l'image </BaseButton>
             <BaseButton class="col-6 m-4" @click="updateArticle"> Enregistrer </BaseButton>
         </div>
         
@@ -68,14 +72,24 @@ export default {
                  console.log(e)
              })
         },
+        uploadFile (event) {
+            this.uploadfile = event.target.files
+            console.log("Uploaded file: ", this.uploadfile)
+        },
         updateArticle(){
-            const data = {
-                title: this.article.title,
-                content: this.article.content
+            const formData = new FormData();
+            for (const i of Object.keys(this.uploadfile)) {
+                formData.append('uploadfile', this.uploadfile[i])
             }
+            formData.append("title", this.article.title)
+            formData.append("content", this.article.content)
 
             http
-                .put("/articles/" + this.$route.params.id, data)
+                .put("/articles/" + this.$route.params.id, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
                 .then(response => {
                     console.log(response.data)
                     router.push("/page_principale");

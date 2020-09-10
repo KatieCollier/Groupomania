@@ -37,6 +37,7 @@ export default {
     },
     methods: {
         uploadFile (event) {
+            console.log(event)
             this.uploadfile = event.target.files
         },
         handleSubmit() {
