@@ -3,7 +3,7 @@ module.exports = app => {
   
   const users = require("../controllers/users_controllers");
   const auth = require("../middleware/auth");
-  
+  const multer = require("../middleware/multer-config");
     
   
     // Sign up and create new user
@@ -16,10 +16,10 @@ module.exports = app => {
     router.get("/:id",  users.findOne);
 
     //Update user by Id
-    router.put("/:id", auth, users.update)
+    router.put("/:id", multer, users.updateWithImage)
 
     //Delete user by id
-    router.delete("/:id", auth, users.delete)
+    router.delete("/:id", users.deleteWithImage)
   
     app.use('/api/users', router);
   };

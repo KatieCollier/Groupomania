@@ -72,7 +72,8 @@ export default {
             console.log("Uploaded file: ", this.uploadfile)
         },
         addArticle() {
-            const formData = new FormData();
+            if(this.uploadfile){
+                const formData = new FormData();
             for (const i of Object.keys(this.uploadfile)) {
                 formData.append('uploadfile', this.uploadfile[i])
             }
@@ -97,7 +98,29 @@ export default {
     
                 this.submitted = true;
                 this.article = {};
-            },
+            } else {
+                const data = {
+                    title: this.article.title,
+                    content: this.article.content,
+                    userId: localStorage.getItem("userId")
+                }
+
+                http
+                .post("/articles", data)
+                .then(response => {
+                this.article.id = response.data.id;
+                console.log(response.data);
+                router.push("/page_principale");
+                })
+                .catch(e => {
+                console.log(e);
+                });
+    
+                this.submitted = true;
+                this.article = {};
+            }
+            }
+            
     }    
 };
 </script>

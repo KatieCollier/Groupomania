@@ -67,7 +67,7 @@ export default {
                 .get("/users/" + this.$route.params.id)
                 .then(response => {
                     this.UserWithActivity = response.data
-                    this.image = "/images/" + this.UserWithActivity.imageUrl
+                    this.image = this.UserWithActivity.imageUrl
                     const articles = this.UserWithActivity.articles
                     const Articles = articles.map(function(o) {
                         o.activityType = "Article";

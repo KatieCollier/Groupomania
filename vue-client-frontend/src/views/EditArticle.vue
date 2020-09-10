@@ -77,7 +77,8 @@ export default {
             console.log("Uploaded file: ", this.uploadfile)
         },
         updateArticle(){
-            const formData = new FormData();
+            if(this.uploadfile){
+                const formData = new FormData();
             for (const i of Object.keys(this.uploadfile)) {
                 formData.append('uploadfile', this.uploadfile[i])
             }
@@ -97,7 +98,28 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
+        } else {
+            const data = {
+                title: this.article.title,
+                content: this.article.content
+            }
+
+            http
+                .put("/articles/" + this.$route.params.id, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
+                .then(response => {
+                    console.log(response.data)
+                    router.push("/page_principale");
+                })
+                .catch(e => {
+                    console.log(e);
+                });
         }
+        }
+            
     },
     created() {
         this.retrieveOneArticle();

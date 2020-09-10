@@ -2,8 +2,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const db = require("../models");
+const { findAllSearch } = require("./articles_controllers");
 const User = db.users;
 const Op = db.Sequelize.Op;
+const fs = require("fs");
 
 /* create and export a function to create a new user (sign up) */
 exports.signup = (req, res, next) => {
@@ -91,7 +93,82 @@ exports.update = (req, res) => {
     });
 };
 
+//update one user by id
+exports.updateWithImage = (req, res) => {
+  const id = req.params.id;
+
+  const user = req.file ?
+   {
+    userName: req.body.userName,
+    email: req.body.email,
+    password: req.body.password,
+    imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
+  } : {
+    userName: req.body.userName,
+    email: req.body.email,
+    password: req.body.password,
+  }
+
+  User.update(user, {
+    where: {id: id}
+  })
+    .then(num => {
+      if (num = 1) {
+        res.send({
+          message: "Votre profile a été mis à jour"
+        });
+      } else {
+        res.send({
+          message: "Nous ne pouvons mettre à jour votre profile"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Erreur lors de la mise à jour de votre profile"
+      });
+    });
+};
+
 //delete user with specified id
+exports.deleteWithImage = (req, res) => {
+  const id = req.params.id;
+
+  User.findByPk(id)
+    .then(user => {
+      const filename = user.imageUrl ? {
+        name: user.imageUrl.split("3000/")[1]
+      } : {
+        name: user.imageUrl
+      }
+      fs.unlink(`public/${filename.name}`, () => {
+        User.destroy({
+          where: { id: id }
+        })
+          .then(num => {
+            if (num == 1) {
+              res.send({
+                message: "Article was deleted successfully!"
+              });
+            } else {
+              res.send({
+                message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: "Could not delete Article with id=" + id
+            });
+          });
+      })
+    })
+    .catch(e => {
+      console.log(e)
+    })
+};
+
+//
 exports.delete = (req, res) => {
   const id = req.params.id;
 

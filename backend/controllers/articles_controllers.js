@@ -14,12 +14,18 @@ exports.create = (req, res) => {
       return;
     }
     // Create an Article
-    const article = {
-      userId: req.body.userId,
-      title: req.body.title,
-      content: req.body.content,
-      imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
-    };
+    const article = req.file ?
+      {
+        userId: req.body.userId,
+        title: req.body.title,
+        content: req.body.content,
+        imageUrl:  `${req.protocol}://${req.get('host')}/${req.file.filename}`
+      } : {
+        userId: req.body.userId,
+        title: req.body.title,
+        content: req.body.content,
+      }
+
     // Save Article in the database
     Article.create(article)
       .then(data => {
@@ -73,38 +79,17 @@ exports.findOne = (req, res) => {
 };
 
 // Update an Article identified by id
-exports.update = (req, res) => {  
-  const id = req.params.id;
-
-  Article.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Article was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Article with id=${id}. Maybe Article was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Articles with id=" + id
-      });
-    });
-};
-
-// Update an Article identified by id
 exports.updateWithImage = (req, res) => {  
   const id = req.params.id;
 
-  const article = {
+  const article = req.file ?
+   {
     title: req.body.title,
     content: req.body.content,
     imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
+  } : {
+    title: req.body.title,
+    content: req.body.content
   }
 
   Article.update(article, {
@@ -131,42 +116,37 @@ exports.updateWithImage = (req, res) => {
 //Delete an article with a specified id
 exports.delete = (req, res) => {
   const id = req.params.id;
- 
-  Article.destroy({
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Article was deleted successfully!"
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete Article with id=" + id
-      });
-    });
-};
-
-exports.deleteWithImage = (req, res) => {
-  const id = req.params.id
 
   Article.findByPk(id)
-    .then(data => {
-      res.send(data)
-      console.log("data", data)
-      const filename = data.imageUrl
-      console.log(filename)
-      fs.unlink(`uploads/${filename}`, () => {
-        console.log("image deleted !")
+    .then(article => {
+      const filename = article.imageUrl ? {
+        name: article.imageUrl.split("3000/")[1]
+      } : {
+        name : article.imageUrl
+      }
+      fs.unlink(`public/${filename.name}`, () => {
+        Article.destroy({
+          where: { id: id }
+        })
+          .then(num => {
+            if (num == 1) {
+              res.send({
+                message: "Article was deleted successfully!"
+              });
+            } else {
+              res.send({
+                message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: "Could not delete Article with id=" + id
+            });
+          });
       })
     })
     .catch(e => {
       console.log(e)
     })
-}
+};

@@ -51,7 +51,10 @@
             </div>
         </div>
 
-        <UploadFiles />
+        <div class="form-group">
+                <label for="file"> Choisissez une image: </label>
+                <input type="file" name="uploadfile" @change="uploadFile">
+            </div>
     
         <div class="text-center m-5">
             <BaseButton @click="updateProfile" class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
@@ -64,7 +67,6 @@
 
 <script>
 import BaseButton from "../components/BaseButton"
-import UploadFiles from "../components/UploadFiles"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
@@ -74,12 +76,11 @@ export default {
   name: "editProfile",
   components: {
     BaseButton,
-    UploadFiles,
     Footer
   },
   data() {
       return {
-          image: null
+          uploadfile: null
       }
   },
   props: ["user"],
@@ -94,20 +95,36 @@ export default {
                  console.log(e)
              })
         },
+        uploadFile (event) {
+            this.uploadfile = event.target.files
+            console.log("Uploaded file: ", this.uploadfile)
+        },
       updateProfile() {
-          if(localStorage.getItem("imageUrl")) {
-              this.image = localStorage.getItem("imageUrl")
-          } else {
-              this.image = this.user.imageUrl
-          }
+          if(this.uploadfile){
+              const formData = new FormData();
+            for (const i of Object.keys(this.uploadfile)) {
+                formData.append('uploadfile', this.uploadfile[i])
+            }
+            formData.append("userName", this.user.userName)
+            formData.append("email", this.user.email)
+            formData.append("password", this.user.password)
 
-        const data = {
-            userName: this.user.userName,
-            email: this.user.email,
-            department: this.user.department,
-            password: this.user.password,
-            imageUrl: this.image
-        }
+          http
+            .put("/users/" + this.$route.params.id, formData)
+            .then(response => {
+                console.log(response.data)
+                localStorage.removeItem("imageUrl")
+                router.push("/profile/" + this.$route.params.id)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+          } else {
+             const data = {
+                 userName: this.user.userName,
+                 email: this.user.email,
+                 password: this.user.password
+             }
 
           http
             .put("/users/" + this.$route.params.id, data)
@@ -119,6 +136,8 @@ export default {
             .catch(e => {
                 console.log(e)
             })
+          }
+          
       },
       deleteProfile() {
           http

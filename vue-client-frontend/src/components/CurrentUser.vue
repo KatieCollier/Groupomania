@@ -31,7 +31,7 @@ export default {
                 this.user = response.data
                 console.log("User: ", response.data)
                 if(this.user.imageUrl != null) {
-                    this.userImage = "/images/" + this.user.imageUrl
+                    this.userImage = this.user.imageUrl
                 }
             })
             .catch(e => {

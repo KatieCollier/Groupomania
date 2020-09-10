@@ -23,7 +23,7 @@ export default {
             .then(response => {
                 this.user = response.data
                 if(this.user.imageUrl != null) {
-                    this.userImage = "/images/" + this.user.imageUrl
+                    this.userImage = this.user.imageUrl
                 }
                 console.log("User: ", response.data)
             })
