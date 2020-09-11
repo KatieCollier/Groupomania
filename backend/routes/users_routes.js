@@ -7,20 +7,20 @@ module.exports = app => {
     const multer = require("../middleware/multer-config");
     
   
-    // Sign up and create new user
+    // Sign up and create new User
     router.post("/signup", users.signup);
   
-    // Login with existing user
+    // Login with existing User
     router.post("/login", users.login);
 
-    // Find user by Id
+    // Find User by Id
     router.get("/:id", auth, users.findOne);
 
-    //Update user by Id
-    router.put("/:id", auth, multer, users.updateWithImage)
+    //Update User by Id
+    router.put("/:id", auth, multer, users.update)
 
-    //Delete user by id
-    router.delete("/:id", auth, users.deleteWithImage)
+    //Delete User by id
+    router.delete("/:id", auth, users.delete)
   
     app.use('/api/users', router);
   };

@@ -5,10 +5,10 @@ module.exports = app => {
   
     const auth = require("../middleware/auth")
   
-    // Create a new Like
+    // Create a new CommentLike
     router.post("/", auth, commentLikes.create);
 
-    //Find Likes by comment id
+    //Find CommentLikes by Comment id
     router.get("/comments/:id", auth, commentLikes.findByCommentId);
   
     app.use('/api/commentLikes', router);

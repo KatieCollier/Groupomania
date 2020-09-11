@@ -17,12 +17,12 @@ exports.create = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Erreur"
+            err.message || "Impossible de liker ce commentaire"
         });
       });
   };
 
-//Find CommentLikes by comment id
+//Find CommentLikes by Comment id
 exports.findByCommentId = (req, res) => { 
   const commentId = req.params.id
   CommentLike.findAll(

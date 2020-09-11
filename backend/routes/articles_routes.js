@@ -9,14 +9,14 @@ module.exports = app => {
     // Create a new Article
     router.post("/", auth, multer, articles.create);
   
-    // Retrieve all articles
-    router.get("/", auth, articles.findAllSearch);
+    // Retrieve all Articles (by page and keyword if available)
+    router.get("/", auth, articles.findAll);
 
     // Retrieve a single Article with id
     router.get("/:id", auth, articles.findOne);
 
     // Update an Article with id
-    router.put("/:id", auth, multer, articles.updateWithImage);
+    router.put("/:id", auth, multer, articles.update);
 
     // Delete an Article with id
     router.delete("/:id", auth, articles.delete);

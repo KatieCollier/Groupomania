@@ -8,7 +8,7 @@ module.exports = app => {
     // Create a new Like
     router.post("/", auth, likes.create);
 
-    //Find Likes by article id
+    //Find Likes by ArticleId
     router.get("/articles/:id", auth, likes.findByArticleId);
   
     app.use('/api/likes', router);

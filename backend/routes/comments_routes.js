@@ -11,16 +11,16 @@ module.exports = app => {
     // Retrieve all Comments
     router.get("/", auth, comments.findAll);
 
-    // Find Comments by articleId
+    // Find Comments by ArticleId
     router.get("/articles/:id", auth, comments.findByArticleId);
 
-    //Find a comment by id
+    //Find a Comment by id
     router.get("/:id", auth, comments.findOne);
 
-    //Update a comment with id
+    //Update a Comment with id
     router.put("/:id", auth, comments.update);
 
-    //Delete a comment with id
+    //Delete a Comment with id
     router.delete("/:id", auth, comments.delete);
   
     app.use('/api/comments', router);

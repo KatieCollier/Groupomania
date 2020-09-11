@@ -1,15 +1,14 @@
+const fs = require("fs");
 const db = require("../models");
 const Article = db.articles;
 const Op = db.Sequelize.Op;
-
-const fs = require("fs");
 
 // Create and Save a new Article
 exports.create = (req, res) => {
     // Validate request
     if (!req.body.title) {
       res.status(400).send({
-        message: "Content can not be empty!"
+        message: "L'article doit avoir un titre !"
       });
       return;
     }
@@ -40,7 +39,7 @@ exports.create = (req, res) => {
   };
 
 // Retrieve all Articles from the database by page and keyword if available.
-exports.findAllSearch = (req, res) => {
+exports.findAll = (req, res) => {
   const keyword = req.query.keyword;
   const condition = keyword ? {title: {[Op.like]: `%${keyword}%`} }: null
   const page = req.query.page;
@@ -58,7 +57,7 @@ exports.findAllSearch = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving user info."
+            err.message || "Une erreur est survenue lors de la recherche des articles."
         });
       });
   };
@@ -73,13 +72,13 @@ exports.findOne = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving Article with id=" + id
+        message: "Une erreur est survenue lors de la recherche de cet article."
       });
     });
 };
 
 // Update an Article identified by id
-exports.updateWithImage = (req, res) => {  
+exports.update = (req, res) => {  
   const id = req.params.id;
 
   const article = req.file ?
@@ -98,17 +97,17 @@ exports.updateWithImage = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Article was updated successfully."
+          message: "L'article a été mis à jour."
         });
       } else {
         res.send({
-          message: `Cannot update Article with id=${id}. Maybe Article was not found or req.body is empty!`
+          message: "Erreur lors de la mise à jour de cet article"
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Articles with id=" + id
+        message: "Impossible de mettre à jour cet article"
       });
     });
 };
@@ -131,17 +130,17 @@ exports.delete = (req, res) => {
           .then(num => {
             if (num == 1) {
               res.send({
-                message: "Article was deleted successfully!"
+                message: "Article effacé."
               });
             } else {
               res.send({
-                message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+                message: "Erreur lors de la supression de cet article"
               });
             }
           })
           .catch(err => {
             res.status(500).send({
-              message: "Could not delete Article with id=" + id
+              message: "Impossible de supprimer cet article."
             });
           });
       })

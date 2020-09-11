@@ -18,12 +18,12 @@ exports.create = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred during signup."
+            err.message || "Une erreur est survenue lors de la création de votre commentaire."
         });
       });
   };
 
-// Retrieve all comments from the database.
+// Retrieve all Comments from the database.
 exports.findAll = (req, res) => {
   const page = req.query.page
 
@@ -39,12 +39,12 @@ exports.findAll = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving user info."
+            err.message || "Une erreur est survenue lors de la recherche des commentaires."
         });
       });
   };
 
-// Find comment by articleId.
+// Find Comment by ArticleId.
 exports.findByArticleId = (req, res) => { 
   const articleId = req.params.id
   Comment.findAll(
@@ -56,7 +56,7 @@ exports.findByArticleId = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving user info."
+          err.message || "Les commentaires de cet article ne peuvent être trouvés."
       });
     });
 };
@@ -71,7 +71,7 @@ exports.findOne = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Ne trouve pas le commentaire concerné"
+        message: "Ce commentaire ne peut être trouvé."
       });
     });
 };
@@ -86,17 +86,17 @@ exports.update = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Commentaire modifié avec succès."
+          message: "Commentaire modifié."
         });
       } else {
         res.send({
-          message: "Echec de la mise à jour du commentaire"
+          message: "Erreur lors de la mise à jour de ce commentaire"
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Echec de la mise à jour du commentaire"
+        message: "Impossible de mettre à jour ce commentaire"
       });
     });
 };
@@ -111,17 +111,17 @@ exports.delete = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Commentaire effacé"
+          message: "Commentaire effacé."
         });
       } else {
         res.send({
-          message: "Echec de la supression du commentaire"
+          message: "Erreur lors de la supression de ce commentaire."
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Echec de la supression du commentaire"
+        message: "Impossible de supprimer ce commentaire."
       });
     });
 };

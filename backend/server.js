@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const db = require("./models");
 const path = require("path");
 
 const app = express();
@@ -17,22 +18,21 @@ const corsOptions = {
   origin: 'http://localhost:8080',
   optionsSuccessStatus: 200
 }
-
 app.use(cors(corsOptions));
 
+//set base directory and a static public folder in which to store uploaded images
 global.__basedir = __dirname;
+app.use(express.static('public'));
 
-const db = require("./models");
+//synchronise tables
 db.sequelize.sync();
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-
-app.use(express.static('public'));
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//require necessary routes
 require("./routes/users_routes")(app);
 require("./routes/articles_routes")(app);
 require("./routes/comments_routes")(app);

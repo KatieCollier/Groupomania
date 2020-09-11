@@ -1,13 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const fs = require("fs");
 const db = require("../models");
-const { findAllSearch } = require("./articles_controllers");
 const User = db.users;
 const Op = db.Sequelize.Op;
-const fs = require("fs");
 
-/* create and export a function to create a new user (sign up) */
+
+/* create and export a function to create a new User (sign up) */
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10) /* create a hash from the password (encrypt it) */
   .then(hash => {
@@ -32,7 +31,7 @@ exports.login = (req, res, next) => {
   User.findOne({where: {email: req.body.email}})
   .then(user => {
     if(!user){ /* if this user does NOT exist, return an error */
-        res.staus(401).json({error: "Utilisateur non trouvé !"})
+        res.status(401).json({error: "Utilisateur non trouvé !"})
     }
     bcrypt.compare(req.body.password, user.password) /* if the user DOES exist, compare the password in the request to the (encrypted) password stored in the database */
         .then(valid => {
@@ -53,7 +52,7 @@ exports.login = (req, res, next) => {
 .catch(error => res.status(500).json({error}));     
 }
 
-// find one user by id
+// find one User by id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
@@ -63,38 +62,13 @@ exports.findOne = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving Article with id=" + id
+        message: "Impossible de trouver cet utilisateur."
       });
     });
 };
 
-//update one user by id
+//update one User by id
 exports.update = (req, res) => {
-  const id = req.params.id;
-
-  User.update(req.body, {
-    where: {id: id}
-  })
-    .then(num => {
-      if (num = 1) {
-        res.send({
-          message: "Votre profile a été mis à jour"
-        });
-      } else {
-        res.send({
-          message: "Nous ne pouvons mettre à jour votre profile"
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Erreur lors de la mise à jour de votre profile"
-      });
-    });
-};
-
-//update one user by id
-exports.updateWithImage = (req, res) => {
   const id = req.params.id;
 
   const user = req.file ?
@@ -115,23 +89,23 @@ exports.updateWithImage = (req, res) => {
     .then(num => {
       if (num = 1) {
         res.send({
-          message: "Votre profile a été mis à jour"
+          message: "Votre profile a été mis à jour."
         });
       } else {
         res.send({
-          message: "Nous ne pouvons mettre à jour votre profile"
+          message: "Nous ne pouvons mettre à jour votre profile."
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Erreur lors de la mise à jour de votre profile"
+        message: "Impossible de mettre à jour de votre profile."
       });
     });
 };
 
-//delete user with specified id
-exports.deleteWithImage = (req, res) => {
+//delete User with specified id
+exports.delete = (req, res) => {
   const id = req.params.id;
 
   User.findByPk(id)
@@ -148,17 +122,17 @@ exports.deleteWithImage = (req, res) => {
           .then(num => {
             if (num == 1) {
               res.send({
-                message: "Article was deleted successfully!"
+                message: "Votre compte a été supprimé."
               });
             } else {
               res.send({
-                message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+                message: "Echec de la supression de votre compte."
               });
             }
           })
           .catch(err => {
             res.status(500).send({
-              message: "Could not delete Article with id=" + id
+              message: "Impossible de supprimer votre compte."
             });
           });
       })
@@ -166,29 +140,4 @@ exports.deleteWithImage = (req, res) => {
     .catch(e => {
       console.log(e)
     })
-};
-
-//
-exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  User.destroy({
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Votre compte a été supprimé"
-        });
-      } else {
-        res.send({
-          message: "Problème lors de la suppression de votre compte"
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Erreur lors de la suppression de votre compte"
-      });
-    });
 };
