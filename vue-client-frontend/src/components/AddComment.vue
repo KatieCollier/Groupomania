@@ -2,7 +2,7 @@
     <div>
         <div class="form-group mb-5">
             <textarea
-                class="p-2 col"
+                class="mb-3 p-2 col"
                 type="text"
                 id="content"
                 required

@@ -76,13 +76,11 @@ export default {
           const chargeCom = response.data.chargeCom
           localStorage.setItem("userId", userId);
           localStorage.setItem("token", token);
-          localStorage.setItem("chargeCom", chargeCom)
-          if(token) {
-            router.push("/page_principale");
-          }
+          localStorage.setItem("chargeCom", chargeCom);
+          router.push("/page_principale");
         })
         .catch(e => {
-          console.log(e);
+          console.log(e)
         });
     },
     

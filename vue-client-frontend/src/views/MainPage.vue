@@ -14,7 +14,7 @@
             Articles Récents
         </Subtitle>
         
-        <ArticlePreview
+        <ArticlePreview class="mx-auto"
             v-for="article in Articles"
             :key="article.id"
             :articleId="article.id"
@@ -27,7 +27,7 @@
 
         <div class="m-4">
             <a href="/tous_articles">
-                <BaseButton> Tous les articles </BaseButton>
+                <BaseButton class="ml-md-5"> Tous les articles </BaseButton>
             </a>
         </div>
 
@@ -35,7 +35,7 @@
             Activité Récente
         </Subtitle>
 
-        <ActivityPreview
+        <ActivityPreview class="mx-auto"
             v-for="activity in AllActivity.slice(0, 5)"
             :key="activity.updatedAt"
             :user="activity.user.userName"
@@ -50,7 +50,7 @@
 
         <div class="m-4">
             <a href="/toute_activite">
-                <BaseButton> Toute l'activité </BaseButton>
+                <BaseButton class="ml-md-5"> Toute l'activité </BaseButton>
             </a>
         </div>
 

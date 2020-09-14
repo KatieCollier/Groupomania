@@ -8,7 +8,7 @@
            Résultats: {{keyword}}...
         </Subtitle>
 
-        <ArticlePreview
+        <ArticlePreview class="mx-auto"
             v-for="article in Articles"
             :key="article.id"
             :articleId="article.id"

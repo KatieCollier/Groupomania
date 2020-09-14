@@ -11,57 +11,62 @@
         <Subtitle class="font-weight-bold">
             Activité
         </Subtitle>
-
-        <DropTitle @click="toggleArticles" class="font-weight-bold"> Voir les articles </DropTitle>
-
-        <div v-show="showArticles" class="activity-articles">
-
-            <ArticlePreview
-            v-for="article in Articles"
-            :key="article.id"
-            :articleId="article.id"
-            :title="article.title"
-            :userId="article.userId"
-            :author="article.user.userName"
-            :updatedAt="article.updatedAt | formatDate"
-            :content="article.content"
-         />
         
-            <div class="pagination text-center">
-                <b-pagination class="mx-auto"
-                    v-model="page"
-                    :total-rows="count"
-                    :per-page="pageSize"
-                    pills
-                    align="center"
-                    @change="handlePageChange"
-                />
+        <div class="row mx-2">
+            <div class="articles-in-activity col-12 col-md-6">
+                <DropTitle @click="toggleArticles" class="font-weight-bold"> Voir les articles </DropTitle>
+
+                <div v-show="showArticles" class="activity-articles">
+
+                    <ArticlePreview
+                    v-for="article in Articles"
+                    :key="article.id"
+                    :articleId="article.id"
+                    :title="article.title"
+                    :userId="article.userId"
+                    :author="article.user.userName"
+                    :updatedAt="article.updatedAt | formatDate"
+                    :content="article.content"
+                    />
+            
+                    <div class="pagination text-center">
+                        <b-pagination class="mx-auto"
+                            v-model="page"
+                            :total-rows="count"
+                            :per-page="pageSize"
+                            pills
+                            align="center"
+                            @change="handlePageChange"
+                        />
+                    </div>
+                </div>
             </div>
+            
+            <div class="comments-in-activity col-12 col-md-6">
+                <DropTitle @click="toggleComments" class="font-weight-bold"> Voir les commentaires </DropTitle>
 
-        </div>
-        
-        <DropTitle @click="toggleComments" class="font-weight-bold"> Voir les commentaires </DropTitle>
+                <div v-if="showComments" class="activity-comments">
 
-        <div v-if="showComments" class="activity-comments">
+                    <CommentPreview v-for="comment in Comments"
+                        :key="comment.id"
+                        :updatedAt="comment.updatedAt | formatDate"
+                        :commentArticleId="comment.articleId"
+                        :userId="comment.userId"
+                        :user="comment.user.userName"
+                        :content="comment.content"
+                    />
 
-            <CommentPreview v-for="comment in Comments"
-                :key="comment.id"
-                :updatedAt="comment.updatedAt | formatDate"
-                :commentArticleId="comment.articleId"
-                :userId="comment.userId"
-                :user="comment.user.userName"
-                :content="comment.content"
-            />
-
-            <div class="pagination">
-            <b-pagination class="m-auto"
-                v-model="commentPage"
-                :total-rows="commentCount"
-                :per-page="pageSize"
-                pills
-                align="center"
-                @change="handleCommentPageChange"
-            />
+                    <div class="pagination">
+                    <b-pagination class="m-auto"
+                        v-model="commentPage"
+                        :total-rows="commentCount"
+                        :per-page="pageSize"
+                        pills
+                        align="center"
+                        @change="handleCommentPageChange"
+                    />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -156,32 +161,39 @@ export default {
                 console.log(e);
                 });
         },
-            toggleArticles() {
-                if(this.showArticles == false) {
-                    this.showArticles = true
-                } else {
-                    this.showArticles = false
-                }
-            },
-            toggleComments() {
-                if(this.showComments == false) {
-                    this.showComments = true
-                } else {
-                    this.showComments = false
-                }
-            },
-            handlePageChange(value) {
+        toggleArticles() {
+            if(this.showArticles == false) {
+                this.showArticles = true
+            } else {
+                this.showArticles = false
+            }
+        },   
+        toggleComments() {
+            if(this.showComments == false) {
+                this.showComments = true
+            } else {
+                this.showComments = false
+            }
+        },
+        handlePageChange(value) {
             this.page = value;
             this.retrieveArticles();
         },
         handleCommentPageChange(value) {
             this.commentPage = value;
             this.retrieveComments();
+        },
+        showInfo() {
+            if(window.screen.width > 767){
+                this.showArticles = true;
+                this.showComments = true;
+            }
         }
     },
     created(){
         this.retrieveArticles();
         this.retrieveComments();
+        this.showInfo();
     }
 }
 </script>

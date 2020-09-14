@@ -9,10 +9,7 @@
              <img :src="image" alt="" class="subtitle-image">
         </div>
         
-
-       
-        
-        <ActivityPreview 
+        <ActivityPreview class="mx-auto"
              v-for="activity in UserActivity"
             :activityType="activity.activityType"
             :updatedAt="activity.updatedAt | formatDate"

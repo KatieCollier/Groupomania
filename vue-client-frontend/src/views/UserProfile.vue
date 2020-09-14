@@ -7,8 +7,8 @@
             <BaseButton> Créer un article </BaseButton>
         </a>
         </div>
-
-        <div class="m-3">
+        
+        <div class="offset-1 offset-sm-3 p-3 user-info">
             <p class="info-title h4"> Informations utilisateur: </p>
             <div class="m-3">
                 <p> <strong> Nom d'utilisateur: </strong> {{this.user.userName}} </p>
@@ -74,6 +74,9 @@ export default {
 @import "../_variables.scss";
 
     .user-profile{
+        .user-info{
+            border-left: black solid 2px;
+        }
         .info-title{
             font-weight: bold;
         }

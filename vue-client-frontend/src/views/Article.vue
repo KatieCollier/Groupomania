@@ -4,61 +4,63 @@
 
         <ReturnButton/>
 
-        <div v-if="this.article" class="article-box m-3 p-2">
-            <p class="mb-0 article-info h4"> {{this.article.title}} </p>
-            <router-link :to="{
-                                name: 'userActivity',
-                                params: { id: this.article.userId }
-                            }"> 
-                <p class="article-info h4"> {{this.article.user.userName}} </p>
-            </router-link>
-            <p class="article-time"> {{this.article.updatedAt | formatDate}} </p>
+        <div class="m-3 m-sm-auto">
+            <div v-if="this.article" class="article-box mb-3 p-2">
+                <p class="mb-0 article-info h4"> {{this.article.title}} </p>
+                <router-link :to="{
+                                    name: 'userActivity',
+                                    params: { id: this.article.userId }
+                                }"> 
+                    <p class="article-info h4"> {{this.article.user.userName}} </p>
+                </router-link>
+                <p class="article-time"> {{this.article.updatedAt | formatDate}} </p>
 
-            <div class="text-center">
-                <img v-if="imagePresent" class="article-img img-fluid m-3" :src="this.article.imageUrl" alt="random image">
-            </div>
-
-            <div class="full-content">
-                 {{this.article.content}} 
-            </div>
-
-            <div class="action">
-                <div v-if="canEdit" class="mr-3">
-                    <router-link :to="{
-                            name: 'editArticle',
-                            params: { id: this.article.id }
-                        }">
-                        <img src="/images/edit.png" alt="Modifier">
-                    </router-link>
+                <div class="text-center">
+                    <img v-if="imagePresent" class="article-img img-fluid m-3" :src="this.article.imageUrl" alt="random image">
                 </div>
-                <div v-if="canDelete" class="mr-3">
-                    <span v-on:click="deleteArticle()">
-                        <img src="/images/bin.png" alt="Supprimer">
-                    </span>
+
+                <div class="full-content">
+                    {{this.article.content}} 
                 </div>
-                <div class="likes">
-                    <p class="mr-2 h4"> {{Likes.length}} </p>
-                    <span @click="likeArticle">
-                        <img v-if="alreadyLiked" src="/images/like-color.png" alt="Liker">
-                        <img v-else src="/images/like-transparent.jpg" alt="Liker">
-                    </span>  
-                </div> 
+
+                <div class="action">
+                    <div v-if="canEdit" class="mr-3">
+                        <router-link :to="{
+                                name: 'editArticle',
+                                params: { id: this.article.id }
+                            }">
+                            <img src="/images/edit.png" alt="Modifier">
+                        </router-link>
+                    </div>
+                    <div v-if="canDelete" class="mr-3">
+                        <span v-on:click="deleteArticle()">
+                            <img src="/images/bin.png" alt="Supprimer">
+                        </span>
+                    </div>
+                    <div class="likes">
+                        <p class="mr-2 h4"> {{Likes.length}} </p>
+                        <span @click="likeArticle">
+                            <img v-if="alreadyLiked" src="/images/like-color.png" alt="Liker">
+                            <img v-else src="/images/like-transparent.jpg" alt="Liker">
+                        </span>  
+                    </div> 
+                </div>
+
             </div>
 
+            <Comment class="ml-5" v-for="comment in Comments"
+                :key="comment.id"
+                :commentor="comment.user.userName"
+                :updatedAt="comment.updatedAt | formatDate"
+                :content="comment.content"
+                :commentorId="comment.userId"
+                :articleAuthorId="comment.article.userId"
+                :commentId="comment.id"
+                :NbCommentLikes="comment.commentLikes.length"
+            />
+
+            <AddComment class="ml-5" />
         </div>
-
-        <Comment class="ml-5" v-for="comment in Comments"
-            :key="comment.id"
-            :commentor="comment.user.userName"
-            :updatedAt="comment.updatedAt | formatDate"
-            :content="comment.content"
-            :commentorId="comment.userId"
-            :articleAuthorId="comment.article.userId"
-            :commentId="comment.id"
-            :NbCommentLikes="comment.commentLikes.length"
-        />
-
-        <AddComment class="ml-5 mr-3" />
 
         <ReturnButton/>
 

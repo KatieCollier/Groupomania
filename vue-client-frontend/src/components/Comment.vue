@@ -1,5 +1,5 @@
 <template>
-    <div class="comment m-3 p-2">
+    <div class="comment ml-3 mb-3 p-2">
         <router-link :to="{
                             name: 'userActivity',
                             params: { id: commentorId }

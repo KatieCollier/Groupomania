@@ -20,7 +20,7 @@ export default {
   data() {
       return {
           user: [],
-          userImage: "/images/profile.png"
+          userImage: "images/profile.png"
       }
   },
   methods: {
@@ -33,6 +33,7 @@ export default {
                 if(this.user.imageUrl != null) {
                     this.userImage = this.user.imageUrl
                 }
+                console.log("userImage", this.userImage)
             })
             .catch(e => {
                 console.log(e)

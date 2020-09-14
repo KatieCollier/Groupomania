@@ -16,6 +16,12 @@
 <style lang="scss"> 
   @import "./_variables.scss";
 
+  #app{
+   font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto; 
+  }
   header{
     background-color: $pink;
     height: 60px;

@@ -23,15 +23,15 @@
                     v-model="article.content"
                     name="content" />
             </div>
-        </div>
-        
-        <div class="form-group">
+
+            <div class="form-group">
                 <label for="file"> Choisissez une image: </label>
                 <input type="file" name="uploadfile" @change="uploadFile">
             </div>
+        </div>
 
         <div class="text-center">
-            <BaseButton class="col-6 m-4" @click="addArticle"> Publier </BaseButton>
+            <BaseButton class="col-6 col-sm-4 m-4" @click="addArticle"> Publier </BaseButton>
         </div>
         
         <ReturnButton />

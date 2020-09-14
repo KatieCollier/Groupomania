@@ -1,5 +1,5 @@
 <template>
-    <div class="subtitle col h3 p-2">
+    <div class="subtitle col h3 p-2 pl-md-5">
         <slot></slot>
     </div>
 </template>

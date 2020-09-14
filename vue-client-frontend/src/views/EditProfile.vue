@@ -49,16 +49,16 @@
                     placeholder="Changez votre mot de passe"
                 />
             </div>
-        </div>
 
-        <div class="form-group">
+            <div class="form-group buttons">
                 <label for="file"> Choisissez une image: </label>
                 <input type="file" name="uploadfile" @change="uploadFile">
             </div>
+        </div>
     
-        <div class="text-center m-5">
-            <BaseButton @click="updateProfile" class="mx-5 my-3"> Enregistrer Votre Profile </BaseButton>
-            <BaseButton @click="deleteProfile" class="mx-5 my-3 mb-5"> Supprimer Votre Compte </BaseButton>
+        <div>
+            <BaseButton @click="updateProfile" class="mx-auto my-3 row"> Enregistrer Votre Profile </BaseButton>
+            <BaseButton @click="deleteProfile" class="mx-auto my-3 mb-5 row"> Supprimer Votre Compte </BaseButton>
         </div>
         
         <Footer />
