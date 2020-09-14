@@ -1,10 +1,14 @@
 const express = require("express");
+const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("./models");
 const path = require("path");
 
 const app = express();
+
+/*Use helmet to help secure express app */
+app.use(helmet());
 
 /* set hearders to avoid CORS errors */
 app.use((req, res, next) => {
