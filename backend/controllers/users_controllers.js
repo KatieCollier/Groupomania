@@ -75,11 +75,13 @@ exports.update = (req, res) => {
    {
     userName: req.body.userName,
     email: req.body.email,
+    department: req.body.department,
     password: req.body.password,
     imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
   } : {
     userName: req.body.userName,
     email: req.body.email,
+    department: req.body.department,
     password: req.body.password,
   }
 

@@ -5,14 +5,6 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Article
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.title) {
-      res.status(400).send({
-        message: "L'article doit avoir un titre !"
-      });
-      return;
-    }
-    // Create an Article
     const article = req.file ?
       {
         userId: req.body.userId,

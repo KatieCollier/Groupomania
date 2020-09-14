@@ -1,4 +1,4 @@
-const jwt =require("jsonwebtoken"); /* import jsonwetoken necessary to create a token for authentication */
+const jwt = require("jsonwebtoken"); /* import jsonwetoken necessary to create a token for authentication */
 
 /* create authentication middleware */
 module.exports = (req, res, next) => {

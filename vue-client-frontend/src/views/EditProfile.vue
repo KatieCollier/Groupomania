@@ -107,6 +107,7 @@ export default {
             }
             formData.append("userName", this.user.userName)
             formData.append("email", this.user.email)
+            formData.append("department", this.user.department)
             formData.append("password", this.user.password)
 
           http
@@ -123,6 +124,7 @@ export default {
              const data = {
                  userName: this.user.userName,
                  email: this.user.email,
+                 department: this.user.department,
                  password: this.user.password
              }
 

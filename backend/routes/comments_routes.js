@@ -2,11 +2,12 @@ module.exports = app => {
     const router = require("express").Router();
 
     const comments = require("../controllers/comments_controllers");
+    const {commentValidationRules, validate} = require("../middleware/comment_validator");
   
     const auth = require("../middleware/auth");
   
     // Create a new Comment
-    router.post("/", auth, comments.create);
+    router.post("/", auth, commentValidationRules(), validate, comments.create);
   
     // Retrieve all Comments
     router.get("/", auth, comments.findAll);
@@ -18,7 +19,7 @@ module.exports = app => {
     router.get("/:id", auth, comments.findOne);
 
     //Update a Comment with id
-    router.put("/:id", auth, comments.update);
+    router.put("/:id", auth, commentValidationRules(), validate, comments.update);
 
     //Delete a Comment with id
     router.delete("/:id", auth, comments.delete);

@@ -57,7 +57,9 @@ export default {
         },
         updateComment(){
             const data = {
-                content: this.comment.content
+                content: this.comment.content,
+                userId: this.comment.userId,
+                articleId: this.comment.articleId
             }
 
             http
