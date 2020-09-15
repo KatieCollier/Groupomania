@@ -1,3 +1,4 @@
+<!-- component for subtitle -->
 <template>
     <div class="subtitle col h3 p-2 pl-md-5">
         <slot></slot>

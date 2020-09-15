@@ -1,6 +1,8 @@
+<!-- component to show a comment preview in the all activtity page -->
 <template>
     <div class="preview m-3 p-2">
         <div class="preview-header">
+            <!-- first line of header -->
             <div class="articleInfo">
                 <p> Comment on </p>
                 
@@ -10,14 +12,16 @@
             </div>
         </div>
 
+        <!-- important information on the comment -->
         <div class="activity-title">
+            <!-- link to the related article -->
             <router-link :to="{
                                 name: 'articlePage',
                                 params: { id: commentArticleId }
                             }">
                 <p class="mb-0 link"> This article </p>
             </router-link>
-            
+            <!-- author of the comment and link to their user activity page -->
             <router-link :to="{
                                 name: 'userActivity',
                                 params: { id: userId }
@@ -26,6 +30,7 @@
             </router-link>
         </div>
         
+        <!-- main section of the preview with the comment content -->
         <div class="content">
             <p> {{content}} </p>
         </div>
@@ -70,11 +75,11 @@ export default {
   .preview{
       width: 90%;
       border: black 2px solid;
-     &-header{
+      &-header{
          display: flex;
          flex-direction: row;
          justify-content: space-between;
-     } 
+      } 
   }
   .articleInfo{
       font-weight: bold;
@@ -86,7 +91,7 @@ export default {
   .link{
       font-style: italic;
   }
-  p{
+  p{ //limit content displayed to 3 lines
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 3;

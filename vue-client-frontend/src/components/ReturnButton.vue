@@ -1,3 +1,4 @@
+<!-- button to return to the main page -->
 <template>
   <div>
       <a href="/page_principale">

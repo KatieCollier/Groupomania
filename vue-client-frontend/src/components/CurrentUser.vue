@@ -1,5 +1,7 @@
+<!-- component to display the name and profile picture of the current user (the one that is logged in) -->
 <template>
     <div>
+        <!-- link to profile page on name and image -->
         <router-link :to="{
                             name: 'profilePage',
                             params: { id: user.id }
@@ -20,27 +22,25 @@ export default {
   data() {
       return {
           user: [],
-          userImage: "images/profile.png"
+          userImage: "images/profile.png" //default profile pic
       }
   },
   methods: {
-      retrieveOneUser() {
+      retrieveOneUser() { //function to retrieve user information
           http
-            .get("/users/" + localStorage.getItem("userId"))
+            .get("/users/" + localStorage.getItem("userId")) // get user info using the id stored during login
             .then(response => {
                 this.user = response.data
-                console.log("User: ", response.data)
-                if(this.user.imageUrl != null) {
+                if(this.user.imageUrl != null) { //if there is a custom profile pic, use that one instead of the default one
                     this.userImage = this.user.imageUrl
                 }
-                console.log("userImage", this.userImage)
             })
-            .catch(e => {
-                console.log(e)
+            .catch(err => {
+                console.log(err)
             })
       }
   },
-  created() {
+  created() { //call necessary function when view is created
       this.retrieveOneUser();
   }
 }

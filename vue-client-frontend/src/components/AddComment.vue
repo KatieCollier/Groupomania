@@ -1,6 +1,7 @@
+<!-- component to add a comment to an article -->
 <template>
-    <div>
         <div class="form-group mb-5">
+            <!-- text area in which to enter the comment -->
             <textarea
                 class="mb-3 p-2 col"
                 type="text"
@@ -11,7 +12,6 @@
             />
             <BaseButton @click="addComment" class="float-right"> Envoyer </BaseButton>
         </div>
-    </div>
 </template>
 
 <script>
@@ -31,27 +31,22 @@ export default {
     },
     methods: {
         addComment() {
-            const data = {
-                articleId: this.$route.params.id,
-                userId: localStorage.getItem("userId"),
-                content: this.comment.content
+            const data = { //create data to be sent in the request
+                articleId: this.$route.params.id, //article is the one that is currently open
+                userId: localStorage.getItem("userId"), //user is the one currently logged in 
+                content: this.comment.content //content retrieved from the text area
                 
             }
-            console.log("comment info", data)
 
             http
-            .post("/comments", data)
+            .post("/comments", data) //send post request
             .then(response => {
                 this.comment.id = response.data.id;
-                console.log(response.data);
-                this.$router.go()
-                
+                this.$router.go(); 
             })
-            .catch(e => {
-                console.log(e);
+            .catch(err => {
+                console.log(err);
             });
-
-            this.comment = {};
         }
     }
 }

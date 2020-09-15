@@ -1,4 +1,6 @@
+<!-- component for titles of drop down columns -->
 <template>
+    <!-- $listeners allows us to add any event we want to the component -->
     <div v-on="$listeners" class="drop-title h4 px-3">
         <slot></slot>
         <span> ▼ </span>

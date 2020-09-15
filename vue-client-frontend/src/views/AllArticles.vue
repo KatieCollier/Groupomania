@@ -99,7 +99,8 @@ export default {
                 .get("/articles", {params})
                 .then(response => {
                 this.Articles = response.data.rows;
-                this.count = response.data.count
+                this.count = response.data.count;
+                console.log("count", this.count)
                 })
                 .catch(e => {
                 console.log(e);
