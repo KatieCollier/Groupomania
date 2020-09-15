@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
     email: {
       type: Sequelize.STRING(35),
       allowNull: false,
-      unique: true
+      unique: true //email unique as only one account can be made per email address
     },
     password: {
       type: Sequelize.STRING(60),
@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
     userName: {
       type: Sequelize.STRING(35),
       allowNull: false,
-      unique: true
+      unique: true //user name must be unique to avoid confusion
     },
     department: {
         type: Sequelize.STRING(35),

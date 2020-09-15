@@ -1,6 +1,5 @@
 const db = require("../models");
 const CommentLike = db.commentLikes;
-const Op = db.Sequelize.Op;
 
 // Create and Save a new CommentLike
 exports.create = (req, res) => {

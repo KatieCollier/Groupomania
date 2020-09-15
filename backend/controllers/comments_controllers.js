@@ -1,10 +1,9 @@
 const db = require("../models");
 const Comment = db.comments;
-const Op = db.Sequelize.Op;
 
 // Create and Save a new Comment
 exports.create = (req, res) => {
-    // Create an Comment
+    // Create a Comment
     const comment = {
       articleId: req.body.articleId,
       userId: req.body.userId,
@@ -28,9 +27,9 @@ exports.findAll = (req, res) => {
   const page = req.query.page
 
     Comment.findAndCountAll({
-      limit: 5,
-      offset: 5*page,
-      order: [["updatedAt", "DESC"]], 
+      limit: 5, //number of comments per page
+      offset: 5*page, //number of comments to skip before start showing comments
+      order: [["updatedAt", "DESC"]], // oder all comments from the most recently updated to the least 
       include: ["user", "article"]
     })
       .then(data => {
@@ -47,7 +46,7 @@ exports.findAll = (req, res) => {
 // Find Comment by ArticleId.
 exports.findByArticleId = (req, res) => { 
   const articleId = req.params.id
-  Comment.findAll(
+  Comment.findAll( //find comments that fulfill the condition of articleId = articleId
     {where: {articleId: articleId}, include: ["user", "article", "commentLikes"]}
     )
     .then(data => {

@@ -5,13 +5,13 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Article
 exports.create = (req, res) => {
-    const article = req.file ?
+    const article = req.file ? //define article if there is also an image
       {
         userId: req.body.userId,
         title: req.body.title,
         content: req.body.content,
         imageUrl:  `${req.protocol}://${req.get('host')}/${req.file.filename}`
-      } : {
+      } : { //define article if there is no image attached
         userId: req.body.userId,
         title: req.body.title,
         content: req.body.content,
@@ -33,13 +33,14 @@ exports.create = (req, res) => {
 // Retrieve all Articles from the database by page and keyword if available.
 exports.findAll = (req, res) => {
   const keyword = req.query.keyword;
+  //condition requires the title to contain the keyword if the keyword is available
   const condition = keyword ? {title: {[Op.like]: `%${keyword}%`} }: null
-  const page = req.query.page;
+  const page = req.query.page; //page the user is on
   
     Article.findAndCountAll({
-      limit: 5,
-      offset: 5*page,
-      order: [["updatedAt", "DESC"]], 
+      limit: 5, //number of articles per page
+      offset: 5*page, //number of articles to skip before showing the results
+      order: [["updatedAt", "DESC"]], // order articles from the most recently updated to the least recently updated
       include: ["user", "comments"],
       where: condition
     })
@@ -74,11 +75,11 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   const article = req.file ?
-   {
+   {//define the new article data if there is also an image
     title: req.body.title,
     content: req.body.content,
     imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
-  } : {
+  } : { //define the new article data if there is no image attached
     title: req.body.title,
     content: req.body.content
   }
@@ -108,15 +109,15 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Article.findByPk(id)
+  Article.findByPk(id) //find the article by its id
     .then(article => {
-      const filename = article.imageUrl ? {
+      const filename = article.imageUrl ? { //if this article is associated to an image, get the image's filename
         name: article.imageUrl.split("3000/")[1]
       } : {
         name : article.imageUrl
       }
-      fs.unlink(`public/${filename.name}`, () => {
-        Article.destroy({
+      fs.unlink(`public/${filename.name}`, () => { //remove the associated image from the public directory
+        Article.destroy({ //delete the article
           where: { id: id }
         })
           .then(num => {
@@ -137,7 +138,7 @@ exports.delete = (req, res) => {
           });
       })
     })
-    .catch(e => {
-      console.log(e)
+    .catch(err => {
+      console.log(err)
     })
 };
