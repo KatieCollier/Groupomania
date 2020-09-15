@@ -25,6 +25,11 @@
           />
         </div>
 
+        <div class="error-alert text-center p-3" v-if="message">
+          <p> Erreur lors de la connection: <br>
+          {{this.message}} </p>
+        </div>
+
         <div class="text-center">
             <BaseButton @click="login" class="m-3"> Connection </BaseButton>
 
@@ -58,7 +63,8 @@ export default {
       user: {
         email: "",
         password: "",
-      }
+      },
+      message: null,
     };
   },
   methods: {
@@ -73,14 +79,15 @@ export default {
         .then(response => {
           const userId = response.data.userId;
           const token = response.data.token;
-          const chargeCom = response.data.chargeCom
+          const chargeCom = response.data.chargeCom;
           localStorage.setItem("userId", userId);
           localStorage.setItem("token", token);
           localStorage.setItem("chargeCom", chargeCom);
           router.push("/page_principale");
         })
-        .catch(e => {
-          console.log(e)
+        .catch(err => {
+          console.log(err);
+          this.message = err.response.data.error
         });
     },
     
@@ -100,6 +107,11 @@ export default {
       border-radius: 5px;
       background-color: $pink;
       border: $red 1px solid;
+    }
+    .error-alert{
+      color: black;
+      font-weight: bold;
+      border: $red solid 5px;
     }
   }
 </style>

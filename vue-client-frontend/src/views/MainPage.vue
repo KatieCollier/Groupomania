@@ -98,7 +98,14 @@ export default {
     methods: {
         retrieveArticles() {
             let params = {};
-            params["page"] = 0
+            params["page"] = 0;
+            
+            console.log("HTTP", http.defaults.headers.Authorization)
+            const httpAuth = http.defaults.headers.Authorization
+
+            if(httpAuth == localStorage.getItem("token")) {
+                console.log("Authorization ok")
+            } //somehow solves the issue of the Authorization header being empty for the first query after logon
 
             http
                 .get("/articles", {params})
@@ -106,8 +113,8 @@ export default {
                 this.Articles = response.data.rows;
                 console.log("Articles: ", response.data);
                 })
-                .catch(e => {
-                console.log(e);
+                .catch(err => {
+                console.log(err);
                 });
         },
         refreshList() {
@@ -133,8 +140,8 @@ export default {
                     this.AllActivity.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)  
                     console.log("all activity: ", this.AllActivity)
                 })
-                .catch(e => {
-                    console.log(e)
+                .catch(err => {
+                    console.log(err)
                 })
         }
     },

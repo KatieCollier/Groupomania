@@ -121,10 +121,14 @@ export default {
                 if(localStorage.getItem("userId") == this.author) {
                     this.canEdit = true;
                 }
-                if(localStorage.getItem("userId") == this.author ||
-                    localStorage.getItem("chargeCom") == true) {
-                        this.canDelete = true;
+                if(localStorage.getItem("userId") == this.author) {
+                    this.canDelete = true;
                 }
+                if(localStorage.getItem("chargeCom") == "true") {
+                    this.canDelete = true;
+                }
+                console.log("Charge communication: ", localStorage.getItem("chargeCom"))
+                console.log("Can delete", this.canDelete)
              })
              .catch(e => {
                  console.log(e)

@@ -48,6 +48,11 @@
           />
         </div>
 
+        <div class="error-alert text-center my-3 p-3" v-if="message">
+          <p> Erreur lors de l'inscription: <br>
+          {{this.message}} </p>
+        </div>
+
         <p> *: Champ obligatoire </p>
         <div class="text-center">
           <BaseButton @click="saveUser"> Inscription </BaseButton>
@@ -76,7 +81,8 @@ export default {
         password: "",
         department: "",
         chargeCom: false
-      }
+      },
+      message: null
     };
   },
   methods: {
@@ -97,8 +103,9 @@ export default {
           this.user = {};
           router.push("/");
         })
-        .catch(e => {
-          console.log(e);
+        .catch(err => {
+          console.log(err);
+          this.message = err.response.data.error
         });
     }
   }
@@ -117,6 +124,11 @@ export default {
         border-radius: 5px;
         background-color: $pink;
         border: $red 1px solid;
+    }
+    .error-alert{
+      color: black;
+      font-weight: bold;
+      border: $red solid 5px;
     }
   }
 </style>

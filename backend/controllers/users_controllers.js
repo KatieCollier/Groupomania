@@ -8,22 +8,29 @@ const Op = db.Sequelize.Op;
 
 /* create and export a function to create a new User (sign up) */
 exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10) /* create a hash from the password (encrypt it) */
-  .then(hash => {
+  User.findOne({where: {email: req.body.email}})
+    .then(user => {
+      if(user) {
+        res.status(401).json({error: "Un compte est déjà associé à cette adresse mail."})
+      } else {
+        bcrypt.hash(req.body.password, 10) /* create a hash from the password (encrypt it) */
+          .then(hash => {
 
-    const user = {
-      email: req.body.email,
-      password: hash,
-      userName: req.body.userName,
-      department: req.body.department,
-      chargeCom: req.body.chargeCom ? req.body.chargeCom: false
-    };
+            const user = {
+              email: req.body.email,
+              password: hash,
+              userName: req.body.userName,
+              department: req.body.department,
+              chargeCom: req.body.ChargeCom ? req.body.ChargeCom: false
+            };
 
-      User.create(user) /* save the new user */
-          .then(() => res.status(201).json({message: "Utilisateur créé !"}))
-          .catch(error => res.status(400).json({error}));
-  })
-  .catch(error => res.status(500).json({error}));
+            User.create(user) /* save the new user */
+              .then(() => res.status(201).json({message: "Utilisateur créé !"}))
+              .catch(error => res.status(400).json({error}));
+          })
+          .catch(error => res.status(500).json({error}));
+      }
+    }) 
 };
 
 /* create and export a function to login */
@@ -40,6 +47,7 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({ /* if the passwords DO match: */
                 userId: user.id,
+                chargeCom: user.ChargeCom,
                 token: jwt.sign( /* give the user a token necessary for authentication and use of the app */
                     {userId: user.id},
                     "RANDOM_SECRET_TOKEN",
