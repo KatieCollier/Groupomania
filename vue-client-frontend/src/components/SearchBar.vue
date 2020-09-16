@@ -1,6 +1,9 @@
 <!-- search bar to find articles by one word in their title -->
 <template>
-    <input @keyup.enter="getSearchResults" v-model="keyword" type="text" placeholder="Rechercher dans le titre..." id="search" class="ml-3">
+    <div>   
+        <label for="search" class="ml-3"> Rechercher: </label>
+        <input @keyup.enter="getSearchResults" v-model="keyword" type="text" placeholder="Rechercher dans le titre..." id="search" class="ml-3">
+    </div>
 </template>
 
 <script>

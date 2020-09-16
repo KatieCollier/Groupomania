@@ -79,7 +79,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  const user = req.file ?
+  const data = req.file ?
    { //define user if there is an attached image
     userName: req.body.userName,
     email: req.body.email,
@@ -92,26 +92,36 @@ exports.update = (req, res) => {
     department: req.body.department,
     password: req.body.password,
   }
-  // update user with the correct id
-  User.update(user, {
-    where: {id: id}
-  })
-    .then(num => {
-      if (num = 1) {
-        res.send({
-          message: "Votre profile a été mis à jour."
-        });
-      } else {
-        res.send({
-          message: "Nous ne pouvons mettre à jour votre profile."
-        });
+
+  User.findByPk(id)
+    .then(user => {
+      const filename = user.imageUrl ? {
+        name: user.imageUrl.split("3000/")[1]
+      }: {
+        name : user.imageUrl
       }
+      fs.unlink(`public/${filename.name}`, () => {
+        User.update(data, {
+          where: {id: id}
+        })
+          .then(num => {
+            if (num = 1) {
+              res.send({
+                message: "Votre profile a été mis à jour."
+              });
+            } else {
+              res.send({
+                message: "Nous ne pouvons mettre à jour votre profile."
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: "Impossible de mettre à jour de votre profile."
+            });
+          });
+      })  
     })
-    .catch(err => {
-      res.status(500).send({
-        message: "Impossible de mettre à jour de votre profile."
-      });
-    });
 };
 
 //delete User with specified id

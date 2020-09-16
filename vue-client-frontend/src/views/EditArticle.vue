@@ -66,58 +66,57 @@ export default {
              .get("/articles/" + this.$route.params.id)
              .then(response => {
                  this.article = response.data
-                 console.log(response.data)
              })
-             .catch(e => {
-                 console.log(e)
+             .catch(err => {
+                 console.log(err)
              })
         },
         uploadFile (event) {
             this.uploadfile = event.target.files
-            console.log("Uploaded file: ", this.uploadfile)
         },
         updateArticle(){
             if(this.uploadfile){
                 const formData = new FormData();
-            for (const i of Object.keys(this.uploadfile)) {
-                formData.append('uploadfile', this.uploadfile[i])
-            }
-            formData.append("title", this.article.title)
-            formData.append("content", this.article.content)
+                for (const i of Object.keys(this.uploadfile)) {
+                    formData.append('uploadfile', this.uploadfile[i])
+                }
+                formData.append("title", this.article.title)
+                formData.append("content", this.article.content)
+                formData.append("userId", localStorage.getItem("userId"))
 
-            http
-                .put("/articles/" + this.$route.params.id, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-                })
-                .then(response => {
-                    console.log(response.data)
-                    router.push("/page_principale");
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-        } else {
-            const data = {
-                title: this.article.title,
-                content: this.article.content
-            }
+                http
+                    .put("/articles/" + this.$route.params.id, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        }
+                    })
+                    .then(response => {
+                        console.log(response.data)
+                        router.push("/articles/" + this.$route.params.id);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else {
+                const data = {
+                    title: this.article.title,
+                    content: this.article.content,
+                    userId: localStorage.getItem("userId")
+                }
 
-            http
-                .put("/articles/" + this.$route.params.id, data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-                })
-                .then(response => {
-                    console.log(response.data)
-                    router.push("/page_principale");
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-        }
+                http
+                    .put("/articles/" + this.$route.params.id, data, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        }
+                    })
+                    .then(() => {
+                        router.push("/articles/" + this.$route.params.id);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
         }
             
     },

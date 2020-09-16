@@ -10,6 +10,12 @@
             </a>
         </div>
 
+        <div class="notLoading text-center m-3 p-3" v-if="loadError">
+            <p> Il y a eu un petit problème lors du chargement de la page <br>
+            Veuillez réessayer </p>
+            <BaseButton @click="refresh"> Rafraichir la page </BaseButton>
+        </div>
+
         <Subtitle class="font-weight-bold">
             Articles Récents
         </Subtitle>
@@ -69,6 +75,7 @@ import Footer from "../components/Footer"
 
 import http from "../http-common"
 import moment from "moment"
+import router from "../router"
 
 export default {
     name: "mainPage",
@@ -85,7 +92,8 @@ export default {
         return {
             Articles: [],
             Comments: [],
-            AllActivity: []
+            AllActivity: [],
+            loadError: false
         };
     },
     filters: {
@@ -100,25 +108,32 @@ export default {
             let params = {};
             params["page"] = 0;
             
+            console.log("token", localStorage.getItem("token"))
             console.log("HTTP", http.defaults.headers.Authorization)
             const httpAuth = http.defaults.headers.Authorization
 
             if(httpAuth == localStorage.getItem("token")) {
                 console.log("Authorization ok")
-            } //somehow solves the issue of the Authorization header being empty for the first query after logon
+            } else {
+                console.log("Houston, we have a problem")
+            }
 
             http
                 .get("/articles", {params})
                 .then(response => {
-                this.Articles = response.data.rows;
-                console.log("Articles: ", response.data);
+                    this.Articles = response.data.rows;
+                    console.log("Articles: ", response.data);
                 })
                 .catch(err => {
-                console.log(err);
+                    console.log(err);
+                    this.loadError = true;
                 });
         },
         refreshList() {
             this.retrieveArticles();
+        },
+        refresh(){
+            router.go()
         },
         getAllActivity() {
             let params = {};
@@ -184,6 +199,10 @@ export default {
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
+        }
+        .notLoading{
+            border: $red solid 5px;
+            font-weight: bold;
         }
     }
 </style>

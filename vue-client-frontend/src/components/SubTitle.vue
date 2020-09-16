@@ -16,7 +16,7 @@ export default {
 
     .subtitle{
         background-color: $pink;
-        color: $red;
+        color: black;
         font-weight: bold;
     }
 </style>

@@ -51,7 +51,6 @@
 import BaseButton from "../components/BaseButton"
 
 import http from "../http-common"
-import router from "../router"
 
 export default {
   name: "logon",
@@ -83,7 +82,7 @@ export default {
           localStorage.setItem("userId", userId);
           localStorage.setItem("token", token);
           localStorage.setItem("chargeCom", chargeCom);
-          router.push("/page_principale");
+          window.location = "/page_principale";
         })
         .catch(err => {
           console.log(err);

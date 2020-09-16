@@ -26,7 +26,9 @@
             :updatedAt="article.updatedAt | formatDate"
             :content="article.content"
          />
-        
+        {{count}}
+        {{pageSize}}
+
         <div class="pagination">
             <b-pagination class="m-auto"
                 v-model="page"

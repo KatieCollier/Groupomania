@@ -20,7 +20,7 @@ export default {
         background-color: $pink;
         border: 2px solid $red;
         border-radius: 10;
-        color: $red;
+        color: black;
         font-weight: bold;
     }
 </style>

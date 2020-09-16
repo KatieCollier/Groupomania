@@ -12,7 +12,7 @@
 
     .drop-title{
         background-color: $red;
-        color: $pink;
+        color: black;
         font-weight: bold;
         display: flex;
         flex-direction: row;

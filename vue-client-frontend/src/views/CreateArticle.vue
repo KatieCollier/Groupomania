@@ -74,30 +74,27 @@ export default {
         addArticle() {
             if(this.uploadfile){
                 const formData = new FormData();
-            for (const i of Object.keys(this.uploadfile)) {
-                formData.append('uploadfile', this.uploadfile[i])
-            }
-            formData.append("title", this.article.title)
-            formData.append("content", this.article.content)
-            formData.append("userId", localStorage.getItem("userId"))
+                for (const i of Object.keys(this.uploadfile)) {
+                    formData.append('uploadfile', this.uploadfile[i])
+                }
+                formData.append("title", this.article.title)
+                formData.append("content", this.article.content)
+                formData.append("userId", localStorage.getItem("userId"))
 
-            http
-                .post("/articles", formData, {
-                    headers: {
+                http
+                    .post("/articles", formData, {
+                        headers: {
                         'Content-Type': 'multipart/form-data',
-                    }
-                })
-                .then(response => {
-                this.article.id = response.data.id;
-                console.log(response.data);
-                router.push("/page_principale");
-                })
-                .catch(e => {
-                console.log(e);
-                });
-    
-                this.submitted = true;
-                this.article = {};
+                        }
+                    })
+                    .then(response => {
+                        this.article.id = response.data.id;
+                        console.log(response.data);
+                        router.push("/page_principale");
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             } else {
                 const data = {
                     title: this.article.title,
@@ -108,18 +105,15 @@ export default {
                 http
                 .post("/articles", data)
                 .then(response => {
-                this.article.id = response.data.id;
-                console.log(response.data);
-                router.push("/page_principale");
+                    this.article.id = response.data.id;
+                    console.log(response.data);
+                    router.push("/page_principale");
                 })
-                .catch(e => {
-                console.log(e);
+                .catch(err => {
+                    console.log(err);
                 });
-    
-                this.submitted = true;
-                this.article = {};
             }
-            }
+        }
             
     }    
 };

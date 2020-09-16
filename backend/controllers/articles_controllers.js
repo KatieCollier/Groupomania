@@ -74,35 +74,47 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {  
   const id = req.params.id;
 
-  const article = req.file ?
+  const data = req.file ?
    {//define the new article data if there is also an image
     title: req.body.title,
     content: req.body.content,
+    userId: req.body.userId,
     imageUrl: `${req.protocol}://${req.get('host')}/${req.file.filename}`
   } : { //define the new article data if there is no image attached
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    userId: req.body.userId
   }
 
-  Article.update(article, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "L'article a été mis à jour."
-        });
-      } else {
-        res.send({
-          message: "Erreur lors de la mise à jour de cet article"
-        });
+  Article.findByPk(id)
+    .then(article => {
+      const filename = article.imageUrl ? {
+        name: article.imageUrl.split("3000/")[1]
+      }: {
+        name : article.imageUrl
       }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Impossible de mettre à jour cet article"
-      });
-    });
+      fs.unlink(`public/${filename.name}`, () => {
+        Article.update(data, {
+          where: { id: id }
+        })
+          .then(num => {
+            if (num == 1) {
+              res.send({
+                message: "L'article a été mis à jour."
+              });
+            } else {
+              res.send({
+                message: "Erreur lors de la mise à jour de cet article"
+              });
+            }
+          })
+          .catch(err => {
+            res.status(500).send({
+              message: "Impossible de mettre à jour cet article"
+            });
+          });
+      })
+    }) 
 };
 
 //Delete an article with a specified id
