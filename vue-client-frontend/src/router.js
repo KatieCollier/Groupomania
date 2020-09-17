@@ -79,6 +79,12 @@ export default new Router({
       alias: "/modifier_commentaire",
       name: "editComment",
       component: () => import("./views/EditComment")
+    },
+    {
+      path: "/resultats_recherche",
+      alias: "/resultats_recherche",
+      name: "searchResults",
+      component: () => import("./views/SearchResults")
     }
   ]
 });

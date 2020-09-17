@@ -1,47 +1,46 @@
+<!-- component to display the name and profile picture of the current user (the one that is logged in) -->
 <template>
     <div>
+        <!-- link to profile page on name and image -->
         <router-link :to="{
                             name: 'profilePage',
                             params: { id: user.id }
                         }">
             <div class="currentUser col-7 offset-5 mb-3">
-                <p class="pr-2 h5"> {{user.userName}} </p>
-                <img :src="Users.image" alt="lien vers la page de profile">
+                <p class="pr-2 h5 font-weight-bold"> {{user.userName}} </p>
+                <img :src="userImage" alt="lien vers la page de profile">
             </div>
         </router-link>
     </div>
 </template>
 
 <script>
-import {mapState} from "vuex"
 import http from "../http-common"
 
 export default {
   name: 'CurrentUser',
-  computed: {
-      ...mapState({
-          Users: "Users"
-      })
-  },
   data() {
       return {
-          user: []
+          user: [],
+          userImage: "images/profile.png" //default profile pic
       }
   },
   methods: {
-      retrieveOneUser() {
+      retrieveOneUser() { //function to retrieve user information
           http
-            .get("/users/" + localStorage.getItem("userId"))
+            .get("/users/" + localStorage.getItem("userId")) // get user info using the id stored during login
             .then(response => {
                 this.user = response.data
-                console.log("User: ", response.data)
+                if(this.user.imageUrl != null) { //if there is a custom profile pic, use that one instead of the default one
+                    this.userImage = this.user.imageUrl
+                }
             })
-            .catch(e => {
-                console.log(e)
+            .catch(err => {
+                console.log(err)
             })
       }
   },
-  created() {
+  created() { //call necessary function when view is created
       this.retrieveOneUser();
   }
 }

@@ -1,9 +1,11 @@
+<!-- view to edit comment -->
 <template>
-    <div>
+    <div class="edit-comment">
         <LargeCurrentUser class="mb-4" />
 
         <ReturnButton />
 
+        <!-- comment content input box-->
         <div class="m-3">
             <div class="form-group">
                 <label for="content">Commentaire:</label>
@@ -17,7 +19,7 @@
         </div>
 
         <div class="text-center">
-            <BaseButton class="col-6 m-4" @click="updateComment"> Enregistrer </BaseButton>
+            <BaseButton class="col-6 col-sm-4 m-4" @click="updateComment"> Enregistrer </BaseButton>
         </div>
         
         <Footer />
@@ -26,6 +28,7 @@
 </template>
 
 <script>
+//import components used in view
 import LargeCurrentUser from "../components/LargeCurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import BaseButton from "../components/BaseButton"
@@ -44,54 +47,58 @@ export default {
     },
     props: ["comment"],
     methods: {
-        retrieveOneComment() {
+        retrieveOneComment() { // get comment information
             http
              .get("/comments/" + this.$route.params.id)
              .then(response => {
                  this.comment = response.data
-                 console.log(response.data)
              })
-             .catch(e => {
-                 console.log(e)
+             .catch(err => {
+                 console.log(err)
              })
         },
-        updateComment(){
-            const data = {
-                content: this.comment.content
+        updateComment(){ // update comment
+            const data = { //define data
+                content: this.comment.content,
+                userId: this.comment.userId,
+                articleId: this.comment.articleId
             }
 
-            http
+            http // and put data to database
                 .put("/comments/" + this.$route.params.id, data)
-                .then(response => {
-                    console.log(response.data)
+                .then(() => {
                     router.go(-1);
                 })
-                .catch(e => {
-                    console.log(e);
+                .catch(err => {
+                    console.log(err);
                 });
         }
     },
-    created() {
+    created() { // call neede functions at the creation of the view
         this.retrieveOneComment();
     }
 }
 </script>
 
 <style lang="scss">
-    .form-group{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-    }
-    input, textarea{
-        border-radius: 5px;
-        background-color: #FFD7D7;
-        border: #FD2D01 1px solid;
-        box-shadow: none;
-        width: 100%;
-    }
-    .comment-textarea{
-        height: 200px;
+@import "../_variables.scss";
+
+    .edit-comment{
+        .form-group{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        input, textarea{
+            border-radius: 5px;
+            background-color: $pink;
+            border: $red 1px solid;
+            box-shadow: none;
+            width: 100%;
+        }
+        .comment-textarea{
+            height: 200px;
+        }
     }
 </style>

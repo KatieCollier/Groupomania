@@ -1,12 +1,11 @@
+<!-- view displaying all article previews at 5 per page-->
 <template>
-    <div class="overview">
-        <CurrentUser>
-        </CurrentUser>
+    <div class="all-articles">
+        <CurrentUser />
 
         <ReturnButton />
 
-        <SearchBar>
-        </SearchBar>
+        <SearchBar />
 
         <div class="text-center m-4">
             <a href="/publier">
@@ -14,32 +13,29 @@
             </a>
         </div>
 
-        <Subtitle>
+        <Subtitle class="font-weight-bold">
             Articles
         </Subtitle>
 
-        <div class="preview m-3 p-2"
-        v-for="(article, index) in Articles"
-                :key="index">
+        <ArticlePreview class="mx-auto"
+            v-for="article in Articles"
+            :key="article.id"
+            :articleId="article.id"
+            :title="article.title"
+            :userId="article.userId"
+            :author="article.user.userName"
+            :updatedAt="article.updatedAt | formatDate"
+            :content="article.content"
+         />
 
-            <div class="preview-header">
-                <div class="articleInfo">
-                    <router-link :to="{
-                            name: 'articlePage',
-                            params: { id: article.id }
-                        }">
-                        <p class="mb-0"> {{article.title}} </p>
-                    </router-link>
-                    <p> {{article.user.userName}} </p>
-                </div>
-                <div class="creationTime">
-                    <p> {{article.createdAt}} </p>
-                </div>
-            </div>
-            
-            <div class="content">
-                <p> {{article.content}} </p>
-            </div>
+        <div class="pagination">
+            <b-pagination class="m-auto"
+                v-model="page"
+                :total-rows="count"
+                :per-page="pageSize"
+                pills
+                @change="handlePageChange"
+            />
         </div>
 
         <ReturnButton />
@@ -50,74 +46,86 @@
 </template>
 
 <script>
+//import components used in this view
 import CurrentUser from "../components/CurrentUser"
+import ReturnButton from "../components/ReturnButton"
 import SearchBar from "../components/SearchBar"
 import BaseButton from "../components/BaseButton"
 import Subtitle from "../components/SubTitle"
-import ReturnButton from "../components/ReturnButton"
+import ArticlePreview from "../components/ArticlePreview"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
+import moment from "moment"
 
 export default {
     name: "allActivity",
     components: {
         CurrentUser,
+        ReturnButton,
         SearchBar,
         BaseButton,
         Subtitle,
-        ReturnButton,
+        ArticlePreview,
         Footer
     },
     data() {
         return {
-            Articles: []
+            Articles: [],
+            page: 1, //default page number
+            count: null,
+            pageSize: 5 //number of articles per page
         };
     },
-    methods: {
-        retrieveArticles() {
-        http
-            .get("/articles")
-            .then(response => {
-            this.Articles = response.data; // JSON are parsed automatically.
-            console.log(response.data);
-            })
-            .catch(e => {
-            console.log(e);
-            });
+    filters: { //filter to display date & time in an easy to read format
+        formatDate: function(value){
+            if(value) {
+               return moment(String(value)).format("DD/MM/YYYY kk:mm") 
+            }
+        }
     },
-    refreshList() {
-      this.retrieveArticles();
-    }
-    /* eslint-enable no-console */
+    methods: {
+        getRequestParams(page) { // function to set request parameters (the page to be displayed) depending on the selected page in pagination
+            let params = {};
+            if(page) {
+                params["page"] = page - 1;
+            }
+            return params;
+        },
+        handlePageChange(value) { // function that set page value for the articles depending on the page number selected in pagination
+            this.page = value;
+            this.retrieveArticles();
+        },
+        retrieveArticles() {// get the information about all the articles in a page
+            const params = this.getRequestParams( //using the page parameters previously defined
+                this.page
+            )
+
+            http
+                .get("/articles", {params})
+                .then(response => {
+                    this.Articles = response.data.rows; //array with information of all articles on page
+                    this.count = response.data.count; //total number of articles present in the database
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }        
   },
-  mounted() {
+  created() { //call necessary functions at the creation of the view
     this.retrieveArticles();
     }       
 }
 </script>
 
 <style lang="scss">
-    a{
-        color: black;
-        text-decoration: none;
-    }
-    .preview{
-        width: 90%;
-        border: black 2px solid;
-        &-header{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        } 
-    }
-    .articleInfo{
-        font-weight: bold;
-    }
-    .content{
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
+@import "../_variables.scss";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";//import bootstrap to allow me to change pagination default settings
+
+    .all-articles{
+        a{
+            color: black;
+            text-decoration: none;
+        }
     }
 </style>

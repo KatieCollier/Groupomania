@@ -1,8 +1,14 @@
 const express = require("express");
+const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const db = require("./models");
+const path = require("path");
 
 const app = express();
+
+/*Use helmet to help secure express app */
+app.use(helmet());
 
 /* set hearders to avoid CORS errors */
 app.use((req, res, next) => {
@@ -16,17 +22,21 @@ const corsOptions = {
   origin: 'http://localhost:8080',
   optionsSuccessStatus: 200
 }
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 
-const db = require("./models");
+//set base directory and a static public folder in which to store uploaded images
+global.__basedir = __dirname;
+app.use(express.static('public'));
+
+//synchronise tables
 db.sequelize.sync();
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//require necessary routes
 require("./routes/users_routes")(app);
 require("./routes/articles_routes")(app);
 require("./routes/comments_routes")(app);

@@ -1,6 +1,5 @@
 const db = require("../models");
 const Like = db.likes;
-const Op = db.Sequelize.Op;
 
 // Create and Save a new Like
 exports.create = (req, res) => {
@@ -17,12 +16,12 @@ exports.create = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred during signup."
+            err.message || "Impossible de liker cet article."
         });
       });
   };
 
-//Find Likes by article id
+//Find Likes by ArticleId
 exports.findByArticleId = (req, res) => { 
   const articleId = req.params.id
   Like.findAll(
@@ -34,22 +33,7 @@ exports.findByArticleId = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Impossible de trouver les likes pour cet article"
+          err.message || "Impossible de trouver les likes pour cet article."
       });
     });
 };
-
-// Retrieve all likes from the database.
-exports.findAll = (req, res) => {
-  
-    Like.findAll()
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving user info."
-        });
-      });
-  };

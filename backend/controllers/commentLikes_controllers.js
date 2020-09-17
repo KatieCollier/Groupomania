@@ -1,6 +1,5 @@
 const db = require("../models");
 const CommentLike = db.commentLikes;
-const Op = db.Sequelize.Op;
 
 // Create and Save a new CommentLike
 exports.create = (req, res) => {
@@ -17,12 +16,12 @@ exports.create = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Erreur"
+            err.message || "Impossible de liker ce commentaire"
         });
       });
   };
 
-//Find CommentLikes by comment id
+//Find CommentLikes by Comment id
 exports.findByCommentId = (req, res) => { 
   const commentId = req.params.id
   CommentLike.findAll(
@@ -38,18 +37,3 @@ exports.findByCommentId = (req, res) => {
       });
     });
 };
-
-// Retrieve all Commentslikes from the database.
-exports.findAll = (req, res) => {
-  
-    CommentLike.findAll()
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving user info."
-        });
-      });
-  };

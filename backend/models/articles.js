@@ -18,6 +18,10 @@ module.exports = (sequelize, Sequelize) => {
           type: Sequelize.TEXT("long"),
           allowNull: false
       },
+      imageUrl: {
+        type: Sequelize.STRING,
+        allowNull: true
+      }
     });
   
     return Article;

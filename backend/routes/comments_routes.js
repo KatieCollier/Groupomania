@@ -1,25 +1,28 @@
 module.exports = app => {
+    const router = require("express").Router();
+
     const comments = require("../controllers/comments_controllers");
+    const {commentValidationRules, validate} = require("../middleware/comment_validator");
   
-    var router = require("express").Router();
+    const auth = require("../middleware/auth");
   
-    // Create a new Article
-    router.post("/", comments.create);
+    // Create a new Comment
+    router.post("/", auth, commentValidationRules(), validate, comments.create);
   
-    // Retrieve all articles
-    router.get("/", comments.findAll);
+    // Retrieve all Comments
+    router.get("/", auth, comments.findAll);
 
-    // Find comments by articleId
-    router.get("/articles/:id", comments.findByArticleId);
+    // Find Comments by ArticleId
+    router.get("/articles/:id", auth, comments.findByArticleId);
 
-    //Find a comment by id
-    router.get("/:id", comments.findOne);
+    //Find a Comment by id
+    router.get("/:id", auth, comments.findOne);
 
-    //Update a comment with id
-    router.put("/:id", comments.update);
+    //Update a Comment with id
+    router.put("/:id", auth, commentValidationRules(), validate, comments.update);
 
-    //Delete a comment with id
-    router.delete("/:id", comments.delete);
+    //Delete a Comment with id
+    router.delete("/:id", auth, comments.delete);
   
     app.use('/api/comments', router);
   };

@@ -1,5 +1,6 @@
+<!-- view of the user's profile -->
 <template>
-    <div>
+    <div class="user-profile">
         <LargerCurrentUser class="mb-5" />
 
         <div class="text-center mb-5">
@@ -7,8 +8,8 @@
             <BaseButton> Créer un article </BaseButton>
         </a>
         </div>
-
-        <div class="m-3">
+        
+        <div class="offset-1 offset-sm-3 p-3 user-info">
             <p class="info-title h4"> Informations utilisateur: </p>
             <div class="m-3">
                 <p> <strong> Nom d'utilisateur: </strong> {{this.user.userName}} </p>
@@ -36,14 +37,13 @@
 </template>
 
 <script>
+//import components for view
 import LargerCurrentUser from "../components/LargeCurrentUser"
 import BaseButton from "../components/BaseButton"
 import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
-
-import {mapState} from "vuex"
 
 export default {
     name: "profilePage",
@@ -54,31 +54,37 @@ export default {
         Footer
     },
     props: ["user"],
-    computed: {
-        ...mapState({
-            Users: "Users",
-        })
-    },
     methods: {
-        retrieveOneUser() {
+        retrieveOneUser() { // get user info
             http
              .get("/users/" + this.$route.params.id)
              .then(response => {
                  this.user = response.data
              })
-             .catch(e => {
-                 console.log(e)
+             .catch(err => {
+                 console.log(err)
              })
         },
     },
-    created() {
+    created() { //call necessary functions when view is created
         this.retrieveOneUser();
     }
 }
 </script>
 
 <style lang="scss">
-    .info-title{
-        font-weight: bold;
+@import "../_variables.scss";
+
+    .user-profile{
+        .user-info{
+            border-left: black solid 2px;
+        }
+        .info-title{
+            font-weight: bold;
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
+        }
     }
 </style>

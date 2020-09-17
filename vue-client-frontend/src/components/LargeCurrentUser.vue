@@ -1,7 +1,8 @@
+<!-- component that displays the logged in user's name and profile pic in large -->
 <template>
     <div class="currentUser">
         <p class="h4 mt-3"> {{user.userName}} </p>
-        <img src="/images/profile.png" alt="lien vers la page de profile">
+        <img :src="userImage" alt="lien vers la page de profile">
     </div>
 </template>
 
@@ -12,21 +13,22 @@ export default {
   name: 'CurrentUser',
   data() {
       return {
-          currentUser: "Harry Potter",
-          src: "../images/profile.png",
-          user:[]
+          user:[],
+          userImage: "/images/profile.png" //default profile pic
       }
   },
    methods: {
-      retrieveOneUser() {
+      retrieveOneUser() { //function to get information on current user
           http
             .get("/users/" + localStorage.getItem("userId"))
             .then(response => {
                 this.user = response.data
-                console.log("User: ", response.data)
+                if(this.user.imageUrl != null) { // if there is a custom profile pic, use this instead of the default one
+                    this.userImage = this.user.imageUrl
+                }
             })
-            .catch(e => {
-                console.log(e)
+            .catch(err => {
+                console.log(err)
             })
       }
   },

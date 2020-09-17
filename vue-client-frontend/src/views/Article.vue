@@ -1,61 +1,82 @@
+<!-- view displaying all the information related to the article, including its fulltext and any image -->
 <template>
     <div class="articlepage">
         <CurrentUser/>
 
         <ReturnButton/>
 
-        <div v-if="this.article" class="article-box m-3 p-2">
-            <p class="mb-0 article-info h4"> {{this.article.title}} </p>
-            <a href="/activite_utilisateur"> 
-                <p class="article-info h4"> {{this.article.user.userName}} </p>
-            </a>
-            <p class="article-time"> {{this.article.createdAt}} </p>
+        <div class="m-3 m-sm-auto">
+            <!-- article box -->
+            <div v-if="this.article" class="article-box mb-3 p-2">
+                <!-- title -->
+                <p class="mb-0 article-info h4"> {{this.article.title}} </p>
+                <!-- author name with link to their user activity page -->
+                <router-link :to="{
+                                    name: 'userActivity',
+                                    params: { id: this.article.userId }
+                                }"> 
+                    <p class="article-info h4"> {{this.article.user.userName}} </p>
+                </router-link>
+                <!-- update date and time -->
+                <p class="article-time"> {{this.article.updatedAt | formatDate}} </p>
 
-            <div class="text-center">
-                <img class="article-img img-fluid m-3" src="/images/images.jpg" alt="random image">
-            </div>
-
-            <div class="full-content">
-                 {{this.article.content}} 
-            </div>
-
-            <div class="action">
-                <div v-if="canEdit" class="mr-3">
-                    <router-link :to="{
-                            name: 'editArticle',
-                            params: { id: this.article.id }
-                        }">
-                        <img src="/images/edit.png" alt="Modifier">
-                    </router-link>
+                <!-- image associated with the article - only displayed if an image is present -->
+                <div class="text-center">
+                    <img v-if="imagePresent" class="article-img img-fluid m-3" :src="this.article.imageUrl" alt="random image">
                 </div>
-                <div v-if="canDelete" class="mr-3">
-                    <span v-on:click="deleteArticle()">
-                        <img src="/images/bin.png" alt="Supprimer">
-                    </span>
+
+                <!-- article content -->
+                <div class="full-content">
+                    {{this.article.content}} 
                 </div>
-                <div class="likes">
-                    <p class="mr-2 h4"> {{Likes.length}} </p>
-                    <span @click="likeArticle">
-                        <img v-if="alreadyLiked" src="/images/like-color.png" alt="Liker">
-                        <img v-else src="/images/like-transparent.jpg" alt="Liker">
-                    </span>  
-                </div> 
+
+                <!-- icons with links to edit, delete or like the article -->
+                <div class="action">
+                    <!-- edit icon - only visilble if user authorised to edit article -->
+                    <div v-if="canEdit" class="mr-3">
+                        <router-link :to="{
+                                name: 'editArticle',
+                                params: { id: this.article.id }
+                            }">
+                            <img src="/images/edit.png" alt="Modifier">
+                        </router-link>
+                    </div>
+                    <!-- delete icon - only visible if user authorised to delete the article -->
+                    <div v-if="canDelete" class="mr-3">
+                        <span v-on:click="deleteArticle()">
+                            <img src="/images/bin.png" alt="Supprimer">
+                        </span>
+                    </div>
+                    <!-- like icon - visible to all users -->
+                    <div class="likes">
+                        <!-- total number of likes the article has already received -->
+                        <p class="mr-2 h4"> {{Likes.length}} </p>
+                        <span @click="likeArticle">
+                            <!-- if the user has already liked the article, the icon displayed will be red -->
+                            <img v-if="alreadyLiked" src="/images/like-color.png" alt="Liker">
+                            <!-- if the user hasn't already liked the article, the icon displayed will be white -->
+                            <img v-else src="/images/like-transparent.jpg" alt="Liker">
+                        </span>  
+                    </div> 
+                </div>
+
             </div>
 
+            <!-- display all comments associated with the article -->
+            <Comment class="ml-5" v-for="comment in Comments"
+                :key="comment.id"
+                :commentor="comment.user.userName"
+                :updatedAt="comment.updatedAt | formatDate"
+                :content="comment.content"
+                :commentorId="comment.userId"
+                :articleAuthorId="comment.article.userId"
+                :commentId="comment.id"
+                :NbCommentLikes="comment.commentLikes.length"
+            />
+
+            <!-- allow users to comment on the article -->
+            <AddComment class="ml-5" />
         </div>
-
-        <Comment class="ml-5" v-for="comment in Comments"
-            :key="comment.id"
-            :commentor="comment.user.userName"
-            :createdAt="comment.createdAt"
-            :content="comment.content"
-            :commentorId="comment.userId"
-            :articleAuthorId="comment.article.userId"
-            :commentId="comment.id"
-            :NbCommentLikes="comment.commentLikes.length"
-        />
-
-        <AddComment class="ml-5 mr-3" />
 
         <ReturnButton/>
 
@@ -64,6 +85,7 @@
 </template>
 
 <script>
+//import components used in this vierw
 import CurrentUser from "../components/CurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import Comment from "../components/Comment"
@@ -71,6 +93,7 @@ import AddComment from "../components/AddComment"
 import Footer from "../components/Footer"
 
 import http from '../http-common'
+import moment from "moment"
 
 export default {
     name: "articlePage",
@@ -83,9 +106,10 @@ export default {
     },
     data(){
         return {
+            imagePresent: null,
             Comments: [],
             Likes: [],
-            alreadyLiked: 0,
+            alreadyLiked: 0, //by default, alreadyLiked is set at zero
             CommentLikes: [],
             canEdit: false,
             canEditComment: false,
@@ -93,99 +117,115 @@ export default {
             actualUser: localStorage.getItem("userId")
         }
     },
+    filters: {
+        formatDate: function(value){ //filter to display date & time in an easy to read format
+            if(value) {
+               return moment(String(value)).format("DD/MM/YYYY kk:mm") 
+            }
+        }
+    },
     methods: {
-        retrieveOneArticle() {
+        retrieveOneArticle() { //get information on the article displayed
             http
-             .get("/articles/" + this.$route.params.id)
+             .get("/articles/" + this.$route.params.id) //use the parameters defined in the router link to complete the path of the query
              .then(response => {
                  this.article = response.data
                  this.author = this.article.userId
-                if(localStorage.getItem("userId") == this.author) {
-                    this.canEdit = true;
+                 if(this.article.imageUrl != null){ //if there is an image associated with the article, set imagePresent to true
+                     this.imagePresent = true
+                 }
+                if(localStorage.getItem("userId") == this.author) { //if the current user is also the author of the article, allow them to...
+                    this.canEdit = true; //edit the article
+                    this.canDelete = true; //delete the article
                 }
-                if(localStorage.getItem("userId") == this.author ||
-                    localStorage.getItem("chargeCom") == true) {
-                        this.canDelete = true;
+                if(localStorage.getItem("chargeCom") == "true") { // if the current user is in charge of communication at groupomania, 
+                    this.canDelete = true; //allow them to delete the article
                 }
              })
-             .catch(e => {
-                 console.log(e)
+             .catch(err => {
+                 console.log(err)
              })
         },
-        deleteArticle() {
+        getRelatedComments() { // function to get comments related to the article displayed
             http
-                .delete("/articles/" + this.article.id)
+                .get("/comments/articles/" + this.$route.params.id) //use the parameters defined in the router link to complete the path of the query
                 .then(response => {
-                    console.log(response.data);
-                    this.$emit("refreshData");
-                    this.$router.push("/page_principale");
+                    this.Comments = response.data
+             })
+             .catch(err => {
+                 console.log(err)
+             })
+        },
+        getLikes() { //get the likes associated with the article
+            http
+                .get("/likes/articles/" + this.$route.params.id) //use the parameters defined in the router link to complete the path of the query
+                .then(response => {
+                    this.Likes = response.data
+                    for(let i = 0; i < this.Likes.length; i++) { //for each like associated with this article...
+                        if(this.Likes[i].userId == this.actualUser) { //...if the userId matches that of the current user...
+                            this.alreadyLiked++ //...add 1 to alreadyLiked ...
+                            break //...and break out of the loop
+                        }    
+                    }
                 })
-                .catch(e => {
-                    console.log(e);
-                });
+                .catch(err => {
+                    console.log(err)
+                })
         },
-        getRelatedComments() {
-            http
-                .get("/comments/articles/" + this.$route.params.id)
-                .then(response => {
-                 this.Comments = response.data
-             })
-             .catch(e => {
-                 console.log(e)
-             })
-        },
-        likeArticle() {
-            if(this.alreadyLiked == 0){
-                const data = {
+        likeArticle() { //function that allows the user to like the article
+            if(this.alreadyLiked == 0){ //if the current user has not already liked the article...
+                const data = { //... set the data for the like with the current user's Id and the current article's id ...
                     userId: this.actualUser,
                     articleId: this.article.id
                 }
 
                 http
-                    .post("/likes", data)
+                    .post("/likes", data) //...post the data to the database...
                     .then(response => {
                         this.like = response.data
-                        console.log(response.data)
-                        this.$router.go()
+                        this.$router.go() //... and refresh the page to display the new like
                     })
-                    .catch(e => {
-                        console.log(e)
+                    .catch(err => {
+                        console.log(err)
                     })
-
-                    this.like = {}
-                } else {
-                    console.log("Déjà liké !")
+                } else { //if the current user has already like the article...
+                    console.log("Déjà liké !") //... console.log a message
                 } 
         },
-        getLikes() {
+        deleteArticle() { //function to delete an article
             http
-                .get("/likes/articles/" + this.$route.params.id)
-                .then(response => {
-                    this.Likes = response.data
-                    console.log("Likes :", this.Likes)
-                    for(let i = 0; i < this.Likes.length; i++) {
-                        if(this.Likes[i].userId == this.actualUser) {
-                            this.alreadyLiked++
-                            console.log("alreadyLiked: ", this.alreadyLiked)
-                        }    
-                    }
+                .delete("/articles/" + this.article.id) // delete article identidied by its id
+                .then(() => {
+                    this.$router.push("/page_principale"); //then return to the main page
                 })
-                .catch(e => {
-                    console.log(e)
-                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
-    created() {
-        console.log("Created")
-        this.getLikes();
+    created() { //call necessary functions at the creation of the view
         this.retrieveOneArticle();
         this.getRelatedComments();
+        this.getLikes();
     }
 }
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .articlepage{
+        a{
+            color: black;
+            text-decoration: none;
+            :hover{
+                color: $red;
+            }
+        }
+        button:hover{
+          background-color: $red;
+          color: white;
+        }
         .article-box{
             border: black 2px solid;
         }
@@ -211,7 +251,7 @@ export default {
             align-items: center;
             p{
                 font-weight: bold;
-                color: #FD2D01;
+                color: $red;
             }
         }
     }

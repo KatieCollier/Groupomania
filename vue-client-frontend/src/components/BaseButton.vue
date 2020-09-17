@@ -1,5 +1,8 @@
+<!-- component for most used button format in the app -->
 <template>
+  <!-- $listeners allows us to put any event we want on the button -->
   <button v-on="$listeners" class="btn-lg">
+    <!-- slot means we can insert any text we want in this button -->
     <slot></slot>
   </button>
 </template>
@@ -11,11 +14,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     button{
-        background-color: #FFD7D7;
-        border: 2px solid #FD2D01;
+        background-color: $pink;
+        border: 2px solid $red;
         border-radius: 10;
-        color:#FD2D01;
+        color: black;
         font-weight: bold;
     }
 </style>

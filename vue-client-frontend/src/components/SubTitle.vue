@@ -1,5 +1,6 @@
+<!-- component for subtitle -->
 <template>
-    <div class="subtitle col h3 p-2">
+    <div class="subtitle col h3 p-2 pl-md-5">
         <slot></slot>
     </div>
 </template>
@@ -11,9 +12,11 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_variables.scss";
+
     .subtitle{
-        background-color: #FFD7D7;
-        color: #FD2D01;
+        background-color: $pink;
+        color: black;
         font-weight: bold;
     }
 </style>
