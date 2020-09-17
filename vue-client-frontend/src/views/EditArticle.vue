@@ -96,7 +96,7 @@ export default {
                         }
                     })
                     .then(() => {
-                        router.push("/articles/" + this.$route.params.id);
+                        router.go(-1);
                     })
                     .catch(err => {
                         console.log(err);
