@@ -1,7 +1,9 @@
+<!-- view to allow a user to signup to the app-->
 <template>
   <div class="signup-form">
     <div class="submit-form">
-    
+
+        <!-- user name input box -->
         <div class="form-group">
           <label for="userName">Nom d'utilisateur*:</label>
           <input
@@ -14,6 +16,7 @@
           />
         </div>
 
+        <!-- email name input box -->
         <div class="form-group">
           <label for="email">Email*:</label>
           <input
@@ -25,6 +28,7 @@
           />
         </div>
 
+        <!-- department name input box -->
         <div class="form-group">
           <label for="department"> Equipe*: </label>
           <input
@@ -36,6 +40,7 @@
           />
         </div>
 
+        <!-- password name input box -->
         <div class="form-group">
           <label for="password"> Mot de passe*: </label>
           <input
@@ -48,6 +53,7 @@
           />
         </div>
 
+        <!-- error message - only displayed in case of an error -->
         <div class="error-alert text-center my-3 p-3" v-if="message">
           <p> Erreur lors de l'inscription: <br>
           {{this.message}} </p>
@@ -63,6 +69,7 @@
 </template>
 
 <script>
+//import components used in view
 import BaseButton from "../components/BaseButton"
 
 import router from "../router"
@@ -75,19 +82,13 @@ export default {
   },
   data() {
     return {
-      user: {
-        email: "",
-        userName: "",
-        password: "",
-        department: "",
-        chargeCom: false
-      },
+      user: [],
       message: null
     };
   },
   methods: {
-    saveUser() {
-      const data = {
+    saveUser() { //sign in user
+      const data = { //create data object with the user's information
         email: this.user.email,
         userName: this.user.userName,
         password: this.user.password,
@@ -95,17 +96,15 @@ export default {
         chargeCom: false
       };
 
-      http
+      http //post it to the database with the signup path
         .post("/users/signup", data)
         .then(response => {
           this.user.id = response.data.id;
-          console.log(response.data);
-          this.user = {};
-          router.push("/");
+          router.push("/"); //go to login page
         })
         .catch(err => {
           console.log(err);
-          this.message = err.response.data.error
+          this.message = err.response.data.error //in case of error, define message
         });
     }
   }

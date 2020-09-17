@@ -103,9 +103,8 @@ export default {
 
                 http //... and post it to the database
                     .post("/commentLikes", data)
-                    .then(response => {
-                        this.commentLike = response.data;
-                        this.$router.go();
+                    .then(() => {
+                        this.$router.go()
                     })
                     .catch(err => {
                         console.log(err)
@@ -135,9 +134,8 @@ export default {
             localStorage.getItem("chargeCom") == "true" ||
             this.articleAuthorId == this.actualUser) {
               this.canDeleteComment = true
-              console.log("canEditComment", this.canEditComment)
           }
-      },  
+      }
   },
   created() { //call necessary functions at the creation of the view
       this.getCommentLikes();

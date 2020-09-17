@@ -1,9 +1,11 @@
+<!-- view to edit an existing article -->
 <template>
     <div class="edit-article">
         <LargeCurrentUser class="mb-4" />
 
         <ReturnButton />
 
+        <!-- title input box-->
         <div class="m-3">
             <div class="form-group">
                 <label for="title">Titre:</label>
@@ -16,6 +18,7 @@
                 />
             </div>
 
+            <!-- content input box-->
             <div class="form-group">
                 <label for="content">Texte:</label>
                 <textarea
@@ -27,6 +30,7 @@
                 />
             </div>
 
+            <!-- imape upload input -->
             <div class="form-group">
                 <label for="file"> Choisissez une image: </label>
                 <input type="file" name="uploadfile" @change="uploadFile">
@@ -43,6 +47,7 @@
 </template>
 
 <script>
+//import components used in view
 import LargeCurrentUser from "../components/LargeCurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import BaseButton from "../components/BaseButton"
@@ -61,7 +66,7 @@ export default {
     },
     props: ["article"],
     methods: {
-        retrieveOneArticle() {
+        retrieveOneArticle() { //get the information on the article to edit
             http
              .get("/articles/" + this.$route.params.id)
              .then(response => {
@@ -71,12 +76,12 @@ export default {
                  console.log(err)
              })
         },
-        uploadFile (event) {
+        uploadFile (event) { // define the file to be uploaded when it is selected or changed
             this.uploadfile = event.target.files
         },
-        updateArticle(){
-            if(this.uploadfile){
-                const formData = new FormData();
+        updateArticle(){ //update the article
+            if(this.uploadfile){ //if an image is attached to the update
+                const formData = new FormData(); //define a formData object
                 for (const i of Object.keys(this.uploadfile)) {
                     formData.append('uploadfile', this.uploadfile[i])
                 }
@@ -84,29 +89,9 @@ export default {
                 formData.append("content", this.article.content)
                 formData.append("userId", localStorage.getItem("userId"))
 
-                http
+                http //and use it to modify the article with put
                     .put("/articles/" + this.$route.params.id, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        }
-                    })
-                    .then(response => {
-                        console.log(response.data)
-                        router.push("/articles/" + this.$route.params.id);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            } else {
-                const data = {
-                    title: this.article.title,
-                    content: this.article.content,
-                    userId: localStorage.getItem("userId")
-                }
-
-                http
-                    .put("/articles/" + this.$route.params.id, data, {
-                        headers: {
+                        headers: { //header indication the correct data type
                             'Content-Type': 'multipart/form-data',
                         }
                     })
@@ -116,11 +101,25 @@ export default {
                     .catch(err => {
                         console.log(err);
                     });
+            } else { //if there is no image attached
+                const data = { //define the data using the input boxes
+                    title: this.article.title,
+                    content: this.article.content,
+                    userId: localStorage.getItem("userId")
+                }
+
+                http //and put it to the database
+                    .put("/articles/" + this.$route.params.id, data)
+                    .then(() => {
+                        router.push("/articles/" + this.$route.params.id);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
-        }
-            
+        }      
     },
-    created() {
+    created() { //call functions need at the creation of the page
         this.retrieveOneArticle();
     }
 }

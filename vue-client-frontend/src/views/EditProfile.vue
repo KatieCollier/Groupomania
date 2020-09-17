@@ -1,6 +1,8 @@
+<!-- view to edit user profile information and or picture-->
 <template>
     <div class="edit-profile">
 
+        <!-- user name input box-->
         <div class="m-4">
             <div class="form-group">
                 <label for="userName">Nom d'utilisateur:</label>
@@ -14,6 +16,7 @@
                 />
             </div>
 
+            <!-- email input box -->
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input
@@ -26,6 +29,7 @@
                 />
             </div>
 
+            <!-- department input box -->
             <div class="form-group">
                 <label for="department">Equipe:</label>
                 <input
@@ -38,6 +42,7 @@
                 />
             </div>
 
+            <!-- password imput box -->
             <div class="form-group">
                 <label for="password">Mot de passe:</label>
                 <input
@@ -50,6 +55,7 @@
                 />
             </div>
 
+            <!-- image upload input -->
             <div class="form-group buttons">
                 <label for="file"> Choisissez une image: </label>
                 <input type="file" name="uploadfile" @change="uploadFile">
@@ -66,6 +72,7 @@
 </template>
 
 <script>
+//import components used in view
 import BaseButton from "../components/BaseButton"
 import Footer from "../components/Footer"
 
@@ -85,23 +92,22 @@ export default {
   },
   props: ["user"],
   methods: {
-      retrieveOneUser() {
+      retrieveOneUser() { //get information about current user
             http
              .get("/users/" + this.$route.params.id)
              .then(response => {
                  this.user = response.data
              })
-             .catch(e => {
-                 console.log(e)
+             .catch(err => {
+                 console.log(err)
              })
         },
-        uploadFile (event) {
+        uploadFile (event) { //define file to upload when it is selected or changed
             this.uploadfile = event.target.files
-            console.log("Uploaded file: ", this.uploadfile)
         },
-      updateProfile() {
-          if(this.uploadfile){
-              const formData = new FormData();
+      updateProfile() { //update profile
+          if(this.uploadfile){ //if there is an image associated
+              const formData = new FormData(); //create a formData object
             for (const i of Object.keys(this.uploadfile)) {
                 formData.append('uploadfile', this.uploadfile[i])
             }
@@ -110,48 +116,42 @@ export default {
             formData.append("department", this.user.department)
             formData.append("password", this.user.password)
 
-          http
+          http //and put it to the database
             .put("/users/" + this.$route.params.id, formData)
-            .then(response => {
-                console.log(response.data)
-                localStorage.removeItem("imageUrl")
+            .then(() => {
                 router.push("/profile/" + this.$route.params.id)
             })
-            .catch(e => {
-                console.log(e)
+            .catch(err => {
+                console.log(err)
             })
-          } else {
-             const data = {
+          } else { // if there is no image attached
+             const data = { //create a data object
                  userName: this.user.userName,
                  email: this.user.email,
                  department: this.user.department,
                  password: this.user.password
              }
 
-          http
+          http //and put it to the database
             .put("/users/" + this.$route.params.id, data)
-            .then(response => {
-                console.log(response.data)
-                localStorage.removeItem("imageUrl")
+            .then(() => {
                 router.push("/profile/" + this.$route.params.id)
             })
-            .catch(e => {
-                console.log(e)
+            .catch(err => {
+                console.log(err)
             })
-          }
-          
+          } 
       },
-      deleteProfile() {
+      deleteProfile() { //delete profile
           http
-            .delete("/users/" + this.$route.params.id)
-            .then(response => {
-                console.log(response.data)
-                localStorage.clear()
-                router.push("/connection")
+            .delete("/users/" + this.$route.params.id) //delete user
+            .then(() => {
+                localStorage.clear() //clear local stotage of userId and authorization token
+                router.push("/connection") //return to the log in page
             })
       }
   },
-  created() {
+  created() { //call the needed functions when the view is created
       this.retrieveOneUser();
   }
 };

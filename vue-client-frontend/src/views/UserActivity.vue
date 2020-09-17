@@ -1,9 +1,11 @@
+<!-- view of user activity -->
 <template>
     <div class="user-activity">
         <CurrentUser />
 
         <ReturnButton />
 
+        <!-- subtitle with name of user whose activity we are seeing -->
         <div class="subtitle-with-image">
             <Subtitle class="font-weight-bold"> {{UserWithActivity.userName}} </Subtitle>
              <img :src="image" alt="" class="subtitle-image">
@@ -26,6 +28,7 @@
 </template>
 
 <script>
+//import components used in view
 import CurrentUser from "../components/CurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import Subtitle from "../components/SubTitle"
@@ -51,7 +54,7 @@ export default {
             image: "",
         }
     },
-    filters: {
+    filters: { //filter to display date & time in an easy to read format
         formatDate: function(value){
             if(value) {
                return moment(String(value)).format("DD/MM/YYYY kk:mm") 
@@ -59,31 +62,31 @@ export default {
         }
     },
     methods: {
-        getUserActivity() {
+        getUserActivity() { //get all activity of a given user
             http
                 .get("/users/" + this.$route.params.id)
                 .then(response => {
-                    this.UserWithActivity = response.data
-                    this.image = this.UserWithActivity.imageUrl
-                    const articles = this.UserWithActivity.articles
+                    this.UserWithActivity = response.data //all user activity
+                    this.image = this.UserWithActivity.imageUrl //user's profile pic url
+                    const articles = this.UserWithActivity.articles //all the users articles
                     const Articles = articles.map(function(o) {
-                        o.activityType = "Article";
+                        o.activityType = "Article"; //define activity type for articles
                         return o;
                     })
-                    const comments = this.UserWithActivity.comments
+                    const comments = this.UserWithActivity.comments //all user's comments
                     const Comments = comments.map(function(o) {
-                        o.activityType = "Comment on";
+                        o.activityType = "Comment on"; //define activity type for comments
                         return o;
                     })
-                    this.UserActivity = Articles.concat(Comments)
-                    this.UserActivity.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)
+                    this.UserActivity = Articles.concat(Comments) //concatenate user's articles and comments into a single array
+                    this.UserActivity.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1) //order array by most recent update data
                 })
-                .catch(e => {
-                    console.log(e)
+                .catch(err => {
+                    console.log(err)
                 })
         }
     },
-    created() {
+    created() { //call necessary functions when view is created
         this.getUserActivity();
     }
 }

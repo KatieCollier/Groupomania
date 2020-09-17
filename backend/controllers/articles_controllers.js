@@ -41,6 +41,7 @@ exports.findAll = (req, res) => {
       limit: 5, //number of articles per page
       offset: 5*page, //number of articles to skip before showing the results
       order: [["updatedAt", "DESC"]], // order articles from the most recently updated to the least recently updated
+      distinct: true,
       include: ["user", "comments"],
       where: condition
     })

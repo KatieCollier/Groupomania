@@ -1,3 +1,4 @@
+<!-- view of the main page of the application-->
 <template>
     <div class="mainpage">
         <CurrentUser />
@@ -10,12 +11,15 @@
             </a>
         </div>
 
+        <!-- error message in case the page doesn't load - only displayed in case of error -->
         <div class="notLoading text-center m-3 p-3" v-if="loadError">
             <p> Il y a eu un petit problème lors du chargement de la page <br>
             Veuillez réessayer </p>
+            <!-- button allows user to refresh the page in case of error -->
             <BaseButton @click="refresh"> Rafraichir la page </BaseButton>
         </div>
 
+        <!-- article section -->
         <Subtitle class="font-weight-bold">
             Articles Récents
         </Subtitle>
@@ -37,6 +41,7 @@
             </a>
         </div>
 
+        <!-- activity section-->
         <Subtitle class="font-weight-bold">
             Activité Récente
         </Subtitle>
@@ -65,6 +70,7 @@
 </template>
 
 <script>
+//import components used in view
 import CurrentUser from "../components/CurrentUser"
 import SearchBar from "../components/SearchBar"
 import BaseButton from "../components/BaseButton"
@@ -97,70 +103,55 @@ export default {
         };
     },
     filters: {
-        formatDate: function(value){
+        formatDate: function(value){ //filter to display date & time in an easy to read format
             if(value) {
                return moment(String(value)).format("DD/MM/YYYY kk:mm") 
             }
         }
     },
     methods: {
-        retrieveArticles() {
+        retrieveArticles() { //get information about the first 5 articles
             let params = {};
-            params["page"] = 0;
-            
-            console.log("token", localStorage.getItem("token"))
-            console.log("HTTP", http.defaults.headers.Authorization)
-            const httpAuth = http.defaults.headers.Authorization
-
-            if(httpAuth == localStorage.getItem("token")) {
-                console.log("Authorization ok")
-            } else {
-                console.log("Houston, we have a problem")
-            }
+            params["page"] = 0; //page set at 0 as we want the first 5 articles only
 
             http
                 .get("/articles", {params})
                 .then(response => {
                     this.Articles = response.data.rows;
-                    console.log("Articles: ", response.data);
                 })
                 .catch(err => {
                     console.log(err);
-                    this.loadError = true;
+                    this.loadError = true; //in case of error, change loadError to true
                 });
         },
-        refreshList() {
-            this.retrieveArticles();
-        },
-        refresh(){
+        refresh(){ // function to reload page
             router.go()
         },
-        getAllActivity() {
+        getAllActivity() { //get information on all activity - articles and comments
             let params = {};
-            params["page"] = 0
+            params["page"] = 0 //page set at 0 as we want the first 5 articles and comments only
 
             http
-                .get("/comments", {params})
+                .get("/comments", {params}) //get the first 5 comments - articles already retrieved in previous function
                 .then(response => {
                     this.Comments = response.data.rows
                     const comments = this.Comments.map(function(o) {
-                        o.activityType = "Comment on";
+                        o.activityType = "Comment on"; //define the activity type of comments
                         return o;
                     })
                     const articles = this.Articles.map(function(o) {
-                        o.activityType = "Article";
+                        o.activityType = "Article"; //define the article type of articles
                         return o;
                     })
-                    this.AllActivity = articles.concat(comments)
-                    this.AllActivity.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1)  
-                    console.log("all activity: ", this.AllActivity)
+                    this.AllActivity = articles.concat(comments) //concatenate articles and comments into a single array
+                    this.AllActivity.sort((a, b) => (a.updatedAt < b.updatedAt) ? 1 : -1) // order the array by most recent update date
                 })
                 .catch(err => {
                     console.log(err)
                 })
         }
     },
-    created() {
+    created() { //call necessary function during the creation of the view
         this.retrieveArticles();
         this.getAllActivity();
     }            

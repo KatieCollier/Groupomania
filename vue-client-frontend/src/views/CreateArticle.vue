@@ -1,7 +1,9 @@
+<!-- view for the creation of an article -->
 <template>
     <div class="create-article">
         <CurrentUser class="mb-4" />
 
+        <!-- title input box -->
         <div class="m-3">
             <div class="form-group">
                 <label for="title">Titre:</label>
@@ -14,6 +16,7 @@
                 />
             </div>
 
+            <!-- content input box -->
             <div class="form-group">
                 <label for="content">Texte:</label>
                 <textarea
@@ -24,6 +27,7 @@
                     name="content" />
             </div>
 
+            <!-- select an image input -->
             <div class="form-group">
                 <label for="file"> Choisissez une image: </label>
                 <input type="file" name="uploadfile" @change="uploadFile">
@@ -43,9 +47,10 @@
 
 
 <script>
+//import components necessary for view
 import CurrentUser from "../components/LargeCurrentUser"
-import ReturnButton from "../components/ReturnButton"
 import BaseButton from "../components/BaseButton"
+import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
@@ -55,8 +60,8 @@ export default {
     name: "createArticle",
     components: {
         CurrentUser,
-        ReturnButton,
         BaseButton,
+        ReturnButton,
         Footer
     },
     data() {
@@ -67,13 +72,12 @@ export default {
         }
     },
     methods: {
-        uploadFile (event) {
+        uploadFile (event) { //function that defines the file to be uploaded when it is selected or changed
             this.uploadfile = event.target.files
-            console.log("Uploaded file: ", this.uploadfile)
         },
-        addArticle() {
-            if(this.uploadfile){
-                const formData = new FormData();
+        addArticle() { //add article to the database
+            if(this.uploadfile){ //if there is an image
+                const formData = new FormData(); //create a formData object with relevent infornmation
                 for (const i of Object.keys(this.uploadfile)) {
                     formData.append('uploadfile', this.uploadfile[i])
                 }
@@ -81,32 +85,30 @@ export default {
                 formData.append("content", this.article.content)
                 formData.append("userId", localStorage.getItem("userId"))
 
-                http
+                http //post formData
                     .post("/articles", formData, {
-                        headers: {
+                        headers: { //define the correct data type with the headers
                         'Content-Type': 'multipart/form-data',
                         }
                     })
                     .then(response => {
                         this.article.id = response.data.id;
-                        console.log(response.data);
-                        router.push("/page_principale");
+                        router.push("/page_principale"); //redirect to main page
                     })
                     .catch(err => {
                         console.log(err);
                     });
-            } else {
-                const data = {
+            } else { //if no image is attached
+                const data = { //define data from the input boxes
                     title: this.article.title,
                     content: this.article.content,
                     userId: localStorage.getItem("userId")
                 }
 
-                http
+                http //post data to database - default headers set in http-common are fine
                 .post("/articles", data)
                 .then(response => {
                     this.article.id = response.data.id;
-                    console.log(response.data);
                     router.push("/page_principale");
                 })
                 .catch(err => {

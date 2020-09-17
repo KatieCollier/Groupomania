@@ -1,3 +1,4 @@
+<!-- view of the user's profile -->
 <template>
     <div class="user-profile">
         <LargerCurrentUser class="mb-5" />
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+//import components for view
 import LargerCurrentUser from "../components/LargeCurrentUser"
 import BaseButton from "../components/BaseButton"
 import ReturnButton from "../components/ReturnButton"
@@ -53,18 +55,18 @@ export default {
     },
     props: ["user"],
     methods: {
-        retrieveOneUser() {
+        retrieveOneUser() { // get user info
             http
              .get("/users/" + this.$route.params.id)
              .then(response => {
                  this.user = response.data
              })
-             .catch(e => {
-                 console.log(e)
+             .catch(err => {
+                 console.log(err)
              })
         },
     },
-    created() {
+    created() { //call necessary functions when view is created
         this.retrieveOneUser();
     }
 }

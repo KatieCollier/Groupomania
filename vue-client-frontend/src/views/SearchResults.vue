@@ -1,3 +1,4 @@
+<!-- view to display search results -->
 <template>
     <div class="search-results">
         <CurrentUser />
@@ -37,10 +38,11 @@
 </template>
 
 <script>
+//import components used in view
 import CurrentUser from "../components/CurrentUser"
+import ReturnButton from "../components/ReturnButton"
 import Subtitle from "../components/SubTitle"
 import ArticlePreview from "../components/ArticlePreview"
-import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
 
 import http from "../http-common"
@@ -50,21 +52,21 @@ export default {
     name: "searchResults",
     components: {
         CurrentUser,
+        ReturnButton,
         Subtitle,
         ArticlePreview,
-        ReturnButton,
         Footer
     },
     data() {
         return {
             Articles: [],
-            page: 1,
+            page: 1, //default page
             count: null,
             pageSize: 5,
-            keyword: localStorage.getItem("keyword")
+            keyword: localStorage.getItem("keyword") //define the keyword
         };
     },
-    filters: {
+    filters: { //filter to display date & time in an easy to read format
         formatDate: function(value){
             if(value) {
                return moment(String(value)).format("DD/MM/YYYY kk:mm") 
@@ -72,7 +74,7 @@ export default {
         }
     },
     methods: {
-        getRequestParams(page) {
+        getRequestParams(page) { // set parameters: page and keyword
             let params = {};
             if(page) {
                 params["page"] = page - 1;
@@ -80,7 +82,11 @@ export default {
             params["keyword"] = localStorage.getItem("keyword")
             return params;
         },
-        retrieveArticles() {
+        handlePageChange(value) { // set page to the number clicked in pagination
+            this.page = value;
+            this.retrieveArticles();
+        },
+        retrieveArticles() { //get all articles that correspond to these parameters
             const params = this.getRequestParams(
                 this.page
             )
@@ -88,23 +94,16 @@ export default {
             http
                 .get("/articles", {params})
                 .then(response => {
-                this.Articles = response.data.rows;
-                this.count = response.data.count
-                localStorage.removeItem("keyword")
-                })
-                .catch(e => {
-                console.log(e);
+                    this.Articles = response.data.rows; //array of articles in the page
+                    this.count = response.data.count //total number of articles that correspond to the parameters
+                    localStorage.removeItem("keyword") //delete the keyword from the local storage - it is no longer needed
+                    })
+                .catch(err => {
+                    console.log(err);
                 });
-        },
-        refreshList() {
-        this.retrieveArticles();
-        },
-        handlePageChange(value) {
-            this.page = value;
-            this.retrieveArticles();
-        }
+        },   
   },
-  mounted() {
+  created() { //call necessary functions when view is created
     this.retrieveArticles();
     }       
 }

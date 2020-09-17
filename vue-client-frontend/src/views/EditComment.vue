@@ -1,9 +1,11 @@
+<!-- view to edit comment -->
 <template>
     <div class="edit-comment">
         <LargeCurrentUser class="mb-4" />
 
         <ReturnButton />
 
+        <!-- comment content input box-->
         <div class="m-3">
             <div class="form-group">
                 <label for="content">Commentaire:</label>
@@ -26,6 +28,7 @@
 </template>
 
 <script>
+//import components used in view
 import LargeCurrentUser from "../components/LargeCurrentUser"
 import ReturnButton from "../components/ReturnButton"
 import BaseButton from "../components/BaseButton"
@@ -44,36 +47,34 @@ export default {
     },
     props: ["comment"],
     methods: {
-        retrieveOneComment() {
+        retrieveOneComment() { // get comment information
             http
              .get("/comments/" + this.$route.params.id)
              .then(response => {
                  this.comment = response.data
-                 console.log(response.data)
              })
-             .catch(e => {
-                 console.log(e)
+             .catch(err => {
+                 console.log(err)
              })
         },
-        updateComment(){
-            const data = {
+        updateComment(){ // update comment
+            const data = { //define data
                 content: this.comment.content,
                 userId: this.comment.userId,
                 articleId: this.comment.articleId
             }
 
-            http
+            http // and put data to database
                 .put("/comments/" + this.$route.params.id, data)
-                .then(response => {
-                    console.log(response.data)
+                .then(() => {
                     router.go(-1);
                 })
-                .catch(e => {
-                    console.log(e);
+                .catch(err => {
+                    console.log(err);
                 });
         }
     },
-    created() {
+    created() { // call neede functions at the creation of the view
         this.retrieveOneComment();
     }
 }
