@@ -22,7 +22,7 @@ export default {
   data() {
       return {
           user: [],
-          userImage: "images/profile.png" //default profile pic
+          userImage: "/images/profile.png" //default profile pic
       }
   },
   methods: {

@@ -4,7 +4,7 @@
         <div class="preview-header">
             <!-- first line of header -->
             <div class="articleInfo">
-                <p> Comment on </p>
+                <p> Commentaire sur </p>
                 
             </div>
             <div class="updateTime">
@@ -19,7 +19,7 @@
                                 name: 'articlePage',
                                 params: { id: commentArticleId }
                             }">
-                <p class="mb-0 link"> This article </p>
+                <p class="mb-0 link"> Cet Article </p>
             </router-link>
             <!-- author of the comment and link to their user activity page -->
             <router-link :to="{

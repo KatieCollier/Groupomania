@@ -75,7 +75,7 @@ export default {
                     })
                     const comments = this.UserWithActivity.comments //all user's comments
                     const Comments = comments.map(function(o) {
-                        o.activityType = "Comment on"; //define activity type for comments
+                        o.activityType = "Commentaire sur"; //define activity type for comments
                         return o;
                     })
                     this.UserActivity = Articles.concat(Comments) //concatenate user's articles and comments into a single array
