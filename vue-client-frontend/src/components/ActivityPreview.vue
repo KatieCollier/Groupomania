@@ -21,7 +21,7 @@
                                 name: 'articlePage',
                                 params: { id: commentArticleId }
                             }">
-                <p v-if="activityType === 'Comment on'" class="mb-0 link"> This article </p>
+                <p v-if="activityType === 'Commentaire sur'" class="mb-0 link"> Cet Article </p>
             </router-link>
             <!-- if the activity is an article, give its title with a link to the full article page -->
             <router-link :to="{
