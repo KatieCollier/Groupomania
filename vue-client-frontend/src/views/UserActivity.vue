@@ -18,6 +18,7 @@
             :content="activity.content"
             :key="activity.updatedAt"
             :activityTitle="activity.title"
+            :articleId="activity.id"
             :commentArticleId="activity.articleId"
         />
 
