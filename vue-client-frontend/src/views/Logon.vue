@@ -35,7 +35,7 @@
         </div>
 
         <div class="text-center">
-            <BaseButton @click="login" class="m-3"> Connection </BaseButton>
+            <BaseButton @click="login" class="m-3"> Connexion </BaseButton>
 
           <div class="mt-4">      
             <p> Pas encore de compte? <br>

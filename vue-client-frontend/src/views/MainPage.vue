@@ -136,7 +136,7 @@ export default {
                 .then(response => {
                     this.Comments = response.data.rows
                     const comments = this.Comments.map(function(o) {
-                        o.activityType = "Comment on"; //define the activity type of comments
+                        o.activityType = "Commentaire sur"; //define the activity type of comments
                         return o;
                     })
                     const articles = this.Articles.map(function(o) {
