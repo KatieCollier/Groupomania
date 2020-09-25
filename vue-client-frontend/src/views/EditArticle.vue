@@ -55,6 +55,7 @@ import Footer from "../components/Footer"
 
 import http from '../http-common'
 import router from "../router"
+import jwtDecode from "jwt-decode"
 
 export default {
     name: "editPage",
@@ -80,6 +81,9 @@ export default {
             this.uploadfile = event.target.files
         },
         updateArticle(){ //update the article
+            const decoded = jwtDecode(localStorage.getItem("token"))
+            const userId = decoded.userId
+
             if(this.uploadfile){ //if an image is attached to the update
                 const formData = new FormData(); //define a formData object
                 for (const i of Object.keys(this.uploadfile)) {
@@ -87,7 +91,7 @@ export default {
                 }
                 formData.append("title", this.article.title)
                 formData.append("content", this.article.content)
-                formData.append("userId", localStorage.getItem("userId"))
+                formData.append("userId", userId)
 
                 http //and use it to modify the article with put
                     .put("/articles/" + this.$route.params.id, formData, {
@@ -105,7 +109,7 @@ export default {
                 const data = { //define the data using the input boxes
                     title: this.article.title,
                     content: this.article.content,
-                    userId: localStorage.getItem("userId")
+                    userId: userId
                 }
 
                 http //and put it to the database

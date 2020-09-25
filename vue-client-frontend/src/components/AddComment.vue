@@ -18,6 +18,7 @@
 import BaseButton from "../components/BaseButton"
 
 import http from "../http-common"
+import jwtDecode from "jwt-decode"
 
 export default {
     name: "AddComment",
@@ -31,22 +32,25 @@ export default {
     },
     methods: {
         addComment() {
+            const decoded = jwtDecode(localStorage.getItem("token"))
+            const userId = decoded.userId
+
             const data = { //create data to be sent in the request
                 articleId: this.$route.params.id, //article is the one that is currently open
-                userId: localStorage.getItem("userId"), //user is the one currently logged in 
+                userId: userId, //user is the one currently logged in 
                 content: this.comment.content //content retrieved from the text area
                 
             }
 
             http
-            .post("/comments", data) //send post request
-            .then(response => {
-                this.comment.id = response.data.id;
-                this.$router.go(); 
-            })
-            .catch(err => {
-                console.log(err);
-            });
+                .post("/comments", data) //send post request
+                .then(response => {
+                    this.comment.id = response.data.id;
+                    this.$router.go(); 
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 }

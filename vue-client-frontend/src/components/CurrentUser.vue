@@ -16,6 +16,7 @@
 
 <script>
 import http from "../http-common"
+import jwtDecode from "jwt-decode"
 
 export default {
   name: 'CurrentUser',
@@ -27,8 +28,11 @@ export default {
   },
   methods: {
       retrieveOneUser() { //function to retrieve user information
+        const decoded = jwtDecode(localStorage.getItem("token"))
+        const userId = decoded.userId
+
           http
-            .get("/users/" + localStorage.getItem("userId")) // get user info using the id stored during login
+            .get("/users/" + userId) // get user info using the id stored during login
             .then(response => {
                 this.user = response.data
                 if(this.user.imageUrl != null) { //if there is a custom profile pic, use that one instead of the default one
