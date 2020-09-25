@@ -44,6 +44,7 @@
 
 <script>
 import http from "../http-common"
+import jwtDecode from "jwt-decode"
 
 export default {
   name: 'Comment',
@@ -72,7 +73,6 @@ export default {
   },
   data() {
       return {
-          actualUser: localStorage.getItem("userId"),
           canEditComment: false,
           canDeleteComment: false,
           CommentLikes: [],
@@ -82,12 +82,15 @@ export default {
   methods: {
       getCommentLikes() { /*function to get the number likes this comment has and to determine weather 
       the current user has already liked the comment */
+        const decoded = jwtDecode(localStorage.getItem("token"))
+        const actualUser = decoded.userId
+
         http
             .get("commentLikes/comments/" + this.commentId)
             .then(response => {
                 this.CommentLikes = response.data
                 for(let i = 0; i < this.CommentLikes.length; i++) { //for each like...
-                    if(this.CommentLikes[i].userId == this.actualUser) { //...check if the userId is the same as that of the current user...
+                    if(this.CommentLikes[i].userId == actualUser) { //...check if the userId is the same as that of the current user...
                         this.commentAlreadyLiked++; //... if yes, add one to commentAlreadyLiked ...
                         break //... and break out of the for loop
                     }
@@ -95,9 +98,12 @@ export default {
             })
       },
       likeComment() { //function like a comment
+            const decoded = jwtDecode(localStorage.getItem("token"))
+            const actualUser = decoded.userId
+
             if(this.commentAlreadyLiked == 0) { //... if the current user hasn't already liked the comment...
                 const data = { //... create the like data ...
-                    userId: this.actualUser,
+                    userId: actualUser,
                     commentId: this.commentId
                 }
 
@@ -124,15 +130,21 @@ export default {
                 });
       },
       commentEditing() { //if the current user is also the author of the comment, they may edit it
-          if(this.commentorId == this.actualUser) {
+        const decoded = jwtDecode(localStorage.getItem("token"))
+        const actualUser = decoded.userId
+
+          if(this.commentorId == actualUser) {
               this.canEditComment = true
           }
       },
       commentDeleting() { /*if the current user is the author of the comment, the author of the associated article or 
       in charge of communication, they may delete this comment */
-          if(this.commentorId == this.actualUser ||
+        const decoded = jwtDecode(localStorage.getItem("token"))
+        const actualUser = decoded.userId
+
+          if(this.commentorId == actualUser ||
             localStorage.getItem("chargeCom") == "true" ||
-            this.articleAuthorId == this.actualUser) {
+            this.articleAuthorId == actualUser) {
               this.canDeleteComment = true
           }
       }

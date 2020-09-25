@@ -94,6 +94,7 @@ import Footer from "../components/Footer"
 
 import http from '../http-common'
 import moment from "moment"
+import jwtDecode from "jwt-decode"
 
 export default {
     name: "articlePage",
@@ -113,8 +114,7 @@ export default {
             CommentLikes: [],
             canEdit: false,
             canEditComment: false,
-            canDelete:false,
-            actualUser: localStorage.getItem("userId")
+            canDelete:false
         }
     },
     filters: {
@@ -126,6 +126,9 @@ export default {
     },
     methods: {
         retrieveOneArticle() { //get information on the article displayed
+            const decoded = jwtDecode(localStorage.getItem("token"))
+            const userId = decoded.userId
+
             http
              .get("/articles/" + this.$route.params.id) //use the parameters defined in the router link to complete the path of the query
              .then(response => {
@@ -134,7 +137,7 @@ export default {
                  if(this.article.imageUrl != null){ //if there is an image associated with the article, set imagePresent to true
                      this.imagePresent = true
                  }
-                if(localStorage.getItem("userId") == this.author) { //if the current user is also the author of the article, allow them to...
+                if(userId == this.author) { //if the current user is also the author of the article, allow them to...
                     this.canEdit = true; //edit the article
                     this.canDelete = true; //delete the article
                 }
@@ -157,12 +160,15 @@ export default {
              })
         },
         getLikes() { //get the likes associated with the article
+            const decoded = jwtDecode(localStorage.getItem("token"))
+            const actualUser = decoded.userId
+
             http
                 .get("/likes/articles/" + this.$route.params.id) //use the parameters defined in the router link to complete the path of the query
                 .then(response => {
                     this.Likes = response.data
                     for(let i = 0; i < this.Likes.length; i++) { //for each like associated with this article...
-                        if(this.Likes[i].userId == this.actualUser) { //...if the userId matches that of the current user...
+                        if(this.Likes[i].userId == actualUser) { //...if the userId matches that of the current user...
                             this.alreadyLiked++ //...add 1 to alreadyLiked ...
                             break //...and break out of the loop
                         }    
@@ -173,9 +179,12 @@ export default {
                 })
         },
         likeArticle() { //function that allows the user to like the article
+            const decoded = jwtDecode(localStorage.getItem("token"))
+            const actualUser = decoded.userId
+
             if(this.alreadyLiked == 0){ //if the current user has not already liked the article...
                 const data = { //... set the data for the like with the current user's Id and the current article's id ...
-                    userId: this.actualUser,
+                    userId: actualUser,
                     articleId: this.article.id
                 }
 

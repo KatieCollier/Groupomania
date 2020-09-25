@@ -96,7 +96,6 @@ export default {
                 .then(response => {
                     this.Articles = response.data.rows; //array of articles in the page
                     this.count = response.data.count //total number of articles that correspond to the parameters
-                    localStorage.removeItem("keyword") //delete the keyword from the local storage - it is no longer needed
                     })
                 .catch(err => {
                     console.log(err);

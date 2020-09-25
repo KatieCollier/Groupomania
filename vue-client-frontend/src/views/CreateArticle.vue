@@ -52,6 +52,7 @@ import CurrentUser from "../components/LargeCurrentUser"
 import BaseButton from "../components/BaseButton"
 import ReturnButton from "../components/ReturnButton"
 import Footer from "../components/Footer"
+import jwtDecode from "jwt-decode"
 
 import http from "../http-common"
 import router from "../router"
@@ -76,6 +77,9 @@ export default {
             this.uploadfile = event.target.files
         },
         addArticle() { //add article to the database
+            const decoded = jwtDecode(localStorage.getItem("token"))
+            const userId = decoded.userId
+
             if(this.uploadfile){ //if there is an image
                 const formData = new FormData(); //create a formData object with relevent infornmation
                 for (const i of Object.keys(this.uploadfile)) {
@@ -83,7 +87,7 @@ export default {
                 }
                 formData.append("title", this.article.title)
                 formData.append("content", this.article.content)
-                formData.append("userId", localStorage.getItem("userId"))
+                formData.append("userId", userId)
 
                 http //post formData
                     .post("/articles", formData, {
@@ -102,7 +106,7 @@ export default {
                 const data = { //define data from the input boxes
                     title: this.article.title,
                     content: this.article.content,
-                    userId: localStorage.getItem("userId")
+                    userId: userId
                 }
 
                 http //post data to database - default headers set in http-common are fine

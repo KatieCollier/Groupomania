@@ -78,10 +78,8 @@ export default {
       http
         .post("/users/login", data) // and post it to the database using the login path
         .then(response => {
-          const userId = response.data.userId;
           const token = response.data.token;
           const chargeCom = response.data.chargeCom;
-          localStorage.setItem("userId", userId); //store the user's ID - usefull to define them as the author of articles or comments
           localStorage.setItem("token", token); //store the authorization token, necessary to use the app
           localStorage.setItem("chargeCom", chargeCom); //store whether or not the user is in charcge of communication - if yes they get extra privileges
           window.location = "/page_principale"; //go to the main page
